@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="me.sabareesh.trippie.SplashActivity">
+
+    <ImageView
+        android:src="@drawable/icon"
+        android:layout_height="@dimen/splash_icon_dim"
+        android:layout_width="@dimen/splash_icon_dim"
+        android:layout_weight="2"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="0.2"
+        android:text="@string/app_name"
+        android:textColor="@color/grey"
+        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_gravity="center_horizontal" />
+
+
+</LinearLayout>

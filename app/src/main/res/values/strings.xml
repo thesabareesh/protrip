@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Trippie !</string>
+    
+    <string name="home_search_hint">Where do you want to go?</string>
+</resources>
