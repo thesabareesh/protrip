@@ -1,9 +1,11 @@
-package me.sabareesh.trippie;
+package me.sabareesh.trippie.ui;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import me.sabareesh.trippie.R;
 
 public class SplashActivity extends AppCompatActivity {
 

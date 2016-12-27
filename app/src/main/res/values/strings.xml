@@ -1,5 +1,18 @@
 <resources>
     <string name="app_name">Trippie !</string>
-    
-    <string name="home_search_hint">Where do you want to go?</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Home screen-->
+    <string name="home_search_hint"><font size="10">Where do you want to go?</font></string>
+    <string name="text_size_home_search" translatable="false">15</string>
+    <string name="error_api">Place selection failed: </string>
+
+    <!--City screen-->
+    <string name="cd_city_banner">City banner</string>
+    <string name="title_hotel">Hotels</string>
+    <string name="title_restaurant">Restaurants</string>
+    <string name="title_top_spots">Top spots</string>
+    <string name="title_places">Places</string>
+
 </resources>

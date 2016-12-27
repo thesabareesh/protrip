@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.sabareesh.trippie">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,25 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".HomeActivity">
+        <activity android:name=".ui.HomeActivity" />
+        <activity android:name=".ui.CityActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CityTheme">
 
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="">
-        </meta-data>
+            android:value="" />
+
     </application>
 
 </manifest>

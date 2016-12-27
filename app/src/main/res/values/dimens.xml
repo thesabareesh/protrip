@@ -3,6 +3,23 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+
     <!--splash screen-->
     <dimen name="splash_icon_dim">150dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- home screen-->
+    <dimen name="margin_home_search">2dp</dimen>
+
+    <!--city screen-->
+    <dimen name="start_margin_collapse">15dp</dimen>
+    <dimen name="height_city_banner">192dp</dimen>
+
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_category_radius">0dp</dimen>
+    <dimen name="category_cover_height">160dp</dimen>
+    <dimen name="category_title_padding">10dp</dimen>
+    <dimen name="category_title">18dp</dimen>
+
 </resources>

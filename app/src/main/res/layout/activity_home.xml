@@ -9,38 +9,45 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
-    tools:context="me.sabareesh.trippie.HomeActivity">
-
-    <!--<EditText
-        android:id="@+id/eT_home_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_alignParentTop="true"
-        android:hint="@string/home_search_hint"
-        android:drawableRight="@drawable/ic_search_black_24px"
-        android:drawableEnd="@drawable/ic_search_black_24px"/>-->
+    tools:context="me.sabareesh.trippie.ui.HomeActivity">
 
 
     <android.support.v7.widget.CardView
+        android:id="@+id/autocomplete_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="20dp"
-        app:cardElevation="4dp">
+        android:layout_marginLeft="@dimen/margin_home_search"
+        android:layout_marginRight="@dimen/margin_home_search"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:cardElevation="@dimen/card_elevation">
 
         <fragment
             android:id="@+id/place_autocomplete_fragment"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/autocomplete_card">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabDots"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment" />
-
-
-    </android.support.v7.widget.CardView>
+            android:layout_alignParentBottom="true"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp" />
+    </RelativeLayout>
 
 
 </RelativeLayout>
