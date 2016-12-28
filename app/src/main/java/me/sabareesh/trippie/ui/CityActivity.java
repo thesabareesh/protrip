@@ -164,9 +164,9 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
     private void loadCategories() {
         int[] covers = new int[]{
                 R.drawable.hotel,
-                R.drawable.hotel,
-                R.drawable.hotel,
-                R.drawable.hotel,
+                R.drawable.restaurant,
+                R.drawable.top_places,
+                R.drawable.all_places,
                 R.drawable.hotel,
                 R.drawable.hotel
         };

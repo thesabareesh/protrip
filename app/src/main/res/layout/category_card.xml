@@ -23,7 +23,7 @@
                 android:layout_height="@dimen/category_cover_height"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitXY" />
 
             <TextView
                 android:id="@+id/title"
