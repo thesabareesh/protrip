@@ -71,7 +71,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitle(cityName);
-        mImageView.setImageResource(R.drawable.poster_placeholder);
+        //mImageView.setImageResource(R.drawable.poster_placeholder);
 
         //Recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -81,7 +81,6 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
         loadCategories();
 
