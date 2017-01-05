@@ -5,13 +5,15 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- commented out line fixes the crash in old devices -->
+    <!-- android:name="android.support.multidex.MultiDexApplication" -->
     <application
+        android:name=".util.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name="android.support.multidex.MultiDexApplication" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
@@ -22,22 +24,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.CityActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/CityTheme"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.PlaceListActivity"
+            android:label="@string/title_activity_hotels"
+            android:parentActivityName=".ui.CityActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.sabareesh.trippie.ui.CityActivity" />
+        </activity>
+
+
+        <activity android:name=".ui.PlaceDetailActivity"
+            android:parentActivityName=".ui.PlaceListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.sabareesh.trippie.ui.PlaceListActivity" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="" />
-
-
     </application>
 
 </manifest>

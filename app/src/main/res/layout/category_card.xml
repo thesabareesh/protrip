@@ -10,6 +10,8 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_margin"
         android:elevation="@dimen/card_elevation"
+        android:clickable="true"
+        android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardCornerRadius="@dimen/card_category_radius">
 
@@ -21,6 +23,7 @@
                 android:id="@+id/thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/category_cover_height"
+                android:transitionName="thumbnail"
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitXY" />
@@ -34,6 +37,7 @@
                 android:paddingRight="@dimen/category_title_padding"
                 android:paddingTop="@dimen/category_title_padding"
                 android:textColor="@color/category_title"
+                style="?android:attr/textAppearanceLarge"
                 android:textSize="@dimen/category_title" />
 
 

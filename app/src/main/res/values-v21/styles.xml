@@ -5,12 +5,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
-    <style name="CityTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-
-    </style>
 
 
 </resources>

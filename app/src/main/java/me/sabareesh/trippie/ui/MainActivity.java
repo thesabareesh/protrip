@@ -22,6 +22,7 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
 
 import me.sabareesh.trippie.R;
 
@@ -128,10 +129,12 @@ public class MainActivity extends AppCompatActivity
         Log.i(TAG, "Place Selected: " + place.getName());
         final String cityId = String.valueOf(place.getId());
         final String cityName = String.valueOf(place.getName());
+        final String cityLatLng=String.valueOf(place.getLatLng().latitude+","+place.getLatLng().longitude);
 
         Intent intent = new Intent(this, CityActivity.class);
         intent.putExtra("cityId", cityId);
         intent.putExtra("cityName", cityName);
+        intent.putExtra("cityLatLng",cityLatLng);
         startActivity(intent);
 
     }

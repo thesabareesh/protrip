@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "me.sabareesh.trippie"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -22,10 +22,6 @@ android {
 
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -34,5 +30,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.0.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
-
+    compile files('libs/volley.jar')
 }

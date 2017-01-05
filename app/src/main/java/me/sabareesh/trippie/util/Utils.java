@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
@@ -25,12 +26,24 @@ public class Utils {
         }
     }
 
-    public void staggerContent(View[] animatedViews) {
+    public void animateView(final View view){
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                view.getViewTreeObserver().removeOnPreDrawListener(this);
+                View[] animatedViews = new View[]{view};
+                staggerContent(animatedViews);
+                return true;
+            }
+        });
+    }
+
+    private void staggerContent(View[] animatedViews) {
 
         Interpolator interpolator = new DecelerateInterpolator();
         for (int i = 0; i < animatedViews.length; ++i) {
             View v = animatedViews[i];
-            v.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+           /* v.setLayerType(View.LAYER_TYPE_HARDWARE, null);*/
             v.setAlpha(0f);
             v.setTranslationY(75);
             v.animate()
@@ -41,4 +54,6 @@ public class Utils {
                     .start();
         }
     }
+
+
 }

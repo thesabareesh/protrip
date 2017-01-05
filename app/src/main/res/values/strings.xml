@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">Trippie !</string>
+    <string name="app_name" translatable="false">Trippie</string>
     <string name="app_desc">Your travel guide</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_feedback">Feedback</string>
     <string name="action_share">Share</string>
+
 
     <!--Home screen-->
     <string name="home_search_hint"><font size="10">Where do you want to go?</font></string>
@@ -16,9 +17,23 @@
     <string name="title_hotel">Hotels</string>
     <string name="title_restaurant">Restaurants</string>
     <string name="title_top_spots">Top spots</string>
-    <string name="title_places">Places</string>
+    <string name="title_places">Places of Interest</string>
 
+    <!--places screen-->
+    <string name="title_activity_hotels">Hotels</string>
+
+    <!-- place screen-->
+    <string name="cd_fab_fav">Favorite</string>
+    <string name="title_icon_url" >Website</string>
+    <string name="title_directions" >Directions</string>
+    <string name="title_call" >Call</string>
+    <string name="place_desc" >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
+
+    <!--APp wide -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--shared animations-->
+    <string name="transition_image">thumbnail</string>
 
 </resources>

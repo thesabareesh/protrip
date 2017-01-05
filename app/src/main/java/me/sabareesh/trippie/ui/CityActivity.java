@@ -1,10 +1,13 @@
 package me.sabareesh.trippie.ui;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -31,12 +34,17 @@ import java.util.List;
 import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.adapter.CategoryAdapter;
 import me.sabareesh.trippie.model.Category;
+import me.sabareesh.trippie.util.Constants;
+import me.sabareesh.trippie.util.RecyclerItemClickListener;
+import me.sabareesh.trippie.util.Utils;
+
+import static me.sabareesh.trippie.R.id.recycler_view_city;
 
 
 public class CityActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "CityActivity";
-    String cityId, cityName;
+    String cityId, cityName, cityLatLng, categoryName;
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
     private List<Category> categoryList;
@@ -61,6 +69,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         if (getIntent().getExtras() != null) {
             cityId = getIntent().getStringExtra("cityId");
             cityName = getIntent().getStringExtra("cityName");
+            cityLatLng = getIntent().getStringExtra("cityLatLng");
             placePhotosAsync(cityId);
 
         }
@@ -74,7 +83,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         //mImageView.setImageResource(R.drawable.poster_placeholder);
 
         //Recyclerview
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(recycler_view_city);
         categoryList = new ArrayList<>();
         adapter = new CategoryAdapter(this, categoryList);
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, 1);
@@ -82,7 +91,32 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(false);
         loadCategories();
+
+
+
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        int itemPosition = recyclerView.getChildLayoutPosition(view);
+                        ImageView thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+                        Log.d(TAG, "City Item clicked: " + String.valueOf(itemPosition));
+                        Intent intent = new Intent(view.getContext(), PlaceListActivity.class);
+                        intent.putExtra("cityLatLng", cityLatLng);
+                        intent.putExtra("itemPosition", itemPosition);
+                        //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(CityActivity.this, thumbnail, getString(R.string.transition_image));
+                        ActivityOptions options = ActivityOptions.makeScaleUpAnimation(thumbnail,0,0,thumbnail.getWidth(),thumbnail.getHeight());
+                        startActivity(intent, options.toBundle());
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        //// TODO: 03-Jan-17 On item long click code
+                    }
+                })
+        );
 
 
     }
@@ -161,7 +195,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void loadCategories() {
-        int[] covers = new int[]{
+        int[] thumbnails = new int[]{
                 R.drawable.hotel,
                 R.drawable.restaurant,
                 R.drawable.top_places,
@@ -170,19 +204,20 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
                 R.drawable.hotel
         };
 
-        Category a = new Category(getString(R.string.title_hotel), covers[0]);
+        Category a = new Category(getString(R.string.title_hotel), thumbnails[0]);
         categoryList.add(a);
 
-        a = new Category(getString(R.string.title_restaurant), covers[1]);
+        a = new Category(getString(R.string.title_restaurant), thumbnails[1]);
         categoryList.add(a);
 
-        a = new Category(getString(R.string.title_top_spots), covers[2]);
+        a = new Category(getString(R.string.title_top_spots), thumbnails[2]);
         categoryList.add(a);
 
-        a = new Category(getString(R.string.title_places), covers[3]);
+        a = new Category(getString(R.string.title_places), thumbnails[3]);
         categoryList.add(a);
 
         adapter.notifyDataSetChanged();
+
     }
 
     @Override
