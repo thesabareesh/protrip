@@ -27,10 +27,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,11 +46,13 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
 
 import me.sabareesh.trippie.R;
+import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Utils;
 
 public class MainActivity extends AppCompatActivity
@@ -58,9 +62,11 @@ public class MainActivity extends AppCompatActivity
     PlaceAutocompleteFragment mAutocompleteFragment;
     LinearLayout mCurrentCardLayout;
     CardView mCardView;
+    TextView tvCurrCityName;
+    ImageView ivStaticMap;
     CoordinatorLayout mCoordinatorLayout;
-
-
+    public static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
+    String mCurrentLocName, mCurrentLat, mCurrentLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         //AutoCompleteFragment
         mAutocompleteFragment = (PlaceAutocompleteFragment)
@@ -83,8 +90,10 @@ public class MainActivity extends AppCompatActivity
         mAutocompleteFragment.setOnPlaceSelectedListener(this);
 
         //current location layouts
-        mCardView=(CardView)findViewById(R.id.current_location_card);
-        mCurrentCardLayout=(LinearLayout) findViewById(R.id.current_location_layout);
+        mCardView = (CardView) findViewById(R.id.current_location_card);
+        mCurrentCardLayout = (LinearLayout) findViewById(R.id.current_location_layout);
+        tvCurrCityName = (TextView) findViewById(R.id.tv_city_name);
+        ivStaticMap=(ImageView)findViewById(R.id.iv_staticMap);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.cLayout_main);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
@@ -106,21 +115,72 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (getIntent().getExtras() != null) {
+            mCurrentLocName = getIntent().getStringExtra("currentLocName");
+            mCurrentLat = getIntent().getStringExtra("currentLat");
+            mCurrentLng = getIntent().getStringExtra("currentLng");
+            if (mCurrentLocName!=null && mCurrentLat!=null && mCurrentLng!=null ) {
+                showCurrentCard();
+            } else {
+                requestLocationPermission();
+            }
+        }
     }
 
+    private void showCurrentCard() {
+        mCurrentCardLayout.setOnClickListener(this);
+        tvCurrCityName.setText(mCurrentLocName);
+        mCardView.setVisibility(View.VISIBLE);
+
+        final String DOMAIN = Constants.BASE_URL_STATIC_MAP;
+        final String APPKEY_PARAM = Constants.API_KEY_PARAM;
+        final String CENTER_PARAM = Constants.CENTER_PARAM;
+        final String ZOOM_PARAM = Constants.ZOOM_PARAM;
+        final String SIZE_PARAM = Constants.SIZE_PARAM;
 
 
+        try {
+            StringBuilder sb = new StringBuilder(DOMAIN)
+                    .append(CENTER_PARAM + "=" + mCurrentLat + "," + mCurrentLng)
+                    .append("&" + ZOOM_PARAM + "=" + Constants.ZOOM_VALUE)
+                    .append("&" + SIZE_PARAM + "=" + Constants.SIZE_VALUE)
+                    .append("&" + APPKEY_PARAM + "=" + Constants.API_VALUE);
 
+            Log.d(TAG, "Thumbnail URL built " + sb.toString());
+            Picasso.with(this)
+                    .load(sb.toString())
+                    .into(ivStaticMap);
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error building url", e);
+        }
+
+
+    }
+
+    protected void requestLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+
+        }
+        else{
+            Snackbar.make(mCoordinatorLayout, getString(R.string.notify_failed_location), Snackbar.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_LOC: {
+            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
 
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getLocation();
+                    Snackbar.make(mCoordinatorLayout, "yea ! granted", Snackbar.LENGTH_LONG).show();
                 } else {
                     Snackbar.make(mCoordinatorLayout, getString(R.string.notify_permission_denied), Snackbar.LENGTH_LONG).show();
 
@@ -205,7 +265,6 @@ public class MainActivity extends AppCompatActivity
                 Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -217,15 +276,15 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.current_location_layout:
+            /*case R.id.current_location_layout:
                 final String cityLatLng = String.valueOf(lat+"," +lng);
 
                 Intent intent = new Intent(this, CityActivity.class);
-                /*intent.putExtra("cityId", cityId);*/
+                *//*intent.putExtra("cityId", cityId);*//*
                 intent.putExtra("cityName", cityName);
                 intent.putExtra("cityLatLng", cityLatLng);
                 startActivity(intent);
-                break;
+                break;*/
 
             default:
                 break;

@@ -29,15 +29,14 @@ import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.util.Utils;
 
 public class SplashActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "SplashActivity";
     private final int SPLASH_DISPLAY_TIME = 1000;
     private GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
-    String cityName, lat, lng;
-    public static final int MY_PERMISSIONS_REQUEST_ACCESS_LOC = 0;
+    String mCurrentLocName, mCurrentLat, mCurrentLng;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +51,12 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                     .build();
         }
 
-        Handler handler = new Handler();
-
-        /*handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-            }
-        }, SPLASH_DISPLAY_TIME);*/
     }
 
-
     protected void checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (!Utils.isConnected(this) || ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
             launchHome();
         } else {
             getLocation();
@@ -75,18 +68,11 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
 
     }
 
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
     @Override
     public void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
         Log.d(TAG, "onStart");
-
     }
 
     @Override
@@ -100,8 +86,6 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "gAPI connected");
         checkLocationPermission();
-
-
     }
 
     @Override
@@ -111,10 +95,24 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
 
     public void launchHome() {
 
-        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-        SplashActivity.this.startActivity(intent);
-        SplashActivity.this.finish();
-        overridePendingTransition(0, 0);
+
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+
+                intent.putExtra("currentLat", mCurrentLat);
+                intent.putExtra("currentLng", mCurrentLng);
+                intent.putExtra("currentLocName", mCurrentLocName);
+
+                SplashActivity.this.startActivity(intent);
+                SplashActivity.this.finish();
+                overridePendingTransition(0, 0);
+            }
+        }, SPLASH_DISPLAY_TIME);
+
 
     }
 
@@ -122,26 +120,18 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
-                lat = String.valueOf(mLastLocation.getLatitude());
-                lng = String.valueOf(mLastLocation.getLongitude());
+                mCurrentLat = String.valueOf(mLastLocation.getLatitude());
+                mCurrentLng = String.valueOf(mLastLocation.getLongitude());
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                 try {
-                    List<Address> addresses = geocoder.getFromLocation(Double.parseDouble(lat), Double.parseDouble(lng), 1);
-                    cityName = addresses.get(0).getLocality();
-                    TextView tvCityName = (TextView) findViewById(R.id.tv_city_name);
-                    if (cityName.length() > 0) {
-                        //mCurrentCardLayout.setOnClickListener(this);
-                        tvCityName.setText(cityName);
-                        //mCardView.setVisibility(View.VISIBLE);
-                    }
+                    List<Address> addresses = geocoder.getFromLocation(Double.parseDouble(mCurrentLat), Double.parseDouble(mCurrentLng), 1);
+                    mCurrentLocName = addresses.get(0).getLocality();
+                    launchHome();
                 } catch (Exception e) {
                     Log.d(TAG, "Exception");
                 }
-
-            } else {
-                //Snackbar.make(mCoordinatorLayout, getString(R.string.notify_failed_location), Snackbar.LENGTH_LONG).show();
-
             }
+            launchHome();
         }
 
     }
