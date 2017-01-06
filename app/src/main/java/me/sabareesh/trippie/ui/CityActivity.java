@@ -70,8 +70,9 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
             cityId = getIntent().getStringExtra("cityId");
             cityName = getIntent().getStringExtra("cityName");
             cityLatLng = getIntent().getStringExtra("cityLatLng");
-            placePhotosAsync(cityId);
-
+            if(cityId!=null){
+                placePhotosAsync(cityId);
+            }
         }
 
         //Toolbar
@@ -199,7 +200,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
                 R.drawable.hotel,
                 R.drawable.restaurant,
                 R.drawable.top_places,
-                R.drawable.all_places,
+                R.drawable.building_illustration,
                 R.drawable.hotel,
                 R.drawable.hotel
         };

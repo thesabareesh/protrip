@@ -3,7 +3,9 @@
     <string name="app_desc">Your travel guide</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_feedback">Feedback</string>
+    <string name="action_info">Info</string>
     <string name="action_share">Share</string>
+    <string name="action_settings">Settings</string>
 
 
     <!--Home screen-->
@@ -35,5 +37,11 @@
 
     <!--shared animations-->
     <string name="transition_image">thumbnail</string>
+
+
+    <!--Notifications-->
+    <string name="notify_failed_location">Unable to get location</string>
+    <string name="notify_permission_denied">Boo ! Permission denied.</string>
+
 
 </resources>

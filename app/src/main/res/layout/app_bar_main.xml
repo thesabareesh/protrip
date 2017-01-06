@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/cLayout_main"
     android:fitsSystemWindows="true"
     tools:context="me.sabareesh.trippie.ui.MainActivity">
 
@@ -23,6 +24,19 @@
 
     <include layout="@layout/content_main" />
 
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:clickable="true"
+        android:contentDescription="@string/cd_fab_search"
+        app:srcCompat="@drawable/ic_search_white_24px"
+        tools:targetApi="lollipop" />
 
 </android.support.design.widget.CoordinatorLayout>

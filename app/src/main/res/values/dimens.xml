@@ -8,12 +8,14 @@
     <dimen name="pbar_height">25dp</dimen>
     <dimen name="pbar_margin_top">-13dp</dimen>
 
+
     <!--splash screen-->
     <dimen name="splash_icon_dim">150dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- home screen-->
     <dimen name="margin_home_search">2dp</dimen>
+    <dimen name="height_card_current">75dp</dimen>
 
     <!--city screen-->
     <dimen name="start_margin_collapse">15dp</dimen>
@@ -33,5 +35,6 @@
     <dimen name="height_top_icons">20dp</dimen>
     <dimen name="padding_iconbar">10dp</dimen>
     <dimen name="padding_descbar">15dp</dimen>
+
 
 </resources>

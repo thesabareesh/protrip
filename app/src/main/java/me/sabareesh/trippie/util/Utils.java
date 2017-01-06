@@ -14,7 +14,7 @@ import android.view.animation.Interpolator;
 
 public class Utils {
 
-    public static boolean checkInternetConnection(@Nullable Context context) {
+    public static boolean isConnected(@Nullable Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected()) {

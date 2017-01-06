@@ -12,5 +12,6 @@
     <color name="widePosterBG">#ddd</color>
     <color name="category_title">#4c4c4c</color>
     <color name="cityBG">#f1f5f8</color>
+    <color name="dark">#151515</color>
 
 </resources>

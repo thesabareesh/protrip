@@ -22,10 +22,10 @@ public class Constants {
     public static final String PLACE_ID_PARAM="placeid";
 
     //Values
-    //public static final String API_VALUE = "";
-    //public static final String API_VALUE = "";
-    public static final String API_VALUE = "";
-    //public static final String API_VALUE = "";
+    public static final String API_VALUE = "AIzaSyBwURzBaLmblbsNIpiEN_09GNDyV7ZgiMM";
+    //public static final String API_VALUE = "AIzaSyAHe5F1bYvx5gpuiuMVn-LIqz_roiqawCw";
+    //public static final String API_VALUE = "AIzaSyCQ3o8bdZI0-oB70eB_FhTDvTf8gXjJBeg";
+    //public static final String API_VALUE = "AIzaSyAlgI0qt6RnA0C8tGuvHMrJyPzyvz5fNzg";
 
     public static final String TYPE_VALUE_RESTAURANT = "restaurant";
     public static final String TYPE_VALUE_HOTEL = "lodging";

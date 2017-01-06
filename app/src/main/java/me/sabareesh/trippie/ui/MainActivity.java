@@ -1,9 +1,21 @@
 package me.sabareesh.trippie.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,22 +27,40 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+import java.util.Locale;
+
 import me.sabareesh.trippie.R;
+import me.sabareesh.trippie.util.Utils;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PlaceSelectionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PlaceSelectionListener, View.OnClickListener {
 
     public static final String TAG = "MainActivity";
-    PlaceAutocompleteFragment autocompleteFragment;
+    PlaceAutocompleteFragment mAutocompleteFragment;
+    LinearLayout mCurrentCardLayout;
+    CardView mCardView;
+    CoordinatorLayout mCoordinatorLayout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,24 +70,28 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //AutoCompleteFragment
-        autocompleteFragment = (PlaceAutocompleteFragment)
+        mAutocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        autocompleteFragment.setHint(getResources().getString(R.string.home_search_hint));
-        ((EditText) autocompleteFragment.getView().
+        mAutocompleteFragment.setHint(getResources().getString(R.string.home_search_hint));
+        ((EditText) mAutocompleteFragment.getView().
                 findViewById(R.id.place_autocomplete_search_input))
                 .setTextSize(Integer.parseInt(getResources().getString(R.string.text_size_home_search)));
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
                 .build();
-        autocompleteFragment.setFilter(typeFilter);
-        autocompleteFragment.setOnPlaceSelectedListener(this);
+        mAutocompleteFragment.setFilter(typeFilter);
+        mAutocompleteFragment.setOnPlaceSelectedListener(this);
 
+        //current location layouts
+        mCardView=(CardView)findViewById(R.id.current_location_card);
+        mCurrentCardLayout=(LinearLayout) findViewById(R.id.current_location_layout);
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.cLayout_main);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                (autocompleteFragment.getView().
+                (mAutocompleteFragment.getView().
                         findViewById(R.id.place_autocomplete_search_input)).performClick();
             }
         });
@@ -72,6 +106,30 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_LOC: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getLocation();
+                } else {
+                    Snackbar.make(mCoordinatorLayout, getString(R.string.notify_permission_denied), Snackbar.LENGTH_LONG).show();
+
+                }
+                break;
+            }
+
+
+        }
     }
 
     @Override
@@ -113,7 +171,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-         if (id == R.id.nav_share) {
+        if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
@@ -129,12 +187,12 @@ public class MainActivity extends AppCompatActivity
         Log.i(TAG, "Place Selected: " + place.getName());
         final String cityId = String.valueOf(place.getId());
         final String cityName = String.valueOf(place.getName());
-        final String cityLatLng=String.valueOf(place.getLatLng().latitude+","+place.getLatLng().longitude);
+        final String cityLatLng = String.valueOf(place.getLatLng().latitude + "," + place.getLatLng().longitude);
 
         Intent intent = new Intent(this, CityActivity.class);
         intent.putExtra("cityId", cityId);
         intent.putExtra("cityName", cityName);
-        intent.putExtra("cityLatLng",cityLatLng);
+        intent.putExtra("cityLatLng", cityLatLng);
         startActivity(intent);
 
     }
@@ -147,10 +205,33 @@ public class MainActivity extends AppCompatActivity
                 Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
-        ((EditText) autocompleteFragment.getView().
+        ((EditText) mAutocompleteFragment.getView().
                 findViewById(R.id.place_autocomplete_search_input)).setText("");
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.current_location_layout:
+                final String cityLatLng = String.valueOf(lat+"," +lng);
+
+                Intent intent = new Intent(this, CityActivity.class);
+                /*intent.putExtra("cityId", cityId);*/
+                intent.putExtra("cityName", cityName);
+                intent.putExtra("cityLatLng", cityLatLng);
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+
+        }
+    }
+
+
 }
