@@ -2,6 +2,7 @@ package me.sabareesh.trippie.ui;
 
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -149,6 +155,31 @@ public class PlaceListActivity extends AppCompatActivity {
         catch (Exception e){
             Log.e(LOG_TAG, "Error building url", e);
         }
+
+        //Admob
+        MobileAds.initialize(this, Constants.ABMOBS_APP_ID);
+        final AdView mAdView = (AdView)findViewById(R.id.adGMSView);
+        final AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("A735BBF17F1F716518CB3F5B1FE57111")
+                .build();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAdView.loadAd(adRequest);
+            }
+        }, Constants.ADMOB_DELAY_MS);
+
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                mAdView.setVisibility(View.VISIBLE);
+                Log.d(LOG_TAG,getString(R.string.admob_loaded));
+            }
+
+        });
 
 
 

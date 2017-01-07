@@ -8,11 +8,15 @@
     <string name="action_settings">Settings</string>
 
 
+    <!--Splash screen-->
+    <string name="cd_splash_image">Trippie logo</string>
+
     <!--Home screen-->
     <string name="home_search_hint"><font size="10">Where do you want to go?</font></string>
     <string name="text_size_home_search" translatable="false">15</string>
     <string name="error_api">Place selection failed: </string>
     <string name="cd_fab_search">Search</string>
+    <string name="cd_current_card">Current Location</string>
 
     <!--City screen-->
     <string name="cd_city_banner">City banner</string>
@@ -43,5 +47,10 @@
     <string name="notify_failed_location">Unable to get location</string>
     <string name="notify_permission_denied">Boo ! Permission denied.</string>
 
+    <!--Admob-->
+    <string name="banner_ad_unit_id">ca-app-pub-1589330732834822/6070642390</string>
+    <string name="admob_banner">BANNER</string>
+    <string name="admob_smart_banner">SMART_BANNER</string>
+    <string name="admob_loaded">Ad is loaded</string>
 
 </resources>

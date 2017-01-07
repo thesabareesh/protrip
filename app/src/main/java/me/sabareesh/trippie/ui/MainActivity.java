@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
         mCurrentCardLayout.setOnClickListener(this);
         tvCurrCityName.setText(mCurrentLocName);
         mCardView.setVisibility(View.VISIBLE);
-        Utils.loadStaticMap(this, ivStaticMap, mCurrentLat, mCurrentLng, Constants.SIZE_VALUE_S, Constants.ZOOM_VALUE_HIGH);
+        Utils.loadStaticMap(this, ivStaticMap, mCurrentLat, mCurrentLng, Constants.SIZE_VALUE_S, Constants.ZOOM_VALUE_LOW);
 
 
     }
@@ -231,12 +231,14 @@ public class MainActivity extends AppCompatActivity
         Log.i(TAG, "Place Selected: " + place.getName());
         final String cityId = String.valueOf(place.getId());
         final String cityName = String.valueOf(place.getName());
-        final String cityLatLng = String.valueOf(place.getLatLng().latitude + "," + place.getLatLng().longitude);
+        final String cityLat = String.valueOf(place.getLatLng().latitude);
+        final String cityLng = String.valueOf(place.getLatLng().longitude);
 
         Intent intent = new Intent(this, CityActivity.class);
         intent.putExtra("cityId", cityId);
         intent.putExtra("cityName", cityName);
-        intent.putExtra("cityLatLng", cityLatLng);
+        intent.putExtra("cityLat", cityLat);
+        intent.putExtra("cityLng", cityLng);
         startActivity(intent);
 
     }

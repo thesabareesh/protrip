@@ -111,7 +111,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                 SplashActivity.this.finish();
                 overridePendingTransition(0, 0);
             }
-        }, Constants.SPLASH_DISPLAY_MS);
+        }, Constants.SPLASH_DELAY_MS);
 
 
     }

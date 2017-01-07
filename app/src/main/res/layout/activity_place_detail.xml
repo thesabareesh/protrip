@@ -24,6 +24,7 @@
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleMarginBottom="@dimen/start_margin_collapse"
             app:expandedTitleMarginStart="@dimen/start_margin_collapse"
+
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -248,6 +249,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
         android:clickable="true"
         android:contentDescription="@string/cd_fab_fav"

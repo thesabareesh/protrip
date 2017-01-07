@@ -9,8 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
-
+import android.widget.TextView;    
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -89,7 +88,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
             viewHolder.rating.setRating(Float.parseFloat(String.valueOf(placeList.getPlace_rating())));
         }
 
-        Picasso.with(mContext).load(url).fit().into(viewHolder.place_pic);
+        //Picasso.with(mContext).load(url).fit().into(viewHolder.place_pic);
         new Utils().animateView(viewHolder.itemView);
     }
 

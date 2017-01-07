@@ -32,24 +32,26 @@ public class Constants {
     //Values
     //public static final String API_VALUE = "";
     //public static final String API_VALUE = "";
-    public static final String API_VALUE = "";
     //public static final String API_VALUE = "";
+    public static final String API_VALUE = "";
 
     public static final String API_MAPS_VALUE = "";
+    public static final String ABMOBS_APP_ID="ca-app-pub-3940256099942544~3347511713";
     public static final String TYPE_VALUE_RESTAURANT = "restaurant";
     public static final String TYPE_VALUE_HOTEL = "lodging";
     public static final String TYPE_VALUE_TOP_SPOTS = "amusement_park|aquarium|art_gallery|casino|church|museum|night_club|park|place_of_worship|shopping_mall|stadium|zoo";
     public static final String TYPE_VALUE_POI = "point_of_interest";
     public static final String RADIUS_VALUE="5000";
     public static final String RANK_BY_VALUE="prominence";
-    public static final String ZOOM_VALUE_HIGH="15";
+    public static final String ZOOM_VALUE_HIGH="16";
     public static final String ZOOM_VALUE_LOW="10";
-    public static final String SIZE_VALUE_S="100x100";
-    public static final String SIZE_VALUE_M="400x400";
+    public static final String SIZE_VALUE_S="150x100";
+    public static final String SIZE_VALUE_M="800x400";
 
-    //NUm values
+    //Delays
     public static final int PERMISSION_DELAY_MS=2000;
-    public static final int SPLASH_DISPLAY_MS = 1000;
+    public static final int SPLASH_DELAY_MS = 1000;
+    public static final int ADMOB_DELAY_MS = 1000;
 
 
 }

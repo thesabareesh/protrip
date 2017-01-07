@@ -77,6 +77,12 @@
                 android:theme="@style/LinearProgress"
                 android:layout_marginTop="@dimen/pbar_margin_top" />
 
+            <include
+                layout="@layout/ad_gms_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_places"
                 android:layout_width="match_parent"

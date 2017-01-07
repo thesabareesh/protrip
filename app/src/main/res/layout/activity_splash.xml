@@ -13,7 +13,8 @@
         android:layout_height="@dimen/splash_icon_dim"
         android:layout_gravity="center"
         android:layout_weight="2"
-        android:src="@drawable/icon" />
+        android:src="@drawable/icon"
+        android:contentDescription="@string/cd_splash_image"/>
 
     <TextView
         android:layout_width="wrap_content"
