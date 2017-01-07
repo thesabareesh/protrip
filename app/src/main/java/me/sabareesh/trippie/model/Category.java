@@ -9,9 +9,6 @@ public class Category {
     private String name;
     private int thumbnail;
 
-    public Category() {
-    }
-
     public Category(String name, int thumbnail) {
         this.name = name;
         this.thumbnail = thumbnail;
@@ -29,7 +26,4 @@ public class Category {
         return thumbnail;
     }
 
-    public void setThumbnail(int thumbnail) {
-        this.thumbnail = thumbnail;
-    }
 }

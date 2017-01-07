@@ -78,9 +78,11 @@ public class Utils {
 
             String url=sb.toString();
             Log.d(TAG, "Thumbnail URL built " + url);
-            Picasso.with(ctx)
-                    .load(url)
-                    .into(imageView);
+            if(url!=null && !url.isEmpty()) {
+                Picasso.with(ctx)
+                        .load(url)
+                        .into(imageView);
+            }
 
         } catch (Exception e) {
             Log.e(TAG, "Error building url", e);

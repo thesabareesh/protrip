@@ -43,17 +43,17 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
     @Override
     public PlaceListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = mInflater.inflate(R.layout.recycle_view_item, viewGroup, false);
-        final ViewHolder vh = new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String place_id = list.get(vh.getAdapterPosition()).getPlace_id();
-                String place_name=list.get(vh.getAdapterPosition()).getPlace_name();
+                String place_id = list.get(holder.getAdapterPosition()).getPlace_id();
+                String place_name=list.get(holder.getAdapterPosition()).getPlace_name();
 
-                String place_imageURL=(list.get(vh.getAdapterPosition()).getPhoto_reference()!=null)
+                String place_imageURL=(list.get(holder.getAdapterPosition()).getPhoto_reference()!=null)
                         ?Constants.PLACE_PHOTO +
-                        list.get(vh.getAdapterPosition()).getPhoto_reference().get(0) +
+                        list.get(holder.getAdapterPosition()).getPhoto_reference().get(0) +
                         "&key="+ Constants.API_VALUE:"";
 
                 Intent intent = new Intent(mContext, PlaceDetailActivity.class);
@@ -64,7 +64,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
             }
         });
 
-        return vh;
+        return holder;
     }
 
     @Override
@@ -87,8 +87,9 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
         if (placeList.getPlace_rating() != null) {
             viewHolder.rating.setRating(Float.parseFloat(String.valueOf(placeList.getPlace_rating())));
         }
-
-        //Picasso.with(mContext).load(url).fit().into(viewHolder.place_pic);
+        if(url!=null && !url.isEmpty()) {
+            //Picasso.with(mContext).load(url).fit().into(viewHolder.place_pic);
+        }
         new Utils().animateView(viewHolder.itemView);
     }
 

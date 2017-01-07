@@ -50,7 +50,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     String place_id, place_name, image_URL;
     ProgressBar progressBar;
     ImageView mBanner;
-    TextView tvPlaceName;
+    TextView tvPlaceName,tvAddress;
     RatingBar rbRatingBar;
     LinearLayout llUrlIcon,llCall,llDirections;
 
@@ -87,6 +87,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         }
 
         rbRatingBar=(RatingBar)findViewById(R.id.rating);
+        tvAddress=(TextView)findViewById(R.id.address);
         llUrlIcon=(LinearLayout)findViewById(R.id.icon_link);
         llCall=(LinearLayout)findViewById(R.id.icon_call);
         llDirections=(LinearLayout)findViewById(R.id.icon_directions);
@@ -102,7 +103,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         collapsingToolbarLayout.setTitle(place_name);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         mBanner = (ImageView) findViewById(R.id.banner);
-        if(image_URL!=null){
+        if(image_URL!=null && !image_URL.isEmpty()){
             Picasso.with(this).load(image_URL).fit().into(mBanner);
         }
 
@@ -156,12 +157,13 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                                 placeDetail.setPlace_detail_id(place.getString(TAG_PLACE_ID));
                                 placeDetail.setPlace_detail_icon_url(place.getString(TAG_ICON));
                                 placeDetail.setPlace_detail_address(place.getString(TAG_ADDRESS));
+                                tvAddress.setText(placeDetail.getPlace_detail_address());
                                 placeDetail.setPlace_detail_name(place.getString(TAG_NAME));
                                 if (place.has(TAG_RATING)) {
                                     placeDetail.setPlace_detail_rating(place.getDouble(TAG_RATING));
                                     rbRatingBar.setRating(Float.parseFloat(String.valueOf(placeDetail.getPlace_detail_rating())));
-                                }
 
+                                }
                                 if (place.has(TAG_PHONE)) {
                                     placeDetail.setPlace_detail_phone(place.getString(TAG_PHONE));
                                 }

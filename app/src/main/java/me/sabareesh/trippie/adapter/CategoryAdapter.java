@@ -28,6 +28,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     private List<Category> categoryList;
 
 
+    public CategoryAdapter(Context mContext, List<Category> categoryList) {
+        this.mContext = mContext;
+        this.categoryList = categoryList;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageView thumbnail;
@@ -36,20 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-           /* view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "onClick：" + getPosition(),Toast.LENGTH_SHORT);
-                }
-            });*/
-
         }
-    }
-
-
-    public CategoryAdapter(Context mContext, List<Category> categoryList) {
-        this.mContext = mContext;
-        this.categoryList = categoryList;
     }
 
     @Override
@@ -65,7 +57,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Category category = categoryList.get(position);
         holder.title.setText(category.getName());
-        // loading wide poster using picasso library
         Picasso.with(mContext).load(category.getThumbnail()).into(holder.thumbnail);
 
     }

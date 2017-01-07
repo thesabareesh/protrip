@@ -5,6 +5,8 @@
     android:layout_centerHorizontal="true"
     ads:adUnitId="@string/banner_ad_unit_id"
     ads:adSize="@string/admob_smart_banner"
-    android:visibility="gone"
+    android:visibility="invisible"
+    android:layout_below="@id/progressBar"
+    android:layout_above="@id/rv_places"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"/>

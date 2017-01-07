@@ -9,7 +9,7 @@ package me.sabareesh.trippie.model;
 public class PlaceDetail {
 
     private String place_detail_name, place_detail_id, place_detail_url, place_detail_phone;
-    public Double place_detail_rating;
+    Double place_detail_rating;
     private String place_detail_address, place_detail_icon_url,place_detail_website;
 
     public PlaceDetail() {

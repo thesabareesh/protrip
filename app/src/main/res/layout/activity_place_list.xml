@@ -68,6 +68,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"

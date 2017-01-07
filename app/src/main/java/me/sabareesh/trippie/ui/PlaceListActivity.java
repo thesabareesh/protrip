@@ -209,6 +209,9 @@ public class PlaceListActivity extends AppCompatActivity {
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+
+            // Credits for Item offsets : http://www.androidhive.info/2016/05/android-working-with-card-view-and-recycler-view/
+
             int position = parent.getChildAdapterPosition(view); // item position
             int column = position % spanCount; // item column
 

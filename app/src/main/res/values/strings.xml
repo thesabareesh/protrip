@@ -33,7 +33,7 @@
     <string name="title_icon_url" >Website</string>
     <string name="title_directions" >Directions</string>
     <string name="title_call" >Call</string>
-    <string name="place_desc" >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
+    <string name="place_desc" > </string>
 
     <!--APp wide -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

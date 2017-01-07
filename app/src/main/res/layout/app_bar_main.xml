@@ -34,15 +34,14 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="?android:attr/actionBarSize">
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:id="@+id/autocomplete_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_home_search"
-            android:layout_marginRight="@dimen/margin_home_search"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            app:cardCornerRadius="@dimen/card_category_radius"
-            app:cardElevation="@dimen/card_elevation">
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?selectableItemBackground"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
 
             <fragment
                 android:id="@+id/place_autocomplete_fragment"
@@ -53,7 +52,13 @@
                 android:focusable="true"
                 android:foreground="?selectableItemBackground"
                 android:contentDescription="@string/cd_fab_search"/>
-        </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/autocomplete_card"
+            android:background="@android:color/darker_gray"/>
 
         <android.support.v7.widget.CardView
             android:id="@+id/current_location_card"
@@ -65,7 +70,7 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:visibility="invisible"
             app:cardElevation="@dimen/card_elevation"
-            app:cardCornerRadius="@dimen/card_category_radius"
+            app:cardCornerRadius="@dimen/card_radius"
             android:contentDescription="@string/cd_current_card">
 
             <LinearLayout

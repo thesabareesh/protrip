@@ -8,10 +8,13 @@
 
 
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
     <color name="grey">#FFDEDADA</color>
+    <color name="material_grey">#616161</color>
     <color name="widePosterBG">#ddd</color>
     <color name="category_title">#4c4c4c</color>
     <color name="cityBG">#f1f5f8</color>
     <color name="dark">#55464646</color>
+
 
 </resources>

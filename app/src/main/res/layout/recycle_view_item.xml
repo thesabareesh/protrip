@@ -2,9 +2,11 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="2dp"
     android:clickable="true"
     android:elevation="@dimen/card_elevation"
+    app:cardCornerRadius="@dimen/card_radius"
     android:focusable="true"
     android:foreground="?selectableItemBackground">
 
@@ -16,15 +18,16 @@
 
         <ImageView
             android:id="@+id/place_pic"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:background="#bfbfbf"
+            android:layout_width="@dimen/dim_places_thumbnail"
+            android:layout_height="@dimen/dim_places_thumbnail"
+            android:background="@color/grey"
             android:scaleType="centerCrop" />
 
         <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center|center_vertical">
 
             <TextView
                 android:id="@+id/place_id"
@@ -34,15 +37,16 @@
 
             <TextView
                 android:id="@+id/place_name"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start|center_vertical"
-                android:maxLines="4"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="8dp"
-                android:textColor="#000"
-                android:textSize="17sp" />
+                android:maxLines="2"
+                style="@style/autoscroll"
+                android:paddingLeft="@dimen/padding_places_name"
+                android:paddingRight="@dimen/padding_places_name"
+                android:paddingTop="@dimen/padding_places_name"
+                android:textColor="@color/black"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             <RatingBar
                 android:id="@+id/rating"
@@ -50,9 +54,9 @@
                 android:layout_height="wrap_content"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_below="@+id/place_name"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginLeft="@dimen/margin_places_start_rating"
+                android:layout_marginStart="@dimen/margin_places_start_rating"
+                android:layout_marginTop="@dimen/margin_places_top_ratings"
                 android:isIndicator="true"
                 android:numStars="5" />
 
@@ -63,10 +67,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rating"
                 android:gravity="start|center_vertical"
-                android:maxLines="4"
-                android:padding="8dp"
-                android:textColor="#5f5f5f"
-                android:textSize="13sp" />
+                style="@style/autoscroll"
+                android:maxLines="3"
+                android:padding="@dimen/padding_places_address"
+                android:textColor="@color/material_grey"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
         </RelativeLayout>
 

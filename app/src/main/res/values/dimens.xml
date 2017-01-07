@@ -3,10 +3,16 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+
     <!-- app wide-->
     <bool name="isTablet">false</bool>
-    <dimen name="pbar_height">25dp</dimen>
-    <dimen name="pbar_margin_top">-13dp</dimen>
+    <dimen name="pbar_height">20dp</dimen>
+    <dimen name="pbar_margin_top">-8dp</dimen>
+    <dimen name="card_radius">2dp</dimen>
+    <dimen name="pb_elevation">10dp</dimen>
 
 
     <!--splash screen-->
@@ -19,22 +25,30 @@
 
     <!--city screen-->
     <dimen name="start_margin_collapse">15dp</dimen>
-    <dimen name="height_city_banner">192dp</dimen>
-
+    <dimen name="height_city_banner">200dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_no_elevation">2dp</dimen>
     <dimen name="card_margin">5dp</dimen>
-    <dimen name="card_category_radius">2dp</dimen>
     <dimen name="category_cover_height">160dp</dimen>
     <dimen name="category_title_padding">10dp</dimen>
     <dimen name="category_title">18dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
+
+    <!--places screen-->
+    <dimen name="padding_places_address">5dp</dimen>
+    <dimen name="margin_places_top_ratings">2dp</dimen>
+    <dimen name="margin_places_start_rating">5dp</dimen>
+    <dimen name="padding_places_name">5dp</dimen>
+    <dimen name="dim_places_thumbnail">130dp</dimen>
+
 
     <!--place screen-->
-    <dimen name="height_top_icons">20dp</dimen>
+    <dimen name="height_top_icons">30dp</dimen>
     <dimen name="padding_iconbar">10dp</dimen>
     <dimen name="padding_descbar">15dp</dimen>
+    <dimen name="padding_place_address">5dp</dimen>
+    <dimen name="padding_place_rating">5dp</dimen>
+    <dimen name="margin_place_top_ratings">7dp</dimen>
+    <dimen name="margin_place_start_rating">10dp</dimen>
 
 
 </resources>
