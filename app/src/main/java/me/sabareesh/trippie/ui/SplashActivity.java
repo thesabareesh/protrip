@@ -26,13 +26,13 @@ import java.util.List;
 import java.util.Locale;
 
 import me.sabareesh.trippie.R;
+import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Utils;
 
 public class SplashActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "SplashActivity";
-    private final int SPLASH_DISPLAY_TIME = 1000;
     private GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     String mCurrentLocName, mCurrentLat, mCurrentLng;
@@ -111,7 +111,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                 SplashActivity.this.finish();
                 overridePendingTransition(0, 0);
             }
-        }, SPLASH_DISPLAY_TIME);
+        }, Constants.SPLASH_DISPLAY_MS);
 
 
     }
@@ -125,8 +125,9 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                 try {
                     List<Address> addresses = geocoder.getFromLocation(Double.parseDouble(mCurrentLat), Double.parseDouble(mCurrentLng), 1);
-                    mCurrentLocName = addresses.get(0).getLocality();
-                    launchHome();
+                    //mCurrentLocName = addresses.get(0).getLocality();
+                    mCurrentLocName=addresses.get(0).getAddressLine(1);
+
                 } catch (Exception e) {
                     Log.d(TAG, "Exception");
                 }

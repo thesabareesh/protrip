@@ -13,7 +13,7 @@ public class Constants {
     public static final String BASE_URL_PLACE_DETAILS = "https://maps.googleapis.com/maps/api/place/details/json?";
     public static final String PLACE_THUMBNAIL = "https://maps.googleapis.com/maps/api/place/photo?maxheight=220&photoreference=";
     public static final String BASE_URL_STATIC_MAP = "https://maps.googleapis.com/maps/api/staticmap?";
-            //"center=40.714728,-73.998672&zoom=14&size=400x400&key=YOUR_API_KEY";
+
 
     public static final String PLACE_PHOTO = "https://maps.googleapis.com/maps/api/place/photo?maxheight=800&photoreference=";
     public static final String API_KEY_PARAM = "key";
@@ -30,9 +30,9 @@ public class Constants {
 
 
     //Values
+    //public static final String API_VALUE = "";
+    //public static final String API_VALUE = "";
     public static final String API_VALUE = "";
-    //public static final String API_VALUE = "";
-    //public static final String API_VALUE = "";
     //public static final String API_VALUE = "";
 
     public static final String API_MAPS_VALUE = "";
@@ -42,8 +42,14 @@ public class Constants {
     public static final String TYPE_VALUE_POI = "point_of_interest";
     public static final String RADIUS_VALUE="5000";
     public static final String RANK_BY_VALUE="prominence";
-    public static final String ZOOM_VALUE="10";
-    public static final String SIZE_VALUE="100x100";
+    public static final String ZOOM_VALUE_HIGH="15";
+    public static final String ZOOM_VALUE_LOW="10";
+    public static final String SIZE_VALUE_S="100x100";
+    public static final String SIZE_VALUE_M="400x400";
+
+    //NUm values
+    public static final int PERMISSION_DELAY_MS=2000;
+    public static final int SPLASH_DISPLAY_MS = 1000;
 
 
 }

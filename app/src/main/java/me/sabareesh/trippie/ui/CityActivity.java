@@ -27,6 +27,7 @@ import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.PlacePhotoResult;
 import com.google.android.gms.location.places.Places;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ import static me.sabareesh.trippie.R.id.recycler_view_city;
 public class CityActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "CityActivity";
-    String cityId, cityName, cityLatLng, categoryName;
+    String mCityId, mCityName, mCityLat, mCityLng, mStaticMapURL;
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
     private List<Category> categoryList;
@@ -67,11 +68,16 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         mImageView = (ImageView) findViewById(R.id.widePoster);
 
         if (getIntent().getExtras() != null) {
-            cityId = getIntent().getStringExtra("cityId");
-            cityName = getIntent().getStringExtra("cityName");
-            cityLatLng = getIntent().getStringExtra("cityLatLng");
-            if(cityId!=null){
-                placePhotosAsync(cityId);
+            mCityId = getIntent().getStringExtra("cityId");
+            mCityName = getIntent().getStringExtra("cityName");
+            mCityLat = getIntent().getStringExtra("cityLat");
+            mCityLng = getIntent().getStringExtra("cityLng");
+            mStaticMapURL=getIntent().getStringExtra("mStaticMapURL");
+            if(mCityId!=null){
+                placePhotosAsync(mCityId);
+            }else{
+                Utils.loadStaticMap(this,mImageView,mCityLat,mCityLng
+                        ,Constants.SIZE_VALUE_M,Constants.ZOOM_VALUE_HIGH);
             }
         }
 
@@ -80,7 +86,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
-        collapsingToolbarLayout.setTitle(cityName);
+        collapsingToolbarLayout.setTitle(mCityName);
         //mImageView.setImageResource(R.drawable.poster_placeholder);
 
         //Recyclerview
@@ -105,7 +111,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
                         ImageView thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
                         Log.d(TAG, "City Item clicked: " + String.valueOf(itemPosition));
                         Intent intent = new Intent(view.getContext(), PlaceListActivity.class);
-                        intent.putExtra("cityLatLng", cityLatLng);
+                        intent.putExtra("cityLatLng", mCityLat+","+mCityLng);
                         intent.putExtra("itemPosition", itemPosition);
                         //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(CityActivity.this, thumbnail, getString(R.string.transition_image));
                         ActivityOptions options = ActivityOptions.makeScaleUpAnimation(thumbnail,0,0,thumbnail.getWidth(),thumbnail.getHeight());

@@ -102,7 +102,10 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         collapsingToolbarLayout.setTitle(place_name);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         mBanner = (ImageView) findViewById(R.id.banner);
-        Picasso.with(this).load(image_URL).fit().into(mBanner);
+        if(image_URL!=null){
+            Picasso.with(this).load(image_URL).fit().into(mBanner);
+        }
+
 
 
         final String DOMAIN = Constants.BASE_URL_PLACE_DETAILS;

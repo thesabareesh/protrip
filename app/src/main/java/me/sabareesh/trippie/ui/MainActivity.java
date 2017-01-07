@@ -9,6 +9,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -66,7 +67,8 @@ public class MainActivity extends AppCompatActivity
     ImageView ivStaticMap;
     CoordinatorLayout mCoordinatorLayout;
     public static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
-    String mCurrentLocName, mCurrentLat, mCurrentLng;
+    String mCurrentLocName, mCurrentLat, mCurrentLng, mStaticMapURL;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity
         mCardView = (CardView) findViewById(R.id.current_location_card);
         mCurrentCardLayout = (LinearLayout) findViewById(R.id.current_location_layout);
         tvCurrCityName = (TextView) findViewById(R.id.tv_city_name);
-        ivStaticMap=(ImageView)findViewById(R.id.iv_staticMap);
+        ivStaticMap = (ImageView) findViewById(R.id.iv_staticMap);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.cLayout_main);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
@@ -120,11 +122,19 @@ public class MainActivity extends AppCompatActivity
             mCurrentLocName = getIntent().getStringExtra("currentLocName");
             mCurrentLat = getIntent().getStringExtra("currentLat");
             mCurrentLng = getIntent().getStringExtra("currentLng");
-            if (mCurrentLocName!=null && mCurrentLat!=null && mCurrentLng!=null ) {
+            if (mCurrentLocName != null && mCurrentLat != null && mCurrentLng != null) {
                 showCurrentCard();
             } else {
-                requestLocationPermission();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        requestLocationPermission();
+                    }
+                }, Constants.PERMISSION_DELAY_MS);
             }
+
+
         }
     }
 
@@ -132,29 +142,7 @@ public class MainActivity extends AppCompatActivity
         mCurrentCardLayout.setOnClickListener(this);
         tvCurrCityName.setText(mCurrentLocName);
         mCardView.setVisibility(View.VISIBLE);
-
-        final String DOMAIN = Constants.BASE_URL_STATIC_MAP;
-        final String APPKEY_PARAM = Constants.API_KEY_PARAM;
-        final String CENTER_PARAM = Constants.CENTER_PARAM;
-        final String ZOOM_PARAM = Constants.ZOOM_PARAM;
-        final String SIZE_PARAM = Constants.SIZE_PARAM;
-
-
-        try {
-            StringBuilder sb = new StringBuilder(DOMAIN)
-                    .append(CENTER_PARAM + "=" + mCurrentLat + "," + mCurrentLng)
-                    .append("&" + ZOOM_PARAM + "=" + Constants.ZOOM_VALUE)
-                    .append("&" + SIZE_PARAM + "=" + Constants.SIZE_VALUE)
-                    .append("&" + APPKEY_PARAM + "=" + Constants.API_VALUE);
-
-            Log.d(TAG, "Thumbnail URL built " + sb.toString());
-            Picasso.with(this)
-                    .load(sb.toString())
-                    .into(ivStaticMap);
-
-        } catch (Exception e) {
-            Log.e(TAG, "Error building url", e);
-        }
+        Utils.loadStaticMap(this, ivStaticMap, mCurrentLat, mCurrentLng, Constants.SIZE_VALUE_S, Constants.ZOOM_VALUE_HIGH);
 
 
     }
@@ -164,10 +152,7 @@ public class MainActivity extends AppCompatActivity
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
-
-
-        }
-        else{
+        } else {
             Snackbar.make(mCoordinatorLayout, getString(R.string.notify_failed_location), Snackbar.LENGTH_LONG).show();
         }
     }
@@ -183,7 +168,6 @@ public class MainActivity extends AppCompatActivity
                     Snackbar.make(mCoordinatorLayout, "yea ! granted", Snackbar.LENGTH_LONG).show();
                 } else {
                     Snackbar.make(mCoordinatorLayout, getString(R.string.notify_permission_denied), Snackbar.LENGTH_LONG).show();
-
                 }
                 break;
             }
@@ -276,15 +260,14 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
 
-            /*case R.id.current_location_layout:
-                final String cityLatLng = String.valueOf(lat+"," +lng);
-
+            case R.id.current_location_layout:
                 Intent intent = new Intent(this, CityActivity.class);
-                *//*intent.putExtra("cityId", cityId);*//*
-                intent.putExtra("cityName", cityName);
-                intent.putExtra("cityLatLng", cityLatLng);
+                intent.putExtra("mStaticMapURL", mStaticMapURL);
+                intent.putExtra("cityName", mCurrentLocName);
+                intent.putExtra("cityLat", mCurrentLat);
+                intent.putExtra("cityLng", mCurrentLng);
                 startActivity(intent);
-                break;*/
+                break;
 
             default:
                 break;

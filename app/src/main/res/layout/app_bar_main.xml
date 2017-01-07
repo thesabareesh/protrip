@@ -2,9 +2,9 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cLayout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/cLayout_main"
     android:fitsSystemWindows="true"
     tools:context="me.sabareesh.trippie.ui.MainActivity">
 
@@ -17,12 +17,115 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="?android:attr/actionBarSize">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/autocomplete_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_home_search"
+            android:layout_marginRight="@dimen/margin_home_search"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            app:cardCornerRadius="@dimen/card_category_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/current_location_card"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_card_current"
+            android:layout_below="@id/autocomplete_card"
+            android:layout_marginLeft="@dimen/margin_home_search"
+            android:layout_marginRight="@dimen/margin_home_search"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:visibility="invisible"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardCornerRadius="@dimen/card_category_radius">
+
+            <LinearLayout
+                android:id="@+id/current_location_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center_horizontal|center"
+                        android:tint="@color/dark"
+                        app:srcCompat="@drawable/ic_my_location_black_24px" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.50">
+
+                    <TextView
+                        android:id="@+id/tv_city_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_staticMap"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_search"
@@ -38,5 +141,6 @@
         android:contentDescription="@string/cd_fab_search"
         app:srcCompat="@drawable/ic_search_white_24px"
         tools:targetApi="lollipop" />
+
 
 </android.support.design.widget.CoordinatorLayout>
