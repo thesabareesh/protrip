@@ -1,16 +1,15 @@
 package me.sabareesh.trippie.model;
 
 
-
 /**
  * Created by VE288800 on 05-Jan-17.
  */
 
 public class PlaceDetail {
 
-    private String place_detail_name, place_detail_id, place_detail_url, place_detail_phone;
     Double place_detail_rating;
-    private String place_detail_address, place_detail_icon_url,place_detail_website;
+    private String place_detail_name, place_detail_id, place_detail_url, place_detail_phone;
+    private String place_detail_address, place_detail_icon_url, place_detail_website;
 
     public PlaceDetail() {
 

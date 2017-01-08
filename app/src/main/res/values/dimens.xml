@@ -10,9 +10,12 @@
     <!-- app wide-->
     <bool name="isTablet">false</bool>
     <dimen name="pbar_height">20dp</dimen>
-    <dimen name="pbar_margin_top">-8dp</dimen>
+    <dimen name="pbar_margin">-8dp</dimen>
     <dimen name="card_radius">2dp</dimen>
     <dimen name="pb_elevation">10dp</dimen>
+    <dimen name="margin_large">16dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <item name="bodytext_spacing" format="float" type="dimen">1.15</item>
 
 
     <!--splash screen-->
@@ -49,6 +52,8 @@
     <dimen name="padding_place_rating">5dp</dimen>
     <dimen name="margin_place_top_ratings">7dp</dimen>
     <dimen name="margin_place_start_rating">10dp</dimen>
+    <dimen name="height_reviewer_avatar">50dp</dimen>
+    <dimen name="margin_place_top_review">2dp</dimen>
 
 
 </resources>

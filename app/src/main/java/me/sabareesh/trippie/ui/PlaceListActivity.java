@@ -49,8 +49,8 @@ import static me.sabareesh.trippie.R.id.rv_places;
 public class PlaceListActivity extends AppCompatActivity {
 
     private final String LOG_TAG = PlaceListActivity.class.getSimpleName();
-    String cityLatLng,categoryName;
-    int itemPosition,bannerResId;
+    String cityLatLng, categoryName;
+    int itemPosition, bannerResId;
     String categoryType;
     private RecyclerView recyclerView;
     private PlaceListAdapter adapter;
@@ -74,32 +74,32 @@ public class PlaceListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_place_list);
         boolean isTablet = getResources().getBoolean(R.bool.isTablet);
 
-         String type_param= Constants.TYPE_PARAM;
+        String type_param = Constants.TYPE_PARAM;
 
         if (getIntent().getExtras() != null) {
-            cityLatLng=getIntent().getStringExtra("cityLatLng");
-            itemPosition=getIntent().getIntExtra("itemPosition",99);
-            switch (itemPosition){
+            cityLatLng = getIntent().getStringExtra("cityLatLng");
+            itemPosition = getIntent().getIntExtra("itemPosition", 99);
+            switch (itemPosition) {
                 case 0:
                     categoryType = Constants.TYPE_VALUE_HOTEL;
                     categoryName = getString(R.string.title_hotel);
-                    bannerResId=R.drawable.hotel;
+                    bannerResId = R.drawable.hotel;
                     break;
                 case 1:
                     categoryType = Constants.TYPE_VALUE_RESTAURANT;
                     categoryName = getString(R.string.title_restaurant);
-                    bannerResId=R.drawable.restaurant;
+                    bannerResId = R.drawable.restaurant;
                     break;
                 case 2:
                     categoryType = Constants.TYPE_VALUE_TOP_SPOTS;
                     categoryName = getString(R.string.title_top_spots);
                     type_param = Constants.TYPES_PARAM;
-                    bannerResId=R.drawable.top_places;
+                    bannerResId = R.drawable.top_places;
                     break;
                 case 3:
                     categoryType = Constants.TYPE_VALUE_POI;
                     categoryName = getString(R.string.title_places);
-                    bannerResId=R.drawable.building_illustration;
+                    bannerResId = R.drawable.building_illustration;
                     break;
                 default:
                     break;
@@ -114,8 +114,8 @@ public class PlaceListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitle(categoryName);
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        mBanner=(ImageView)findViewById(R.id.banner);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mBanner = (ImageView) findViewById(R.id.banner);
         mBanner.setImageResource(bannerResId);
 
 
@@ -123,10 +123,10 @@ public class PlaceListActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(rv_places);
         placeList = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager;
-        int span=(isTablet)?2:1;
+        int span = (isTablet) ? 2 : 1;
         mLayoutManager = new StaggeredGridLayoutManager(span, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
-        adapter=new PlaceListAdapter(this,placeListDetailList,3);
+        adapter = new PlaceListAdapter(this, placeListDetailList, 3);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
@@ -135,8 +135,8 @@ public class PlaceListActivity extends AppCompatActivity {
         final String DOMAIN = Constants.BASE_URL_PLACES;
         final String APPKEY_PARAM = Constants.API_KEY_PARAM;
         final String RADIUS_PARAM = Constants.RADIUS_PARAM;
-        final String LOCATION_PARAM= Constants.LOCATION_PARAM;
-        final String RANK_BY_PARAM=Constants.RANK_BY_PARAM;
+        final String LOCATION_PARAM = Constants.LOCATION_PARAM;
+        final String RANK_BY_PARAM = Constants.RANK_BY_PARAM;
 
 
         try {
@@ -147,18 +147,17 @@ public class PlaceListActivity extends AppCompatActivity {
                     .append("&" + RADIUS_PARAM + "=" + Constants.RADIUS_VALUE)
                     .append("&" + APPKEY_PARAM + "=" + Constants.API_VALUE);
 
-            Log.d(LOG_TAG, "Places URL built "+sb.toString());
+            Log.d(LOG_TAG, "Places URL built " + sb.toString());
 
             fetchPlaces(sb.toString());
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.e(LOG_TAG, "Error building url", e);
         }
 
         //Admob
         MobileAds.initialize(this, Constants.ABMOBS_APP_ID);
-        final AdView mAdView = (AdView)findViewById(R.id.adGMSView);
+        final AdView mAdView = (AdView) findViewById(R.id.adGMSView);
         final AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice("A735BBF17F1F716518CB3F5B1FE57111")
@@ -176,11 +175,10 @@ public class PlaceListActivity extends AppCompatActivity {
             @Override
             public void onAdLoaded() {
                 mAdView.setVisibility(View.VISIBLE);
-                Log.d(LOG_TAG,getString(R.string.admob_loaded));
+                Log.d(LOG_TAG, getString(R.string.admob_loaded));
             }
 
         });
-
 
 
     }

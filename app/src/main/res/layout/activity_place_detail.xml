@@ -75,8 +75,9 @@
                 android:id="@+id/progressBar"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/pbar_height"
-                android:layout_marginTop="@dimen/pbar_margin_top"
+                android:layout_height="20dp"
+                android:layout_marginBottom="@dimen/pbar_margin"
+                android:layout_marginTop="@dimen/pbar_margin"
                 android:indeterminate="true"
                 android:theme="@style/LinearProgress" />
 
@@ -89,8 +90,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:weightSum="2"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:weightSum="2">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -99,15 +100,16 @@
 
                         <RatingBar
                             android:id="@+id/rating"
+                            style="?android:attr/ratingBarStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="?android:attr/ratingBarStyleSmall"
                             android:layout_marginLeft="@dimen/margin_place_start_rating"
                             android:layout_marginStart="@dimen/margin_place_start_rating"
                             android:layout_marginTop="@dimen/margin_place_top_ratings"
                             android:isIndicator="true"
+                            android:numStars="5"
                             android:stepSize="0.1"
-                            android:numStars="5" />
+                            android:visibility="invisible"/>
 
                     </LinearLayout>
 
@@ -121,9 +123,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/padding_descbar"
-                            android:textColor="@color/material_grey"
+                            android:text="@string/place_desc"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:text="@string/place_desc" />
+                            android:textColor="@color/material_grey" />
 
                     </LinearLayout>
 
@@ -140,12 +142,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/icon_link"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
@@ -153,7 +154,8 @@
                         android:focusable="true"
                         android:foreground="?selectableItemBackground"
                         android:orientation="vertical"
-                        android:padding="@dimen/padding_iconbar">
+                        android:padding="@dimen/padding_iconbar"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="@dimen/height_top_icons"
@@ -173,7 +175,7 @@
 
                     <LinearLayout
                         android:id="@+id/icon_call"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
@@ -181,7 +183,8 @@
                         android:focusable="true"
                         android:foreground="?selectableItemBackground"
                         android:orientation="vertical"
-                        android:padding="@dimen/padding_iconbar">
+                        android:padding="@dimen/padding_iconbar"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="@dimen/height_top_icons"
@@ -201,7 +204,7 @@
 
                     <LinearLayout
                         android:id="@+id/icon_directions"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
@@ -209,7 +212,8 @@
                         android:focusable="true"
                         android:foreground="?selectableItemBackground"
                         android:orientation="vertical"
-                        android:padding="@dimen/padding_iconbar">
+                        android:padding="@dimen/padding_iconbar"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="@dimen/height_top_icons"
@@ -232,7 +236,34 @@
 
             </android.support.v7.widget.CardView>
 
+            <LinearLayout
+                android:id="@+id/layout_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
+                <TextView
+                    android:id="@+id/reviews_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_large"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:layout_marginRight="@dimen/margin_large"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_large"
+                    android:text="@string/title_reviews"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <LinearLayout
+                    android:id="@+id/reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
         </LinearLayout>
 
 

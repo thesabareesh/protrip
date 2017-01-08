@@ -28,8 +28,8 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.CityActivity"
             android:screenOrientation="portrait"
@@ -46,7 +46,8 @@
         </activity>
 
 
-        <activity android:name=".ui.PlaceDetailActivity"
+        <activity
+            android:name=".ui.PlaceDetailActivity"
             android:parentActivityName=".ui.PlaceListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

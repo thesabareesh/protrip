@@ -1,5 +1,6 @@
 package me.sabareesh.trippie.adapter;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;    
+import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -49,18 +51,21 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
             @Override
             public void onClick(View v) {
                 String place_id = list.get(holder.getAdapterPosition()).getPlace_id();
-                String place_name=list.get(holder.getAdapterPosition()).getPlace_name();
+                String place_name = list.get(holder.getAdapterPosition()).getPlace_name();
 
-                String place_imageURL=(list.get(holder.getAdapterPosition()).getPhoto_reference()!=null)
-                        ?Constants.PLACE_PHOTO +
+                String place_imageURL = (list.get(holder.getAdapterPosition()).getPhoto_reference() != null)
+                        ? Constants.PLACE_PHOTO +
                         list.get(holder.getAdapterPosition()).getPhoto_reference().get(0) +
-                        "&key="+ Constants.API_VALUE:"";
+                        "&key=" + Constants.API_VALUE : "";
 
                 Intent intent = new Intent(mContext, PlaceDetailActivity.class);
+                ImageView thumbnail = (ImageView) v.findViewById(R.id.place_pic);
+                //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(CityActivity.this, thumbnail, getString(R.string.transition_image));
+                ActivityOptions options = ActivityOptions.makeScaleUpAnimation(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight());
                 intent.putExtra("place_id", place_id);
-                intent.putExtra("place_name",place_name);
-                intent.putExtra("image_URL",place_imageURL);
-                mContext.startActivity(intent);
+                intent.putExtra("place_name", place_name);
+                intent.putExtra("image_URL", place_imageURL);
+                mContext.startActivity(intent, options.toBundle());
             }
         });
 
@@ -75,8 +80,8 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
         if (placeList.getPhoto_reference() != null) {
             url = Constants.PLACE_THUMBNAIL +
                     placeList.getPhoto_reference().get(0) +
-                    "&"+Constants.API_KEY_PARAM+"=" + Constants.API_VALUE;
-            Log.d(TAG,"Image url "+url);
+                    "&" + Constants.API_KEY_PARAM + "=" + Constants.API_VALUE;
+            Log.d(TAG, "Image url " + url);
         } else {
             url = placeList.getIcon_url();
         }
@@ -87,7 +92,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
         if (placeList.getPlace_rating() != null) {
             viewHolder.rating.setRating(Float.parseFloat(String.valueOf(placeList.getPlace_rating())));
         }
-        if(url!=null && !url.isEmpty()) {
+        if (url != null && !url.isEmpty()) {
             //Picasso.with(mContext).load(url).fit().into(viewHolder.place_pic);
         }
         new Utils().animateView(viewHolder.itemView);

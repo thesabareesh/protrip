@@ -1,6 +1,9 @@
 package me.sabareesh.trippie.util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -11,6 +14,8 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 /**
  * Created by Sabareesh on 27-Dec-16.
@@ -89,6 +94,7 @@ public class Utils {
         }
 
     }
+
 
 
 }
