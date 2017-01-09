@@ -1,6 +1,9 @@
 package me.sabareesh.trippie.ui;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -24,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.location.places.Place;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -34,6 +38,8 @@ import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.model.Extras;
 import me.sabareesh.trippie.model.PlaceDetail;
 import me.sabareesh.trippie.model.Review;
+import me.sabareesh.trippie.provider.PlacesProvider;
+import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
 import me.sabareesh.trippie.util.AppController;
 import me.sabareesh.trippie.util.CircleTransform;
 import me.sabareesh.trippie.util.Constants;
@@ -72,9 +78,13 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     LinearLayout llUrlIcon, llCall, llDirections, llReviews;
     PlaceDetail placeDetail = new PlaceDetail();
 
-    public static boolean isFavourite(String placeId) {
+    public static boolean isFavourite(Context context, String placeId) {
         // TODO: 08-Jan-17 Co-pro query
-        if (true) {
+        String URL = PlacesProvider.URL;
+        Uri places = Uri.parse(URL);
+        Cursor cursor = null;
+        cursor = context.getContentResolver().query(places, null, PlacesSQLiteHelper.ID +" = '"+ placeId +"'", null, PlacesSQLiteHelper.ROW_ID);
+        if (cursor != null&&cursor.moveToNext()) {
             return true;
         } else {
             return false;
@@ -124,7 +134,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         }
 
         //Ui
-        fabFav.setImageResource(isFavourite(place_id) ?
+        fabFav.setImageResource(isFavourite(this,place_id) ?
                 R.drawable.ic_favorite_white_24px : R.drawable.ic_favorite_border_white_24px);
 
         final String DOMAIN = Constants.BASE_URL_PLACE_DETAILS;
@@ -229,21 +239,43 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
     }
 
-    public void toggleFavourite() {
-        if (isFavourite(placeDetail.getPlace_detail_id())) {
+    public int  toggleFavourite() {
+
+        Uri.Builder uriBuilder = PlacesProvider.CONTENT_URI.buildUpon();
+
+        if (isFavourite(this, placeDetail.getPlace_detail_id())) {
             // TODO: 08-Jan-17 Co-pro delete
+            fabFav.setImageResource(R.drawable.ic_favorite_border_white_24px);
+            Snackbar.make(coordinatorLayout, getString(R.string.notify_unfavorite), Snackbar.LENGTH_SHORT)
+                    .setAction("UNDO", this)
+                    .show();
+
+            this.getContentResolver().delete(uriBuilder.build(), placeDetail.getPlace_detail_id(), null);
+
+
+        } else {
             fabFav.setImageResource(R.drawable.ic_favorite_white_24px);
+            // TODO: 08-Jan-17 Co-pro insert
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(PlacesSQLiteHelper.ID, placeDetail.getPlace_detail_id());
+            contentValues.put(PlacesSQLiteHelper.TITLE, placeDetail.getPlace_detail_name());
+            contentValues.put(PlacesSQLiteHelper.POSTERPATH_WIDE, placeDetail.getPlace_detail_icon_url());
+            // contentValues.put(MoviesSQLiteHelper.FILEPATH_WIDE_CACHE, backdropFilePath);
+            // contentValues.put(MoviesSQLiteHelper.FILEPATH_SQUARE_CACHE, getResources().getString(R.string.cache_thumbnails_path)+"Fav"+movie.mPosterId+".jpg");
+            contentValues.put(PlacesSQLiteHelper.RATING_AVG, placeDetail.getPlace_detail_rating());
+            contentValues.put(PlacesSQLiteHelper.ADDRESS_PHONE, placeDetail.getPlace_detail_phone());
+            contentValues.put(PlacesSQLiteHelper.ADDRESS_URL, placeDetail.getPlace_detail_url());
+            contentValues.put(PlacesSQLiteHelper.ADDRESS_WEB, placeDetail.getPlace_detail_website());
+
+
+            this.getContentResolver().insert(PlacesProvider.CONTENT_URI, contentValues);
+
             Snackbar.make(coordinatorLayout, getString(R.string.notify_favorite), Snackbar.LENGTH_SHORT)
                     .setAction("UNDO", this)
                     .show();
 
-        } else {
-            fabFav.setImageResource(R.drawable.ic_favorite_border_white_24px);
-            // TODO: 08-Jan-17 Co-pro insert
-            Snackbar.make(coordinatorLayout, getString(R.string.notify_unfavorite), Snackbar.LENGTH_SHORT)
-                    .setAction("UNDO", this)
-                    .show();
         }
+        return 0;
 
     }
 

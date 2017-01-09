@@ -1,5 +1,6 @@
 package me.sabareesh.trippie.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +14,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -95,6 +98,16 @@ public class Utils {
 
     }
 
-
+    public static boolean isGooglePlayServicesAvailable(Activity activity) {
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int status = googleApiAvailability.isGooglePlayServicesAvailable(activity);
+        if(status != ConnectionResult.SUCCESS) {
+            if(googleApiAvailability.isUserResolvableError(status)) {
+                //googleApiAvailability.getErrorDialog(activity, status, 2404).show();
+            }
+            return false;
+        }
+        return true;
+    }
 
 }

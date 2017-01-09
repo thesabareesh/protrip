@@ -42,7 +42,6 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -70,7 +69,12 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onStart() {
-        mGoogleApiClient.connect();
+        if(Utils.isGooglePlayServicesAvailable(this)){
+            mGoogleApiClient.connect();
+        }
+        else{
+            launchHome();
+        }
         super.onStart();
         Log.d(TAG, "onStart");
     }
@@ -117,7 +121,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
                 mCurrentLat = String.valueOf(mLastLocation.getLatitude());
