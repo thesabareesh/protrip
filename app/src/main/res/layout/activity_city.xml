@@ -74,6 +74,21 @@
         tools:context="me.sabareesh.trippie.ui.CityActivity"
         tools:showIn="@layout/activity_city">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pbar_height"
+            android:indeterminate="true"
+            android:theme="@style/LinearProgress"
+            android:layout_marginTop="@dimen/pbar_margin"
+            android:layout_marginBottom="@dimen/pbar_margin"/>
 
 
         <android.support.v7.widget.RecyclerView
@@ -83,7 +98,7 @@
             android:clipToPadding="false"
             android:scrollbars="vertical"
             />
-
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

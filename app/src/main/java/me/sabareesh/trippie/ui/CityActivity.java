@@ -18,12 +18,11 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
-import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.PlacePhotoResult;
 import com.google.android.gms.location.places.Places;
 
@@ -33,6 +32,7 @@ import java.util.List;
 import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.adapter.CategoryAdapter;
 import me.sabareesh.trippie.model.Category;
+import me.sabareesh.trippie.tasks.PhotoTask;
 import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.RecyclerItemClickListener;
 import me.sabareesh.trippie.util.Utils;
@@ -46,7 +46,9 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
     String mCityId, mCityName, mCityLat, mCityLng, mStaticMapURL;
     GoogleApiClient mGoogleApiClient;
     ImageView mImageView;
-    ResultCallback<PlacePhotoResult> mDisplayPhotoResultCallback
+    ProgressBar progressBar;
+
+    /*ResultCallback<PlacePhotoResult> mDisplayPhotoResultCallback
             = new ResultCallback<PlacePhotoResult>() {
         @Override
         public void onResult(PlacePhotoResult placePhotoResult) {
@@ -55,7 +57,8 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
             }
             mImageView.setImageBitmap(placePhotoResult.getBitmap());
         }
-    };
+    };*/
+
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
     private List<Category> categoryList;
@@ -81,7 +84,8 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
             mCityLng = getIntent().getStringExtra("cityLng");
             mStaticMapURL = getIntent().getStringExtra("mStaticMapURL");
             if (mCityId != null) {
-                placePhotosAsync(mCityId);
+                //placePhotosAsync(mCityId);
+                fetchPlacePhotos(mCityId);
             } else {
                 Utils.loadStaticMap(this, mImageView, mCityLat, mCityLng
                         , Constants.SIZE_VALUE_M, Constants.ZOOM_VALUE_HIGH);
@@ -94,6 +98,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitle(mCityName);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         //mImageView.setImageResource(R.drawable.poster_placeholder);
 
         //Recyclerview
@@ -134,8 +139,9 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
-    private void placePhotosAsync(String placeId) {
 
+    private void placePhotosAsync(String placeId) {
+    /*
         Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, placeId)
                 .setResultCallback(new ResultCallback<PlacePhotoMetadataResult>() {
                     @Override
@@ -153,7 +159,31 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
                         }
                         photoMetadataBuffer.release();
                     }
-                });
+                });*/
+    }
+
+    private void fetchPlacePhotos(String placeId) {
+
+
+        // Create a new AsyncTask that displays the bitmap and attribution once loaded.
+        new PhotoTask(Constants.WIDTH_CITY_GPHOTO,
+                Constants.HEIGHT_CITY_GPHOTO, mGoogleApiClient) {
+            @Override
+            protected void onPreExecute() {
+                // Display a temporary image to show while bitmap is loading.
+                //mImageView.setImageResource(R.drawable.poster_placeholder);
+            }
+
+            @Override
+            protected void onPostExecute(AttributedPhoto attributedPhoto) {
+                if (attributedPhoto != null) {
+                    // Photo has been loaded, display it.
+                    mImageView.setImageBitmap(attributedPhoto.bitmap);
+
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        }.execute(placeId);
     }
 
     private int dpToPx(int dp) {
@@ -199,19 +229,21 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onResume() {
-        super.onResume();
         mGoogleApiClient.connect();
+        super.onResume();
+
     }
 
     @Override
     public void onStop() {
-        super.onStop();
         mGoogleApiClient.disconnect();
+        super.onStop();
+
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "Location services connected.");
+        Log.i(TAG, "API services connected.");
     }
 
     @Override
@@ -221,7 +253,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.i(TAG, "Location services connection failed. Please reconnect.");
+        Log.i(TAG, "API services connection failed. Please reconnect.");
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

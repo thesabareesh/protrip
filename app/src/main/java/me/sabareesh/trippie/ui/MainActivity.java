@@ -49,6 +49,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
@@ -216,8 +217,33 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.nav_share) {
+            /*String _ImageFile = "android.resource://" + getResources().getResourceName(R.drawable.nav_header).replace(":", "/");
+            Uri imageUri = Uri.parse(_ImageFile);
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("image*//*");
+            intent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_app_desc));
+            intent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            startActivity(Intent.createChooser(intent, getString(R.string.action_share)));*/
 
-        } else if (id == R.id.nav_send) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_app_desc));
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+
+
+        }else if(id==R.id.nav_feedback){
+            Intent Email = new Intent(Intent.ACTION_SEND);
+            Email.setType("text/email");
+            Email.putExtra(Intent.EXTRA_EMAIL, Constants.EMAIL_ADMIN);
+            Email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.title_feedback));
+            startActivity(Intent.createChooser(Email, getString(R.string.intent_desc_link)));
+            return true;
+
+        }else if(id==R.id.nav_settings){
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+            return true;
 
         }
 

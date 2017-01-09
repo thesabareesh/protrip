@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-
     <!-- commented out line fixes the crash in old devices -->
     <!-- android:name="android.support.multidex.MultiDexApplication" -->
     <application
@@ -44,8 +43,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.sabareesh.trippie.ui.CityActivity" />
         </activity>
-
-
         <activity
             android:name=".ui.PlaceDetailActivity"
             android:parentActivityName=".ui.PlaceListActivity"
@@ -59,7 +56,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -67,8 +63,16 @@
         <provider
             android:name=".provider.PlacesProvider"
             android:authorities="me.sabareesh.trippie.provider"
-            android:exported="false"/>
+            android:exported="false" />
 
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.sabareesh.trippie.ui.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
