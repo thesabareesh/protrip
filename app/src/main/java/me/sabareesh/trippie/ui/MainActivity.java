@@ -1,74 +1,86 @@
 package me.sabareesh.trippie.ui;
 
 import android.Manifest;
+
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.CardView;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
+
+
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.model.LatLng;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import me.sabareesh.trippie.R;
+import me.sabareesh.trippie.adapter.PlaceListAdapter;
+import me.sabareesh.trippie.model.PlaceList;
+import me.sabareesh.trippie.provider.PlacesProvider;
+import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
 import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Utils;
 
+import static me.sabareesh.trippie.R.id.rv_fav_places;
+import static me.sabareesh.trippie.R.id.rv_places;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PlaceSelectionListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        PlaceSelectionListener, View.OnClickListener,LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "MainActivity";
+    public static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
+    private static final int PLACES_LOADER_ID = 0;
     PlaceAutocompleteFragment mAutocompleteFragment;
     LinearLayout mCurrentCardLayout;
     CardView mCardView;
     TextView tvCurrCityName;
     ImageView ivStaticMap;
     CoordinatorLayout mCoordinatorLayout;
-    public static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
     String mCurrentLocName, mCurrentLat, mCurrentLng, mStaticMapURL;
+    private boolean mDidInitLoader;
+    private RecyclerView recyclerView;
+    private List<PlaceList> placeList;
+    private PlaceListAdapter adapter;
+    private List<PlaceList> placeListDetailList = new ArrayList<>();
 
 
     @Override
@@ -77,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
 
         //AutoCompleteFragment
         mAutocompleteFragment = (PlaceAutocompleteFragment)
@@ -119,6 +131,30 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //Loader
+
+        if (!mDidInitLoader) {
+            getSupportLoaderManager().initLoader(PLACES_LOADER_ID, null, this);
+            mDidInitLoader = true;
+        } else {
+            getSupportLoaderManager().restartLoader(PLACES_LOADER_ID, null, this);
+        }
+
+        //Recyclerview
+        recyclerView = (RecyclerView) findViewById(rv_fav_places);
+        placeList = new ArrayList<>();
+        RecyclerView.LayoutManager mLayoutManager;
+        int span = (isTablet) ? 2 : 1;
+        mLayoutManager = new StaggeredGridLayoutManager(span, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(mLayoutManager);
+        adapter = new PlaceListAdapter(this, placeListDetailList, 3);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setAdapter(adapter);
+
+
+        //GetIntent
         if (getIntent().getExtras() != null) {
             mCurrentLocName = getIntent().getStringExtra("currentLocName");
             mCurrentLat = getIntent().getStringExtra("currentLat");
@@ -135,9 +171,12 @@ public class MainActivity extends AppCompatActivity
                 }, Constants.PERMISSION_DELAY_MS);
             }
 
-
         }
+
+
     }
+
+
 
     private void showCurrentCard() {
         mCurrentCardLayout.setOnClickListener(this);
@@ -148,6 +187,39 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void loadFavorites() {
+        String URL = PlacesProvider.URL;
+        Uri places = Uri.parse(URL);
+        Cursor cursor = null;
+        try {
+            cursor = this.getContentResolver().query(places, null, null, null, PlacesSQLiteHelper.ROW_ID);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String place_id = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID));
+                    String place_name = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE));
+                    String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
+                    String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
+                    String place_web = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_WEB));
+                    String place_poster_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE));
+                    String place_rating = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG));
+
+                    Toast.makeText(this, place_name, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "no favs", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (SQLException e) {
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+
+    //Google location methods
     protected void requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -177,6 +249,51 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onError(Status status) {
+        Log.e(TAG, "onError: Status = " + status.toString());
+
+        Toast.makeText(this, getString(R.string.error_api) + status.getStatusMessage(),
+                Toast.LENGTH_SHORT).show();
+    }
+
+
+    //Loader methods
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (id == PLACES_LOADER_ID) {
+            Uri uri=PlacesProvider.CONTENT_URI;
+            return new CursorLoader(this,uri, null, null, null, null);
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (loader.getId() == PLACES_LOADER_ID) {
+            while (cursor.moveToNext()) {
+                String place_id = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID));
+                String place_name = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE));
+                String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
+                String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
+                String place_web = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_WEB));
+                String place_poster_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE));
+                String place_rating = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG));
+
+                Toast.makeText(this, place_name, Toast.LENGTH_SHORT).show();
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        adapter.notifyDataSetChanged();
+}
+
+
+    //App options methods
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -227,12 +344,12 @@ public class MainActivity extends AppCompatActivity
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_app_desc));
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_desc));
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
 
 
-        }else if(id==R.id.nav_feedback){
+        } else if (id == R.id.nav_feedback) {
             Intent Email = new Intent(Intent.ACTION_SEND);
             Email.setType("text/email");
             Email.putExtra(Intent.EXTRA_EMAIL, Constants.EMAIL_ADMIN);
@@ -240,8 +357,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(Intent.createChooser(Email, getString(R.string.intent_desc_link)));
             return true;
 
-        }else if(id==R.id.nav_settings){
-            Intent intent = new Intent(this,SettingsActivity.class);
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
 
@@ -269,19 +386,19 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onError(Status status) {
-        Log.e(TAG, "onError: Status = " + status.toString());
 
-        Toast.makeText(this, getString(R.string.error_api) + status.getStatusMessage(),
-                Toast.LENGTH_SHORT).show();
-    }
+    //App lifecycles
 
     @Override
     public void onResume() {
         super.onResume();
         ((EditText) mAutocompleteFragment.getView().
                 findViewById(R.id.place_autocomplete_search_input)).setText("");
+        //loadFavorites();
+        if (!mDidInitLoader) {
+            getSupportLoaderManager().restartLoader(PLACES_LOADER_ID, null, this);
+        }
+        mDidInitLoader = false;
     }
 
     @Override
@@ -304,4 +421,50 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+
+
+    //recyclerview methods
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+
+            // Credits for Item offsets : http://www.androidhive.info/2016/05/android-working-with-card-view-and-recycler-view/
+
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
 }
+
+

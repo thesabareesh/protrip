@@ -78,18 +78,6 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     LinearLayout llUrlIcon, llCall, llDirections, llReviews;
     PlaceDetail placeDetail = new PlaceDetail();
 
-    public static boolean isFavourite(Context context, String placeId) {
-        // TODO: 08-Jan-17 Co-pro query
-        String URL = PlacesProvider.URL;
-        Uri places = Uri.parse(URL);
-        Cursor cursor = null;
-        cursor = context.getContentResolver().query(places, null, PlacesSQLiteHelper.ID +" = '"+ placeId +"'", null, PlacesSQLiteHelper.ROW_ID);
-        if (cursor != null&&cursor.moveToNext()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +214,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                             e.printStackTrace();
                         }
                         progressBar.setVisibility(View.GONE);
+                        fabFav.setVisibility(View.VISIBLE);
                         //adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
@@ -244,7 +233,6 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         Uri.Builder uriBuilder = PlacesProvider.CONTENT_URI.buildUpon();
 
         if (isFavourite(this, placeDetail.getPlace_detail_id())) {
-            // TODO: 08-Jan-17 Co-pro delete
             fabFav.setImageResource(R.drawable.ic_favorite_border_white_24px);
             Snackbar.make(coordinatorLayout, getString(R.string.notify_unfavorite), Snackbar.LENGTH_SHORT)
                     .setAction("UNDO", this)
@@ -255,7 +243,6 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
 
         } else {
             fabFav.setImageResource(R.drawable.ic_favorite_white_24px);
-            // TODO: 08-Jan-17 Co-pro insert
             ContentValues contentValues = new ContentValues();
             contentValues.put(PlacesSQLiteHelper.ID, placeDetail.getPlace_detail_id());
             contentValues.put(PlacesSQLiteHelper.TITLE, placeDetail.getPlace_detail_name());
@@ -277,6 +264,18 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         }
         return 0;
 
+    }
+
+    public static boolean isFavourite(Context context, String placeId) {
+        String URL = PlacesProvider.URL;
+        Uri places = Uri.parse(URL);
+        Cursor cursor = null;
+        cursor = context.getContentResolver().query(places, null, PlacesSQLiteHelper.ID +" = '"+ placeId +"'", null, PlacesSQLiteHelper.ROW_ID);
+        if (cursor != null&&cursor.moveToNext()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void showReviews(Extras extras) {

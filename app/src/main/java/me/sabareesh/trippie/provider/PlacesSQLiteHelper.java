@@ -36,10 +36,10 @@ public class PlacesSQLiteHelper extends SQLiteOpenHelper {
             " TEXT NOT NULL, " + POSTERPATH_WIDE+
             //" TEXT NOT NULL, " + FILEPATH_SQUARE_CACHE+
             //" TEXT NOT NULL, " + FILEPATH_WIDE_CACHE+
-            " TEXT NOT NULL, " + RATING_AVG+
-            " TEXT NOT NULL, " + ADDRESS_PHONE+
-            " TEXT NOT NULL, " + ADDRESS_WEB+
-            " TEXT NOT NULL, " + ADDRESS_URL+
+            " TEXT , " + RATING_AVG+
+            " TEXT , " + ADDRESS_PHONE+
+            " TEXT , " + ADDRESS_WEB+
+            " TEXT , " + ADDRESS_URL+
             " TEXT NOT NULL); ";
 
 

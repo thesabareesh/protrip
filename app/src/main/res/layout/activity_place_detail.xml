@@ -280,6 +280,8 @@
         android:clickable="true"
         android:contentDescription="@string/cd_fab_fav"
         app:layout_anchor="@id/banner"
+        android:visibility="gone"
+        app:useCompatPadding="true"
         app:layout_anchorGravity="bottom|right|end"
         app:srcCompat="@drawable/ic_favorite_border_white_24px"
         tools:targetApi="lollipop" />

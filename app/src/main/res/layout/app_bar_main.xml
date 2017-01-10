@@ -131,6 +131,13 @@
 
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_fav_places"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+
 
     </RelativeLayout>
 
@@ -146,6 +153,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
         android:clickable="true"
+        app:useCompatPadding="true"
         android:contentDescription="@string/cd_fab_search"
         app:srcCompat="@drawable/ic_search_white_24px"
         tools:targetApi="lollipop" />
