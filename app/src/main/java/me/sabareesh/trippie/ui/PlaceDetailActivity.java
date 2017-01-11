@@ -246,7 +246,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             ContentValues contentValues = new ContentValues();
             contentValues.put(PlacesSQLiteHelper.ID, placeDetail.getPlace_detail_id());
             contentValues.put(PlacesSQLiteHelper.TITLE, placeDetail.getPlace_detail_name());
-            contentValues.put(PlacesSQLiteHelper.POSTERPATH_WIDE, placeDetail.getPlace_detail_icon_url());
+            contentValues.put(PlacesSQLiteHelper.POSTERPATH_WIDE, image_URL);
             // contentValues.put(MoviesSQLiteHelper.FILEPATH_WIDE_CACHE, backdropFilePath);
             // contentValues.put(MoviesSQLiteHelper.FILEPATH_SQUARE_CACHE, getResources().getString(R.string.cache_thumbnails_path)+"Fav"+movie.mPosterId+".jpg");
             contentValues.put(PlacesSQLiteHelper.RATING_AVG, placeDetail.getPlace_detail_rating());

@@ -92,6 +92,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
             viewHolder.rating.setRating(Float.parseFloat(String.valueOf(placeList.getPlace_rating())));
         }
         if (url != null && !url.isEmpty()) {
+            //Comment to the below call cu down api calls while testing
             Picasso.with(mContext).load(url).fit().into(viewHolder.place_pic);
         }
         new Utils().animateView(viewHolder.itemView);

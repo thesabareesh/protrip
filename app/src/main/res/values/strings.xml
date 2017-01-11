@@ -22,6 +22,7 @@
     <string name="cd_fab_search">Search</string>
     <string name="cd_current_card">Current Location</string>
     <string name="text_size_home_search" translatable="false">15</string>
+    <string name="title_favorite_places">Favorite places</string>
 
     <!--City screen-->
     <string name="cd_city_banner">City banner</string>
@@ -135,5 +136,12 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+
+
+
+    <!--Widget-->
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     LinearLayout mCurrentCardLayout;
     CardView mCardView;
     RelativeLayout mCurrentLayout;
-    TextView tvCurrCityName;
+    TextView tvCurrCityName,tvFavPlaces;
     ImageView ivStaticMap;
     CoordinatorLayout mCoordinatorLayout;
     String mCurrentLocName, mCurrentLat, mCurrentLng, mStaticMapURL;
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity
         tvCurrCityName = (TextView) findViewById(R.id.tv_city_name);
         ivStaticMap = (ImageView) findViewById(R.id.iv_staticMap);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.cLayout_main);
+        tvFavPlaces=(TextView)findViewById(R.id.fab_favorite_title);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -167,10 +168,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }, Constants.PERMISSION_DELAY_MS);
             }
-
         }
-
-
     }
 
 
@@ -258,6 +256,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.v(TAG, "onCreateLoader");
         if (id == PLACES_LOADER_ID) {
             Uri uri = PlacesProvider.CONTENT_URI;
             return new CursorLoader(this, uri, null, null, null, null);
@@ -267,10 +266,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (loader.getId() == PLACES_LOADER_ID) {
-
-
-            while (cursor.moveToNext()) {
+        Log.v(TAG, "onLoadFinished");
+        if (loader.getId() == PLACES_LOADER_ID && cursor!=null) {
+            while (cursor!=null && cursor.moveToNext()) {
                 PlaceList placeList = new PlaceList();
                 String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
                 String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
@@ -283,19 +281,25 @@ public class MainActivity extends AppCompatActivity
                 placeList.setPlace_rating(cursor.getDouble(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG)));
                 placeList.setIcon_url(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE)));
 
-                Toast.makeText(this, cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE)), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE)), Toast.LENGTH_SHORT).show();
                 placeListDetailList.add(placeList);
-
+                tvFavPlaces.setVisibility(View.VISIBLE);
             }
 
-            adapter.notifyDataSetChanged();
         }
+        else{
+            tvFavPlaces.setVisibility(View.GONE);
+        }
+        adapter.notifyDataSetChanged();
 
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        Log.v(TAG, "onLoaderReset");
+        placeListDetailList.clear();
+        adapter.notifyDataSetChanged();
+        tvFavPlaces.setVisibility(View.GONE);
     }
 
 
@@ -398,28 +402,24 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
+        Log.v(TAG, " activity onResume");
+
         ((EditText) mAutocompleteFragment.getView().
                 findViewById(R.id.place_autocomplete_search_input)).setText("");
-        //loadFavorites();
         if (!mDidInitLoader) {
-            clearAdapter();
+            placeListDetailList.clear();
+            tvFavPlaces.setVisibility(View.GONE);
+            adapter.notifyDataSetChanged();
             getSupportLoaderManager().restartLoader(PLACES_LOADER_ID, null, this);
         }
         mDidInitLoader = false;
     }
 
-    public void clearAdapter() {
-        adapter = new PlaceListAdapter(this, new ArrayList<PlaceList>());
-        int size = this.placeListDetailList.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                this.placeListDetailList.remove(0);
-            }
-
-            adapter.notifyItemRangeRemoved(0, size);
-        }
-        adapter.notifyDataSetChanged();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "Loader destroyed");
+        getSupportLoaderManager().destroyLoader(PLACES_LOADER_ID);
     }
 
     @Override

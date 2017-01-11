@@ -23,139 +23,146 @@
 
     <include layout="@layout/content_main" />
 
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/activity_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="?android:attr/actionBarSize">
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:clipChildren="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:id="@+id/autocomplete_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?selectableItemBackground">
-
-            <fragment
-                android:id="@+id/place_autocomplete_fragment"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:contentDescription="@string/cd_fab_search"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/seperator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:layout_below="@id/autocomplete_card"
-            android:background="@android:color/darker_gray" />
-
-        <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/activity_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:clipChildren="false"
-            android:layout_below="@id/seperator"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
-            <RelativeLayout
+
+            <LinearLayout
+                android:id="@+id/autocomplete_card"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground">
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_card_current"
-                    android:id="@+id/current_location_card"
-                    android:layout_marginLeft="@dimen/margin_home_search"
-                    android:layout_marginRight="@dimen/margin_home_search"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:contentDescription="@string/cd_current_card"
-                    app:cardCornerRadius="@dimen/card_radius"
-                    android:visibility="gone"
-                    app:cardElevation="@dimen/card_elevation">
-
-                    <LinearLayout
-                        android:id="@+id/current_location_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?selectableItemBackground"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="center_horizontal|center"
-                                android:tint="@color/dark"
-                                app:srcCompat="@drawable/ic_my_location_black_24px" />
-
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1.50">
-
-                            <TextView
-                                android:id="@+id/tv_city_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_centerInParent="true"
-                                android:gravity="center" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/iv_staticMap"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop" />
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_fav_places"
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/current_location_card"
-                    android:clipToPadding="false"
-                    android:scrollbars="vertical" />
-            </RelativeLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </RelativeLayout>
+                    android:clickable="true"
+                    android:contentDescription="@string/cd_fab_search"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/seperator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/autocomplete_card"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:background="@android:color/darker_gray" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/current_location_card"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_card_current"
+                android:layout_marginLeft="@dimen/margin_home_search"
+                android:layout_marginRight="@dimen/margin_home_search"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_below="@id/seperator"
+                android:contentDescription="@string/cd_current_card"
+                android:visibility="gone"
+                app:cardCornerRadius="@dimen/card_radius"
+                app:cardElevation="@dimen/card_elevation">
+
+                <LinearLayout
+                    android:id="@+id/current_location_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center_horizontal|center"
+                            android:tint="@color/dark"
+                            app:srcCompat="@drawable/ic_my_location_black_24px" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.50">
+
+                        <TextView
+                            android:id="@+id/tv_city_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:gravity="center" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_staticMap"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/fab_favorite_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/margin_home_search"
+                android:layout_marginRight="@dimen/margin_home_search"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:layout_below="@id/current_location_card"
+                android:text="@string/title_favorite_places"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_fav_places"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fab_favorite_title"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 
     <android.support.design.widget.FloatingActionButton
