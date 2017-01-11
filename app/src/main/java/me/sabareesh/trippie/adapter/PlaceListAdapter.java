@@ -32,14 +32,13 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
     Context mContext;
     private LayoutInflater mInflater;
     List<PlaceList> list;
-    int choice;
 
-    public PlaceListAdapter(Context ctx, List<PlaceList> list, int choice) {
+
+    public PlaceListAdapter(Context ctx, List<PlaceList> list) {
         this.mContext = ctx;
         this.list = list;
         mInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.choice = choice;
     }
 
     @Override
@@ -93,7 +92,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
             viewHolder.rating.setRating(Float.parseFloat(String.valueOf(placeList.getPlace_rating())));
         }
         if (url != null && !url.isEmpty()) {
-            //Picasso.with(mContext).load(url).fit().into(viewHolder.place_pic);
+            Picasso.with(mContext).load(url).fit().into(viewHolder.place_pic);
         }
         new Utils().animateView(viewHolder.itemView);
     }

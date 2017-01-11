@@ -27,6 +27,7 @@ public class PlacesSQLiteHelper extends SQLiteOpenHelper {
     public static final String ADDRESS_PHONE="phone";
     public static final String ADDRESS_WEB="web";
     public static final String ADDRESS_URL="url";
+    public static final String ADDRESS_FULL="address";
 
 
     static final String CREATE_TABLE=" CREATE TABLE " + TABLE_NAME +
@@ -40,6 +41,7 @@ public class PlacesSQLiteHelper extends SQLiteOpenHelper {
             " TEXT , " + ADDRESS_PHONE+
             " TEXT , " + ADDRESS_WEB+
             " TEXT , " + ADDRESS_URL+
+            " TEXT , " + ADDRESS_FULL+
             " TEXT NOT NULL); ";
 
 

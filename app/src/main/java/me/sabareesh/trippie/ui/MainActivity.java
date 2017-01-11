@@ -1,7 +1,6 @@
 package me.sabareesh.trippie.ui;
 
 import android.Manifest;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -16,12 +15,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-
-
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -39,6 +35,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,11 +57,10 @@ import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Utils;
 
 import static me.sabareesh.trippie.R.id.rv_fav_places;
-import static me.sabareesh.trippie.R.id.rv_places;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PlaceSelectionListener, View.OnClickListener,LoaderManager.LoaderCallbacks<Cursor> {
+        PlaceSelectionListener, View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "MainActivity";
     public static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
@@ -72,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     PlaceAutocompleteFragment mAutocompleteFragment;
     LinearLayout mCurrentCardLayout;
     CardView mCardView;
+    RelativeLayout mCurrentLayout;
     TextView tvCurrCityName;
     ImageView ivStaticMap;
     CoordinatorLayout mCoordinatorLayout;
@@ -147,7 +144,7 @@ public class MainActivity extends AppCompatActivity
         int span = (isTablet) ? 2 : 1;
         mLayoutManager = new StaggeredGridLayoutManager(span, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
-        adapter = new PlaceListAdapter(this, placeListDetailList, 3);
+        adapter = new PlaceListAdapter(this, placeListDetailList);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
@@ -175,7 +172,6 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-
 
 
     private void showCurrentCard() {
@@ -263,8 +259,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == PLACES_LOADER_ID) {
-            Uri uri=PlacesProvider.CONTENT_URI;
-            return new CursorLoader(this,uri, null, null, null, null);
+            Uri uri = PlacesProvider.CONTENT_URI;
+            return new CursorLoader(this, uri, null, null, null, null);
         }
         return null;
     }
@@ -272,25 +268,35 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (loader.getId() == PLACES_LOADER_ID) {
+
+
             while (cursor.moveToNext()) {
-                String place_id = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID));
-                String place_name = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE));
+                PlaceList placeList = new PlaceList();
                 String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
                 String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
                 String place_web = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_WEB));
-                String place_poster_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE));
-                String place_rating = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG));
 
-                Toast.makeText(this, place_name, Toast.LENGTH_SHORT).show();
+
+                placeList.setPlace_id(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID)));
+                placeList.setPlace_name(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE)));
+                placeList.setPlace_address(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_FULL)));
+                placeList.setPlace_rating(cursor.getDouble(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG)));
+                placeList.setIcon_url(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE)));
+
+                Toast.makeText(this, cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE)), Toast.LENGTH_SHORT).show();
+                placeListDetailList.add(placeList);
+
             }
+
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
+
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.notifyDataSetChanged();
-}
+
+    }
 
 
     //App options methods
@@ -392,13 +398,28 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
+        adapter.notifyDataSetChanged();
         ((EditText) mAutocompleteFragment.getView().
                 findViewById(R.id.place_autocomplete_search_input)).setText("");
         //loadFavorites();
         if (!mDidInitLoader) {
+            clearAdapter();
             getSupportLoaderManager().restartLoader(PLACES_LOADER_ID, null, this);
         }
         mDidInitLoader = false;
+    }
+
+    public void clearAdapter() {
+        adapter = new PlaceListAdapter(this, new ArrayList<PlaceList>());
+        int size = this.placeListDetailList.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                this.placeListDetailList.remove(0);
+            }
+
+            adapter.notifyItemRangeRemoved(0, size);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -420,8 +441,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
 
     //recyclerview methods
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
@@ -460,10 +483,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
-    }
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }
 

@@ -253,6 +253,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             contentValues.put(PlacesSQLiteHelper.ADDRESS_PHONE, placeDetail.getPlace_detail_phone());
             contentValues.put(PlacesSQLiteHelper.ADDRESS_URL, placeDetail.getPlace_detail_url());
             contentValues.put(PlacesSQLiteHelper.ADDRESS_WEB, placeDetail.getPlace_detail_website());
+            contentValues.put(PlacesSQLiteHelper.ADDRESS_FULL,placeDetail.getPlace_detail_address());
 
 
             this.getContentResolver().insert(PlacesProvider.CONTENT_URI, contentValues);

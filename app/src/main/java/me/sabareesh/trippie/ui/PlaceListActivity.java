@@ -126,7 +126,7 @@ public class PlaceListActivity extends AppCompatActivity {
         int span = (isTablet) ? 2 : 1;
         mLayoutManager = new StaggeredGridLayoutManager(span, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
-        adapter = new PlaceListAdapter(this, placeListDetailList, 3);
+        adapter = new PlaceListAdapter(this, placeListDetailList);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
