@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:elevation="@dimen/card_elevation"
-    app:cardCornerRadius="@dimen/card_radius"
     android:focusable="true"
-    android:foreground="?selectableItemBackground">
+    android:foreground="?selectableItemBackground"
+    app:cardCornerRadius="@dimen/card_radius">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +25,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center|center_vertical">
+            android:layout_gravity="center|center_vertical"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/place_id"
@@ -36,22 +36,22 @@
 
             <TextView
                 android:id="@+id/place_name"
+                style="@style/autoscroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start|center_vertical"
                 android:maxLines="2"
-                style="@style/autoscroll"
                 android:paddingLeft="@dimen/padding_places_name"
                 android:paddingRight="@dimen/padding_places_name"
                 android:paddingTop="@dimen/padding_places_name"
-                android:textColor="@color/black"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/black" />
 
             <RatingBar
                 android:id="@+id/rating"
+                style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="?android:attr/ratingBarStyleSmall"
                 android:layout_below="@+id/place_name"
                 android:layout_marginLeft="@dimen/margin_places_start_rating"
                 android:layout_marginStart="@dimen/margin_places_start_rating"
@@ -62,15 +62,15 @@
 
             <TextView
                 android:id="@+id/place_Address"
+                style="@style/autoscroll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rating"
                 android:gravity="start|center_vertical"
-                style="@style/autoscroll"
                 android:maxLines="3"
                 android:padding="@dimen/padding_places_address"
-                android:textColor="@color/material_grey"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="@color/material_grey" />
 
         </RelativeLayout>
 

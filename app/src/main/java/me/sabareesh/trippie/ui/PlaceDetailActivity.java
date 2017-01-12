@@ -235,7 +235,6 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         if (isFavourite(this, placeDetail.getPlace_detail_id())) {
             fabFav.setImageResource(R.drawable.ic_favorite_border_white_24px);
             Snackbar.make(coordinatorLayout, getString(R.string.notify_unfavorite), Snackbar.LENGTH_SHORT)
-                    .setAction("UNDO", this)
                     .show();
 
             this.getContentResolver().delete(uriBuilder.build(), placeDetail.getPlace_detail_id(), null);
@@ -259,7 +258,6 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             this.getContentResolver().insert(PlacesProvider.CONTENT_URI, contentValues);
 
             Snackbar.make(coordinatorLayout, getString(R.string.notify_favorite), Snackbar.LENGTH_SHORT)
-                    .setAction("UNDO", this)
                     .show();
 
         }

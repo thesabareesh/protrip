@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'capstone'
+            keyPassword 'capstone'
+            storeFile file('D:/Capstone/Trippie/capstone.jks')
+            storePassword 'capstone'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
     defaultConfig {
@@ -15,29 +23,34 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         debug {
             minifyEnabled false
             applicationIdSuffix ".debug"
-
         }
     }
 
+    signingConfigs {
+        config {
+            keyAlias 'capstone'
+            keyPassword 'capstone'
+            storeFile file('../capstone.jks')
+            storePassword 'capstone'
+        }
+    }
 
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     //networking
     compile files('libs/volley.jar')
     compile 'com.squareup.picasso:picasso:2.5.2'
-
     //Google services
     compile 'com.google.android.gms:play-services:10.0.1'
-
     //UI
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
@@ -45,6 +58,4 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:support-vector-drawable:24.2.1'
-
-
 }

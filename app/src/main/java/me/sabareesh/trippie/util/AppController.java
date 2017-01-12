@@ -2,6 +2,7 @@ package me.sabareesh.trippie.util;
 
 import android.app.Application;
 import android.text.TextUtils;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
@@ -15,20 +16,18 @@ public class AppController extends Application {
 
     public static final String TAG = AppController.class
             .getSimpleName();
-
+    private static AppController mInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
 
-    private static AppController mInstance;
+    public static synchronized AppController getInstance() {
+        return mInstance;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-    }
-
-    public static synchronized AppController getInstance() {
-        return mInstance;
     }
 
     public RequestQueue getRequestQueue() {

@@ -14,18 +14,18 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_city_banner"
         android:background="@color/colorPrimary"
-        android:theme="@style/AppTheme.AppBarOverlay"
         android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay"
         app:statusBarScrim="@android:color/transparent">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleMarginBottom="@dimen/start_margin_collapse"
             app:expandedTitleMarginStart="@dimen/start_margin_collapse"
-            android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -35,8 +35,8 @@
                 android:background="@color/widePosterBG"
                 android:contentDescription="@string/cd_city_banner"
                 android:scaleType="fitXY"
-                app:layout_collapseParallaxMultiplier="0.5"
-                app:layout_collapseMode="parallax" />
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.5" />
 
             <View
                 android:layout_width="match_parent"
@@ -57,10 +57,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
 
-
-
     </android.support.design.widget.AppBarLayout>
-
 
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -80,24 +77,23 @@
             android:orientation="vertical">
 
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/pbar_height"
-            android:indeterminate="true"
-            android:theme="@style/LinearProgress"
-            android:layout_marginTop="@dimen/pbar_margin"
-            android:layout_marginBottom="@dimen/pbar_margin"/>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pbar_height"
+                android:layout_marginBottom="@dimen/pbar_margin"
+                android:layout_marginTop="@dimen/pbar_margin"
+                android:indeterminate="true"
+                android:theme="@style/LinearProgress" />
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

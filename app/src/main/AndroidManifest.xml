@@ -73,6 +73,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.sabareesh.trippie.ui.MainActivity" />
         </activity>
+
+        !-- Widget start-->
+        <receiver
+            android:name=".widget.PlacesWidgetProvider"
+            android:label="@string/widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+
+        <service
+            android:name=".widget.PlacesWidgetRemoteViewsService"
+            android:exported="true"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <!--Widget end -->
     </application>
 
 </manifest>

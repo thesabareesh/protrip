@@ -75,11 +75,11 @@
                 android:id="@+id/current_location_card"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_card_current"
+                android:layout_below="@id/seperator"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/margin_home_search"
                 android:layout_marginRight="@dimen/margin_home_search"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_below="@id/seperator"
                 android:contentDescription="@string/cd_current_card"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/card_radius"
@@ -146,13 +146,13 @@
                 android:id="@+id/fab_favorite_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:layout_below="@id/current_location_card"
                 android:layout_marginLeft="@dimen/margin_home_search"
                 android:layout_marginRight="@dimen/margin_home_search"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/title_favorite_places"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:layout_below="@id/current_location_card"
-                android:text="@string/title_favorite_places"/>
+                android:visibility="gone" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_fav_places"

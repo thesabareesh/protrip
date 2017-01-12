@@ -12,12 +12,13 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:minHeight="?android:attr/listPreferredItemHeightSmall">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/appwidget_text"
-            android:textSize="@dimen/size_widget_title"/>
+            android:textSize="@dimen/size_widget_title" />
 
     </FrameLayout>
 
@@ -32,7 +33,7 @@
             android:layout_height="match_parent"
             android:divider="@null"
             android:dividerHeight="0dp"
-            tools:listitem="@layout/widget_collection_item"/>
+            tools:listitem="@layout/widget_collection_item" />
     </FrameLayout>
 
 </LinearLayout>

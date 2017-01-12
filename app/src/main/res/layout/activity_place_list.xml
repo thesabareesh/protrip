@@ -74,16 +74,15 @@
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/pbar_height"
-                android:indeterminate="true"
-                android:theme="@style/LinearProgress"
+                android:layout_marginBottom="@dimen/pbar_margin"
                 android:layout_marginTop="@dimen/pbar_margin"
-                android:layout_marginBottom="@dimen/pbar_margin"/>
+                android:indeterminate="true"
+                android:theme="@style/LinearProgress" />
 
             <include
                 layout="@layout/ad_gms_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="wrap_content" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_places"
@@ -92,8 +91,6 @@
                 android:clipToPadding="false"
                 android:scrollbars="vertical" />
         </LinearLayout>
-
-
 
 
     </android.support.v4.widget.NestedScrollView>

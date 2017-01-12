@@ -1,7 +1,6 @@
 package me.sabareesh.trippie.ui;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -28,7 +27,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     LinearLayout mCurrentCardLayout;
     CardView mCardView;
     RelativeLayout mCurrentLayout;
-    TextView tvCurrCityName,tvFavPlaces;
+    TextView tvCurrCityName, tvFavPlaces;
     ImageView ivStaticMap;
     CoordinatorLayout mCoordinatorLayout;
     String mCurrentLocName, mCurrentLat, mCurrentLng, mStaticMapURL;
@@ -109,7 +107,7 @@ public class MainActivity extends AppCompatActivity
         tvCurrCityName = (TextView) findViewById(R.id.tv_city_name);
         ivStaticMap = (ImageView) findViewById(R.id.iv_staticMap);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.cLayout_main);
-        tvFavPlaces=(TextView)findViewById(R.id.fab_favorite_title);
+        tvFavPlaces = (TextView) findViewById(R.id.fab_favorite_title);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -191,13 +189,13 @@ public class MainActivity extends AppCompatActivity
             cursor = this.getContentResolver().query(places, null, null, null, PlacesSQLiteHelper.ROW_ID);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                        String place_id = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID));
-                        String place_name = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE));
-                        String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
-                        String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
-                        String place_web = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_WEB));
-                        String place_poster_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE));
-                        String place_rating = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG));
+                    String place_id = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID));
+                    String place_name = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE));
+                    String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
+                    String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
+                    String place_web = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_WEB));
+                    String place_poster_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE));
+                    String place_rating = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG));
 
 
                 }
@@ -234,9 +232,17 @@ public class MainActivity extends AppCompatActivity
 
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Snackbar.make(mCoordinatorLayout, "yea ! granted", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mCoordinatorLayout, getString(R.string.notify_permission_accepted), Snackbar.LENGTH_LONG).show();
+
                 } else {
-                    Snackbar.make(mCoordinatorLayout, getString(R.string.notify_permission_denied), Snackbar.LENGTH_LONG).show();
+                    final Snackbar snackBar = Snackbar.make(mCoordinatorLayout, getString(R.string.notify_permission_denied), Snackbar.LENGTH_LONG);
+                    snackBar.setAction(getString(R.string.snackbar_action_allow), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                   requestLocationPermission();
+                                }
+                            })
+                    .show();
                 }
                 break;
             }
@@ -269,8 +275,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.v(TAG, "onLoadFinished");
-        if (loader.getId() == PLACES_LOADER_ID && cursor!=null) {
-            while (cursor!=null && cursor.moveToNext()) {
+        if (loader.getId() == PLACES_LOADER_ID && cursor != null) {
+            while (cursor != null && cursor.moveToNext()) {
                 PlaceList placeList = new PlaceList();
                 String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
                 String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
@@ -288,8 +294,7 @@ public class MainActivity extends AppCompatActivity
                 tvFavPlaces.setVisibility(View.VISIBLE);
             }
 
-        }
-        else{
+        } else {
             tvFavPlaces.setVisibility(View.GONE);
         }
         adapter.notifyDataSetChanged();
@@ -486,8 +491,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
-
 
 
 }
