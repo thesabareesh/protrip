@@ -100,7 +100,6 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     public void launchHome() {
 
 
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

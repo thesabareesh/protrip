@@ -78,6 +78,7 @@
                 android:layout_marginLeft="@dimen/margin_home_search"
                 android:layout_marginRight="@dimen/margin_home_search"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_below="@id/seperator"
                 android:contentDescription="@string/cd_current_card"
                 android:visibility="gone"

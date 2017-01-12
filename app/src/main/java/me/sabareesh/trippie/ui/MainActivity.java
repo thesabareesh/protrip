@@ -1,6 +1,7 @@
 package me.sabareesh.trippie.ui;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -27,6 +28,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -56,7 +58,7 @@ import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
 import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Utils;
 
-import static me.sabareesh.trippie.R.id.rv_fav_places;
+;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         //Recyclerview
-        recyclerView = (RecyclerView) findViewById(rv_fav_places);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_fav_places);
         placeList = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager;
         int span = (isTablet) ? 2 : 1;
@@ -189,15 +191,15 @@ public class MainActivity extends AppCompatActivity
             cursor = this.getContentResolver().query(places, null, null, null, PlacesSQLiteHelper.ROW_ID);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    String place_id = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID));
-                    String place_name = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE));
-                    String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
-                    String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
-                    String place_web = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_WEB));
-                    String place_poster_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE));
-                    String place_rating = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG));
+                        String place_id = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID));
+                        String place_name = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE));
+                        String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
+                        String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
+                        String place_web = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_WEB));
+                        String place_poster_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE));
+                        String place_rating = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG));
 
-                    Toast.makeText(this, place_name, Toast.LENGTH_SHORT).show();
+
                 }
             } else {
                 Toast.makeText(this, "no favs", Toast.LENGTH_SHORT).show();
@@ -484,6 +486,10 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+
+
+
 }
 
 

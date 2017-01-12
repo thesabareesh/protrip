@@ -141,7 +141,9 @@
 
 
     <!--Widget-->
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+    <string name="widget_label" translatable="false">Trippie</string>
+    <string name="appwidget_text" translatable="false">Favorite places</string>
+    <string name="add_widget" translatable="false">Add widget</string>
+    <string name="rating_divider">/5</string>
 
 </resources>
