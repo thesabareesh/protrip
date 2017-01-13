@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
     public static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
     private static final int PLACES_LOADER_ID = 0;
     PlaceAutocompleteFragment mAutocompleteFragment;
-    LinearLayout mCurrentCardLayout;
+    LinearLayout mCurrentCardLayout,llNoFavsLayout;
     CardView mCardView;
     RelativeLayout mCurrentLayout;
     TextView tvCurrCityName, tvFavPlaces;
@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         //current location layouts
         mCardView = (CardView) findViewById(R.id.current_location_card);
         mCurrentCardLayout = (LinearLayout) findViewById(R.id.current_location_layout);
+        llNoFavsLayout = (LinearLayout) findViewById(R.id.layout_no_favs);
         tvCurrCityName = (TextView) findViewById(R.id.tv_city_name);
         ivStaticMap = (ImageView) findViewById(R.id.iv_staticMap);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.cLayout_main);
@@ -264,10 +265,12 @@ public class MainActivity extends AppCompatActivity
                 // Toast.makeText(this, cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE)), Toast.LENGTH_SHORT).show();
                 placeListDetailList.add(placeList);
                 tvFavPlaces.setVisibility(View.VISIBLE);
+                llNoFavsLayout.setVisibility(View.GONE);
             }
 
         } else {
             tvFavPlaces.setVisibility(View.GONE);
+
         }
         adapter.notifyDataSetChanged();
 
@@ -279,6 +282,8 @@ public class MainActivity extends AppCompatActivity
         placeListDetailList.clear();
         adapter.notifyDataSetChanged();
         tvFavPlaces.setVisibility(View.GONE);
+        llNoFavsLayout.setVisibility(View.VISIBLE);
+
     }
 
 
@@ -394,6 +399,7 @@ public class MainActivity extends AppCompatActivity
         if (!mDidInitLoader) {
             placeListDetailList.clear();
             tvFavPlaces.setVisibility(View.GONE);
+            llNoFavsLayout.setVisibility(View.VISIBLE);
             adapter.notifyDataSetChanged();
             getSupportLoaderManager().restartLoader(PLACES_LOADER_ID, null, this);
         }

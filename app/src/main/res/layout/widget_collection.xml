@@ -34,6 +34,16 @@
             android:divider="@null"
             android:dividerHeight="0dp"
             tools:listitem="@layout/widget_collection_item" />
+
+        <!--<include
+            android:id="@+id/widget_nofavs_badge"
+            layout="@layout/content_no_favorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_nofavs_badge"
+            android:gravity="center_vertical|center_horizontal" />-->
+
+
     </FrameLayout>
 
 </LinearLayout>

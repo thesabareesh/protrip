@@ -21,6 +21,9 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     buildTypes {
         release {
             minifyEnabled false

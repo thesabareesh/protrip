@@ -25,6 +25,8 @@
     <!-- home screen-->
     <dimen name="margin_home_search">2dp</dimen>
     <dimen name="height_card_current">75dp</dimen>
+    <dimen name="height_nofavs_badge">150dp</dimen>
+    <dimen name="margin_top_nofavs_badge">50dp</dimen>
 
     <!--city screen-->
     <dimen name="start_margin_collapse">15dp</dimen>

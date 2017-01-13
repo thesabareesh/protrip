@@ -162,6 +162,16 @@
                 android:clipToPadding="false"
                 android:scrollbars="vertical" />
 
+            <include
+                layout="@layout/content_no_favorites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="@dimen/margin_top_nofavs_badge"
+                android:layout_below="@+id/rv_fav_places"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 

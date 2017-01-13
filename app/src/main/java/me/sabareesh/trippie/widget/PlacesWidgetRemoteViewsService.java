@@ -11,6 +11,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -88,20 +89,26 @@ class PlacesWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
         }
 
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_collection_item);
-        Intent intent = new Intent(mContext, PlaceDetailActivity.class);
-        intent.putExtra("place_id", place_id);
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+        //RemoteViews rootView = new RemoteViews(mContext.getPackageName(), R.layout.widget_collection);
+        //Intent intent = new Intent(mContext, PlaceDetailActivity.class);
+        //intent.putExtra("place_id", place_id);
+        //PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+
+        //rv.setViewVisibility(R.id.widget_nofavs_badge, View.INVISIBLE);
 
         rv.setTextViewText(R.id.place_id, place_id);
         rv.setTextViewText(R.id.place_name, place_name);
         rv.setTextViewText(R.id.place_Address, place_address);
         place_rating = (place_rating == null) ? "0" : place_rating;
         rv.setTextViewText(R.id.rating, place_rating);
-        rv.setOnClickPendingIntent(R.id.root_view,pendingIntent);
+        //rv.setOnClickPendingIntent(R.id.root_view, pendingIntent);
 
         try {
-            Bitmap b = Picasso.with(mContext).load(place_poster_url).get();
-            rv.setImageViewBitmap(R.id.place_pic, b);
+            if (!place_poster_url.isEmpty()) {
+                Bitmap b = Picasso.with(mContext).load(place_poster_url).get();
+                rv.setImageViewBitmap(R.id.place_pic, b);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
