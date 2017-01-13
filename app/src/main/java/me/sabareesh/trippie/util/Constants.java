@@ -28,10 +28,8 @@ public class Constants {
 
 
     //Values
-    //public static final String API_VALUE = "";
     public static final String API_VALUE = "";
-    //public static final String API_VALUE = "";
-    //public static final String API_VALUE = "";
+
 
     public static final String API_MAPS_VALUE = "";
     public static final String ABMOBS_APP_ID = "ca-app-pub-3940256099942544~3347511713";
@@ -47,7 +45,7 @@ public class Constants {
     public static final String SIZE_VALUE_M = "800x400";
     public static final int HEIGHT_CITY_GPHOTO = 300;
     public static final int WIDTH_CITY_GPHOTO = 600;
-    public static final String EMAIL_ADMIN = "thesabareesh@gmail.com";
+
 
     //Delays
     public static final int PERMISSION_DELAY_MS = 2000;

@@ -1,6 +1,7 @@
 package me.sabareesh.trippie.util;
 
 import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -12,7 +13,7 @@ import com.android.volley.toolbox.Volley;
  * Created by ve288800 on 03-Jan-17.
  */
 
-public class AppController extends Application {
+public class AppController extends MultiDexApplication {
 
     public static final String TAG = AppController.class
             .getSimpleName();

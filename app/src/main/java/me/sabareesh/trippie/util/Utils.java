@@ -13,12 +13,15 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import me.sabareesh.trippie.R;
 
 /**
  * Created by Sabareesh on 27-Dec-16.
@@ -91,6 +94,7 @@ public class Utils {
                         .load(url)
                         .into(imageView);
             }
+
 
         } catch (Exception e) {
             Log.e(TAG, "Error building url", e);

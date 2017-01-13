@@ -3,6 +3,7 @@ package me.sabareesh.trippie.adapter;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,8 +92,8 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
         if (placeList.getPlace_rating() != null) {
             viewHolder.rating.setRating(Float.parseFloat(String.valueOf(placeList.getPlace_rating())));
         }
+
         if (url != null && !url.isEmpty()) {
-            //Comment to the below call cu down api calls while testing
             Picasso.with(mContext).load(url).fit().into(viewHolder.place_pic);
         }
         new Utils().animateView(viewHolder.itemView);

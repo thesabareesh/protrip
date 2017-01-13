@@ -5,6 +5,7 @@
     <string name="action_feedback">Feedback</string>
     <string name="action_info">Info</string>
     <string name="action_share">Share</string>
+    <string name="action_share_app">Share App</string>
     <string name="action_settings">Settings</string>
 
 
@@ -12,8 +13,11 @@
     <string name="cd_splash_image">Trippie logo</string>
 
     <!--Drawer items-->
-    <string name="title_feedback">Feedback</string>
+    <string name="title_feedback">Feedback on Trippie</string>
+    <string name="email_admin">thesabareesh@gmail.com</string>
     <string name="share_app_desc">Hey checkout - Trippie - Ultimate travel guide</string>
+    <string name="desc_app_version">App version :&#160;</string>
+    <string name="desc_device_info">Device info :&#160;</string>
 
 
     <!--Home screen-->

@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,7 +84,8 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_detail);
-
+        //Enable support for vector drawables on Pre-lollipop devices
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         if (getIntent().getExtras() != null) {
             place_id = getIntent().getStringExtra("place_id");
@@ -209,13 +211,11 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                                 Extras extras = new Extras(reviews);
                                 showReviews(extras);
                             }
-                            //placeListDetailList.add(placeList);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         progressBar.setVisibility(View.GONE);
                         fabFav.setVisibility(View.VISIBLE);
-                        //adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
 
@@ -305,7 +305,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             reviewContent.setText(extras.getReviewAtIndex(i).getBody().replace("\n\n", " ").replace("\n", " "));
             Log.d(TAG, "picasso url http:" + extras.getReviewAtIndex(i).getAvatar_url());
             Picasso.with(this).load("http:" + extras.getReviewAtIndex(i).getAvatar_url())
-                    .placeholder(R.drawable.ic_account_circle_black_24px)
+                    .placeholder(R.drawable.ic_account_circle_black_24dp)
                     .transform(new CircleTransform())
                     .fit()
                     .into(rivAvatar);

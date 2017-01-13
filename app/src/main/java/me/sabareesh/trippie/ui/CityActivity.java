@@ -72,7 +72,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         mImageView = (ImageView) findViewById(R.id.widePoster);
 
         if (getIntent().getExtras() != null) {
@@ -87,6 +87,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
             } else {
                 Utils.loadStaticMap(this, mImageView, mCityLat, mCityLng
                         , Constants.SIZE_VALUE_M, Constants.ZOOM_VALUE_HIGH);
+                progressBar.setVisibility(View.GONE);
             }
         }
 
@@ -96,7 +97,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitle(mCityName);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         //mImageView.setImageResource(R.drawable.poster_placeholder);
 
         //Recyclerview
@@ -162,8 +163,6 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void fetchPlacePhotos(String placeId) {
 
-
-        // Create a new AsyncTask that displays the bitmap and attribution once loaded.
         new PhotoTask(Constants.WIDTH_CITY_GPHOTO,
                 Constants.HEIGHT_CITY_GPHOTO, mGoogleApiClient) {
             @Override
@@ -175,9 +174,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             protected void onPostExecute(AttributedPhoto attributedPhoto) {
                 if (attributedPhoto != null) {
-                    // Photo has been loaded, display it.
                     mImageView.setImageBitmap(attributedPhoto.bitmap);
-
                 }
                 progressBar.setVisibility(View.GONE);
             }

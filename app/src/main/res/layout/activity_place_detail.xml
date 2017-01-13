@@ -24,7 +24,6 @@
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleMarginBottom="@dimen/start_margin_collapse"
             app:expandedTitleMarginStart="@dimen/start_margin_collapse"
-
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -50,6 +49,7 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:contentInsetStart="72dp"
                 app:layout_collapseMode="pin"
+                style="@style/autoscroll"
                 app:navigationIcon="@drawable/ic_arrow_back_white_24px" />
 
         </android.support.design.widget.CollapsingToolbarLayout>

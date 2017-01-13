@@ -1,6 +1,7 @@
 package me.sabareesh.trippie.ui;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -8,12 +9,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -48,6 +51,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.sabareesh.trippie.BuildConfig;
 import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.adapter.PlaceListAdapter;
 import me.sabareesh.trippie.model.PlaceList;
@@ -181,38 +185,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void loadFavorites() {
-        String URL = PlacesProvider.URL;
-        Uri places = Uri.parse(URL);
-        Cursor cursor = null;
-        try {
-            cursor = this.getContentResolver().query(places, null, null, null, PlacesSQLiteHelper.ROW_ID);
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    String place_id = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID));
-                    String place_name = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE));
-                    String place_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_URL));
-                    String place_phone = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_PHONE));
-                    String place_web = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_WEB));
-                    String place_poster_url = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE));
-                    String place_rating = cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG));
-
-
-                }
-            } else {
-                Toast.makeText(this, "no favs", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (SQLException e) {
-
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-
-
     //Google location methods
     protected void requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -335,8 +307,16 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_settings) {
+            Intent email = new Intent(Intent.ACTION_SENDTO);
+            email.setType("text/email");
+            email.setData(Uri.parse("mailto:"+getString(R.string.email_admin)));
+            email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.title_feedback));
+            email.putExtra(Intent.EXTRA_TEXT,"\n \n" +getResources().getString(R.string.desc_app_version)+ BuildConfig.VERSION_NAME+
+                    "\n" +getResources().getString(R.string.desc_device_info)+ Build.BRAND.toUpperCase()+" "+Build.MODEL+", OS : " +Build.VERSION.RELEASE);
+            email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(Intent.createChooser(email, getString(R.string.intent_desc_link)));
             return true;
         }
 
@@ -367,16 +347,14 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_feedback) {
-            Intent Email = new Intent(Intent.ACTION_SEND);
-            Email.setType("text/email");
-            Email.putExtra(Intent.EXTRA_EMAIL, Constants.EMAIL_ADMIN);
-            Email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.title_feedback));
-            startActivity(Intent.createChooser(Email, getString(R.string.intent_desc_link)));
-            return true;
-
-        } else if (id == R.id.nav_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            Intent email = new Intent(Intent.ACTION_SENDTO);
+            email.setType("text/email");
+            email.setData(Uri.parse("mailto:"+getString(R.string.email_admin)));
+            email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.title_feedback));
+            email.putExtra(Intent.EXTRA_TEXT,"\n \n" +getResources().getString(R.string.desc_app_version)+ BuildConfig.VERSION_NAME+
+                    "\n" +getResources().getString(R.string.desc_device_info)+ Build.BRAND.toUpperCase()+" "+Build.MODEL+", OS : " +Build.VERSION.RELEASE);
+            email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(Intent.createChooser(email, getString(R.string.intent_desc_link)));
             return true;
 
         }
@@ -428,6 +406,7 @@ public class MainActivity extends AppCompatActivity
         Log.v(TAG, "Loader destroyed");
         getSupportLoaderManager().destroyLoader(PLACES_LOADER_ID);
     }
+
 
     @Override
     public void onClick(View v) {

@@ -86,6 +86,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         Log.d(TAG, "onStop");
     }
 
+
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "gAPI connected");
