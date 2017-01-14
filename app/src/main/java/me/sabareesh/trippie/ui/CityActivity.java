@@ -46,16 +46,6 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
     ImageView mImageView;
     ProgressBar progressBar;
 
-    /*ResultCallback<PlacePhotoResult> mDisplayPhotoResultCallback
-            = new ResultCallback<PlacePhotoResult>() {
-        @Override
-        public void onResult(PlacePhotoResult placePhotoResult) {
-            if (!placePhotoResult.getStatus().isSuccess()) {
-                return;
-            }
-            mImageView.setImageBitmap(placePhotoResult.getBitmap());
-        }
-    };*/
 
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
