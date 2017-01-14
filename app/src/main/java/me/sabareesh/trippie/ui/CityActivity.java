@@ -54,6 +54,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_city);
 
         mGoogleApiClient = new GoogleApiClient

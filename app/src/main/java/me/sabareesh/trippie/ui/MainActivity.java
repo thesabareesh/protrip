@@ -362,6 +362,9 @@ public class MainActivity extends AppCompatActivity
             return true;
 
         }
+        else if(id==R.id.nav_info){
+            startActivity(new Intent(this,InfoActivity.class));
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

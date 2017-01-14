@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-
     <application
         android:name=".util.AppController"
         android:allowBackup="true"
@@ -24,6 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait"
@@ -52,6 +55,17 @@
                 android:value="me.sabareesh.trippie.ui.PlaceListActivity" />
         </activity>
 
+        <activity
+            android:name=".ui.InfoActivity"
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.sabareesh.trippie.ui.MainActivity" />
+
+        </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="" />
@@ -64,7 +78,7 @@
             android:authorities="me.sabareesh.trippie.provider"
             android:exported="false" />
 
-        <!-- Widget start-->
+        <!-- Widget start -->
         <receiver
             android:name=".widget.PlacesWidgetProvider"
             android:label="@string/widget_label">
@@ -81,7 +95,9 @@
             android:name=".widget.PlacesWidgetRemoteViewsService"
             android:exported="true"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <!--Widget end -->
+        <!-- Widget end -->
+
+
     </application>
 
 </manifest>

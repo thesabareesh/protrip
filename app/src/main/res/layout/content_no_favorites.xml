@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:weightSum="3"
     android:visibility="visible"
-    android:gravity="bottom">
+    android:gravity="bottom"
+    android:layout_alignParentBottom="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_nofavs_badge"
-            android:src="@drawable/badge_no_favs"
+            android:src="@drawable/badge_no_favs_final"
             android:layout_gravity="center_vertical|center_horizontal" />
 
     </LinearLayout>
@@ -26,6 +27,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.5"
         android:text="@string/title_no_favs"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:gravity="center_vertical|center_horizontal" />
     <TextView
         android:layout_width="match_parent"

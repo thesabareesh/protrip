@@ -11,9 +11,16 @@
 
     </style>
 
-    <!-- -->
-    <!--<item name="android:windowTranslucentStatus">true</item>-->
-    <!--<item name="android:windowTranslucentStatus">true</item>-->
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowContentTransitions">true</item>
+
+    </style>
 
 
 </resources>

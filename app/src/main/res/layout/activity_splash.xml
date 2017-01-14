@@ -9,12 +9,14 @@
     tools:context="me.sabareesh.trippie.ui.SplashActivity">
 
     <ImageView
+        android:id="@+id/logo"
         android:layout_width="@dimen/splash_icon_dim"
         android:layout_height="@dimen/splash_icon_dim"
         android:layout_gravity="center"
         android:layout_weight="2"
+        android:transitionName="thumbnail"
         android:contentDescription="@string/cd_splash_image"
-        android:src="@drawable/icon" />
+        android:src="@drawable/icon_hi_res" />
 
     <TextView
         android:layout_width="wrap_content"

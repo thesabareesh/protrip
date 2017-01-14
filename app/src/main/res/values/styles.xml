@@ -18,6 +18,7 @@
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@null</item>
         <item name="android:windowNoTitle">true</item>
+
     </style>
 
 

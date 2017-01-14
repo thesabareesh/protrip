@@ -18,6 +18,7 @@
     <string name="share_app_desc">Hey checkout - Trippie - Ultimate travel guide</string>
     <string name="desc_app_version">App version :&#160;</string>
     <string name="desc_device_info">Device info :&#160;</string>
+    <string name="title_titlebar_info">Info</string>
 
 
     <!--Home screen-->
@@ -28,7 +29,7 @@
     <string name="text_size_home_search" translatable="false">15</string>
     <string name="title_favorite_places">Favorite places</string>
     <string name="title_no_favs">No Favorites</string>
-    <string name="desc_no_favs">Tap on a star icon on place details page to save it.</string>
+    <string name="desc_no_favs">Tap the star icon of a place to add it to your Favorites</string>
 
     <!--City screen-->
     <string name="cd_city_banner">City banner</string>
@@ -61,7 +62,7 @@
     <!--Notifications-->
     <string name="notify_failed_location">Unable to get location</string>
     <string name="notify_permission_denied">Allow access to location services to explore nearby places !</string>
-    <string name="notify_permission_accepted">Awesome ! </string>
+    <string name="notify_permission_accepted">Awesome ! Location based suggestions will be shown from now. </string>
     <string name="snackbar_action_allow">I\'M IN</string>
     <string name="notify_favorite">Added to favorites !</string>
     <string name="notify_unfavorite">Removed from favorites !   </string>
@@ -73,83 +74,40 @@
     <string name="admob_loaded">Ad is loaded</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
-
 
     <!--Widget-->
     <string name="widget_label" translatable="false">Trippie</string>
     <string name="appwidget_text" translatable="false">Favorite places</string>
     <string name="add_widget" translatable="false">Add widget</string>
     <string name="rating_divider">/5</string>
+
+
+    <!--Swipe intro strings-->
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Trippie</string>
+    <string name="slide_1_desc">Exploring just got easier ! See more and plan less.</string>
+
+    <string name="slide_2_title">Find restaurants and hotels </string>
+    <string name="slide_2_desc">Browse tons of cool places near and far.</string>
+
+    <string name="slide_3_title">Save places</string>
+    <string name="slide_3_desc">Browse your favorite places even with no internet connection.</string>
+
+    <string name="slide_4_title">Slide 4</string>
+    <string name="slide_4_desc">slide 4 description</string>
+
+    <!--Info-->
+    <string-array name="info">
+        <item>Published by www.sabareesh.me</item>
+        <item>Version 1.0</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <item>Item 4</item>
+        <item>Item 5</item>
+    </string-array>
+
 
 </resources>

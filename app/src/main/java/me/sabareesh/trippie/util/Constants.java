@@ -49,7 +49,7 @@ public class Constants {
 
     //Delays
     public static final int PERMISSION_DELAY_MS = 2000;
-    public static final int SPLASH_DELAY_MS = 1000;
+    public static final int SPLASH_DELAY_MS = 1500;
     public static final int ADMOB_DELAY_MS = 0;
 
 
