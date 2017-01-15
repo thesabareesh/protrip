@@ -97,8 +97,8 @@ public class PlaceListActivity extends AppCompatActivity {
                     bannerResId = R.drawable.top_places;
                     break;
                 case 3:
-                    categoryType = Constants.TYPE_VALUE_POI;
-                    categoryName = getString(R.string.title_places);
+                    categoryType = Constants.TYPE_VALUE_SHOPPING;
+                    categoryName = getString(R.string.title_shopping);
                     bannerResId = R.drawable.building_illustration;
                     break;
                 default:

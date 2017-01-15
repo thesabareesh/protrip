@@ -11,6 +11,11 @@
     <dimen name="height_city_banner">450dp</dimen>
     <dimen name="category_cover_height">400dp</dimen>
     <dimen name="category_title">28dp</dimen>
+
+
+    <!--Intro swipe dimens-->
+    <dimen name="img_width_height">200dp</dimen>
+
 </resources>
 
 

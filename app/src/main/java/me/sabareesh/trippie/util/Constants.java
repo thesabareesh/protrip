@@ -37,6 +37,7 @@ public class Constants {
     public static final String TYPE_VALUE_HOTEL = "lodging";
     public static final String TYPE_VALUE_TOP_SPOTS = "amusement_park|aquarium|art_gallery|casino|church|museum|night_club|park|place_of_worship|shopping_mall|stadium|zoo";
     public static final String TYPE_VALUE_POI = "point_of_interest";
+    public static final String TYPE_VALUE_SHOPPING = "shopping_mall";
     public static final String RADIUS_VALUE = "5000";
     public static final String RANK_BY_VALUE = "prominence";
     public static final String ZOOM_VALUE_HIGH = "16";

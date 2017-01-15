@@ -56,7 +56,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
                 String place_imageURL = (list.get(holder.getAdapterPosition()).getPhoto_reference() != null)
                         ? Constants.PLACE_PHOTO +
                         list.get(holder.getAdapterPosition()).getPhoto_reference().get(0) +
-                        "&key=" + Constants.API_VALUE : "";
+                        "&key=" + Constants.API_VALUE : list.get(holder.getAdapterPosition()).getIcon_url();
 
                 Intent intent = new Intent(mContext, PlaceDetailActivity.class);
                 ImageView thumbnail = (ImageView) v.findViewById(R.id.place_pic);

@@ -91,8 +91,9 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         if (prefManager.isFirstTimeLaunch()) {
             //show welcome screen
             Intent intent = new Intent(SplashActivity.this, WelcomeActivity.class);
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SplashActivity.this, logo, getString(R.string.transition_image));
-            startActivity(intent, options.toBundle());
+            SplashActivity.this.startActivity(intent);
+            SplashActivity.this.finish();
+            overridePendingTransition(0, 0);
         } else {
             //Launch home screen
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);

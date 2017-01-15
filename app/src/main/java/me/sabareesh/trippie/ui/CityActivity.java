@@ -196,7 +196,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
         a = new Category(getString(R.string.title_top_spots), thumbnails[2]);
         categoryList.add(a);
 
-        a = new Category(getString(R.string.title_places), thumbnails[3]);
+        a = new Category(getString(R.string.title_shopping), thumbnails[3]);
         categoryList.add(a);
 
         adapter.notifyDataSetChanged();

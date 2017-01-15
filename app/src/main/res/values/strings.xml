@@ -15,10 +15,11 @@
     <!--Drawer items-->
     <string name="title_feedback">Feedback on Trippie</string>
     <string name="email_admin">thesabareesh@gmail.com</string>
-    <string name="share_app_desc">Hey checkout - Trippie - Ultimate travel guide</string>
+    <string name="share_app_desc">Exploring just gets easier with #Trippie! Download now!</string>
     <string name="desc_app_version">App version :&#160;</string>
     <string name="desc_device_info">Device info :&#160;</string>
     <string name="title_titlebar_info">Info</string>
+    <string name="site_admin">wwww.sabareesh.me</string>
 
 
     <!--Home screen-->
@@ -37,6 +38,7 @@
     <string name="title_restaurant">Restaurants</string>
     <string name="title_top_spots">Top spots</string>
     <string name="title_places">Places of Interest</string>
+    <string name="title_shopping">Shopping</string>
 
     <!--places screen-->
     <string name="title_activity_hotels">Hotels</string>
@@ -91,23 +93,14 @@
     <string name="slide_1_desc">Exploring just got easier ! See more and plan less.</string>
 
     <string name="slide_2_title">Find restaurants and hotels </string>
-    <string name="slide_2_desc">Browse tons of cool places near and far.</string>
+    <string name="slide_2_desc">See pictures and reviews of great new places also with driving directions !</string>
 
-    <string name="slide_3_title">Save places</string>
-    <string name="slide_3_desc">Browse your favorite places even with no internet connection.</string>
+    <string name="slide_3_title">Works offline</string>
+    <string name="slide_3_desc">Tap the star button and browse your favorite places on the go.</string>
 
     <string name="slide_4_title">Slide 4</string>
     <string name="slide_4_desc">slide 4 description</string>
 
-    <!--Info-->
-    <string-array name="info">
-        <item>Published by www.sabareesh.me</item>
-        <item>Version 1.0</item>
-        <item>Item 2</item>
-        <item>Item 3</item>
-        <item>Item 4</item>
-        <item>Item 5</item>
-    </string-array>
 
 
 </resources>
