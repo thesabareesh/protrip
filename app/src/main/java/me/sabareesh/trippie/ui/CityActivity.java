@@ -110,7 +110,7 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
                     public void onItemClick(View view, int position) {
                         int itemPosition = recyclerView.getChildLayoutPosition(view);
                         ImageView thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-                        Log.d(TAG, "City Item clicked: " + String.valueOf(itemPosition));
+                        //Log.d(TAG, "City Item clicked: " + String.valueOf(itemPosition));
                         Intent intent = new Intent(view.getContext(), PlaceListActivity.class);
                         intent.putExtra("cityLatLng", mCityLat + "," + mCityLng);
                         intent.putExtra("itemPosition", itemPosition);
@@ -229,17 +229,17 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "API services connected.");
+        //Log.i(TAG, "API services connected.");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.i(TAG, "Location services suspended. Please reconnect.");
+        //Log.i(TAG, "Location services suspended. Please reconnect.");
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.i(TAG, "API services connection failed. Please reconnect.");
+        //Log.i(TAG, "API services connection failed. Please reconnect.");
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

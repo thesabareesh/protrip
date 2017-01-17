@@ -82,7 +82,7 @@ public class PlacesProvider extends ContentProvider {
                 count = database.delete(sqLiteOpenHelper.TABLE_NAME,selection,selectionArgs);
                 break;
             case PLACES_ID:
-                Log.d("Selection deletion", "selection" + selection);
+                //Log.d("Selection deletion", "selection" + selection);
                 count = database.delete( sqLiteOpenHelper.TABLE_NAME, sqLiteOpenHelper.ID +  " = '" + selection +"'"
                         +(!TextUtils.isEmpty(null) ? " AND (" +
                                 selection + ')' : ""), selectionArgs);

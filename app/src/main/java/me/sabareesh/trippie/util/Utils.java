@@ -88,7 +88,7 @@ public class Utils {
                     .append("&" + APPKEY_PARAM + "=" + Constants.API_MAPS_VALUE);
 
             String url=sb.toString();
-            Log.d(TAG, "Thumbnail URL built " + url);
+            //Log.d(TAG, "Thumbnail URL built " + url);
             if(url!=null && !url.isEmpty()) {
                 Picasso.with(ctx)
                         .load(url)
@@ -97,7 +97,7 @@ public class Utils {
 
 
         } catch (Exception e) {
-            Log.e(TAG, "Error building url", e);
+            //Log.e(TAG, "Error building url", e);
         }
 
     }

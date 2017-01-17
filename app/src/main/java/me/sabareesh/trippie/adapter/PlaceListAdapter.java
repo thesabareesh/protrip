@@ -81,7 +81,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
             url = Constants.PLACE_THUMBNAIL +
                     placeList.getPhoto_reference().get(0) +
                     "&" + Constants.API_KEY_PARAM + "=" + Constants.API_VALUE;
-            Log.d(TAG, "Image url " + url);
+            //Log.d(TAG, "Image url " + url);
         } else {
             url = placeList.getIcon_url();
         }

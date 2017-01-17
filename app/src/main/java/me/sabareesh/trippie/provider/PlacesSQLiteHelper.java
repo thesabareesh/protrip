@@ -52,7 +52,7 @@ public class PlacesSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(" Creating a table", "" + CREATE_TABLE);
+        //Log.d(" Creating a table", "" + CREATE_TABLE);
         db.execSQL(CREATE_TABLE );
     }
 

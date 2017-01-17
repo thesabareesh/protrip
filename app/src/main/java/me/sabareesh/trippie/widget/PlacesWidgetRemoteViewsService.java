@@ -50,11 +50,11 @@ class PlacesWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
     }
 
     public void onCreate() {
-        Log.d(TAG, "onCreate");
+        //Log.d(TAG, "onCreate");
     }
 
     public void onDestroy() {
-        Log.d(TAG, "onDestroy");
+        //Log.d(TAG, "onDestroy");
 
         if (mPlaceCursor != null) {
             mPlaceCursor.close();
@@ -62,7 +62,7 @@ class PlacesWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
     }
 
     public int getCount() {
-        Log.d(TAG, "getCount");
+        //Log.d(TAG, "getCount");
         if (mPlaceCursor != null) {
             return mPlaceCursor.getCount();
         } else {
@@ -117,13 +117,13 @@ class PlacesWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public RemoteViews getLoadingView() {
-        Log.d(TAG, "getLoadingView");
+        //Log.d(TAG, "getLoadingView");
         return null;
     }
 
 
     public int getViewTypeCount() {
-        Log.d(TAG, "getViewTypeCount");
+        //Log.d(TAG, "getViewTypeCount");
         return 1;
     }
 
@@ -137,7 +137,7 @@ class PlacesWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
     }
 
     public void onDataSetChanged() {
-        Log.d(TAG, "onDataSetChanged");
+        //Log.d(TAG, "onDataSetChanged");
         if (mPlaceCursor != null) {
             mPlaceCursor.close();
         }

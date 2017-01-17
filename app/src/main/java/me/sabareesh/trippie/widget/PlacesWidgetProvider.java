@@ -50,19 +50,19 @@ public class PlacesWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive");
+        //Log.d(TAG, "onReceive");
         super.onReceive(context, intent);
     }
 
     @Override
     public void onEnabled(Context context) {
-        Log.d(TAG, "onEnabled");
+        //Log.d(TAG, "onEnabled");
         super.onEnabled(context);
     }
 
     @Override
     public void onDisabled(Context context) {
-        Log.d(TAG, "onDisabled");
+        //Log.d(TAG, "onDisabled");
         super.onDisabled(context);
     }
 

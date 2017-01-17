@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Trippie</string>
+    <string name="app_name" translatable="false">ProTrip</string>
     <string name="app_desc">Your travel guide</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_feedback">Feedback</string>
@@ -10,12 +10,12 @@
 
 
     <!--Splash screen-->
-    <string name="cd_splash_image">Trippie logo</string>
+    <string name="cd_splash_image">ProTrip logo</string>
 
     <!--Drawer items-->
-    <string name="title_feedback">Feedback on Trippie</string>
+    <string name="title_feedback">Feedback on ProTrip</string>
     <string name="email_admin">thesabareesh@gmail.com</string>
-    <string name="share_app_desc">Exploring just gets easier with #Trippie! Download now!</string>
+    <string name="share_app_desc">Exploring just gets easier with #ProTrip! Download now!</string>
     <string name="desc_app_version">App version :&#160;</string>
     <string name="desc_device_info">Device info :&#160;</string>
     <string name="title_titlebar_info">Info</string>
@@ -78,7 +78,7 @@
 
 
     <!--Widget-->
-    <string name="widget_label" translatable="false">Trippie</string>
+    <string name="widget_label" translatable="false">ProTrip</string>
     <string name="appwidget_text" translatable="false">Favorite places</string>
     <string name="add_widget" translatable="false">Add widget</string>
     <string name="rating_divider">/5</string>
@@ -89,7 +89,7 @@
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
 
-    <string name="slide_1_title">Trippie</string>
+    <string name="slide_1_title">ProTrip</string>
     <string name="slide_1_desc">Exploring just got easier ! See more and plan less.</string>
 
     <string name="slide_2_title">Find restaurants and hotels </string>

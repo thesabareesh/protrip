@@ -1,22 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'capstone'
-            keyPassword 'capstone'
-            storeFile file('../capstone.jks')
-            storePassword 'capstone'
-        }
-    }
+
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "me.sabareesh.trippie"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 1_000_000
-        versionName "1.0.0"
+        versionCode 1_000_110
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -27,15 +20,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
+
         }
         debug {
             minifyEnabled false
             applicationIdSuffix ".debug"
         }
     }
-
-
 }
 
 dependencies {
