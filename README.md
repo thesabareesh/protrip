@@ -1,6 +1,6 @@
-#ProTrip - City & Travel Guide <img height="40px" style="vertical-align:text-bottom" src="/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"/>
+[![](/resources/feature_graphic.png)][playstore]
 
-ProTrip is based on integration with Google Places API and built with strong focus on Material design. 
+ProTrip is built on integration with Google Places API and with strong focus on Material design. 
 Get it [here on the Google Play Store][playstore]
 
 <a href='https://play.google.com/store/apps/details?id=me.sabareesh.trippie&hl=en&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='300px'/></a>
