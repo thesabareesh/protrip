@@ -15,7 +15,7 @@ Get it [here on the Google Play Store][playstore]
 
 ### Bug reports? Feature requests?
 
-[File an issue](/CONTRIBUTING.md)
+[File an issue](https://github.com/thesabareesh/protrip/issues)
 
 If you need help getting started, [email me](mailto:thesabareesh@gmail.com)
 
@@ -23,7 +23,7 @@ If you need help getting started, [email me](mailto:thesabareesh@gmail.com)
 
 Setup is as simple as importing the project into Android Studio and building (assuming you have the correct build tools and Android SDK).
 
-If you face any issues setting this up, please let me know by [filing a new issue](/issues/new).
+If you face any issues setting this up, please let me know by [filing a new issue](https://github.com/thesabareesh/protrip/issues).
 
 ### Contributors
 
