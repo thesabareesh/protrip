@@ -1,3 +1,33 @@
-#Capstone Project
+#ProTrip - City & Travel Guide <img height="40px" style="vertical-align:text-bottom" src="/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"/>
 
-Udacity Android Nanodegree Capstone project
+ProTrip is based on integration with Google Places API and built with strong focus on Material design. 
+Get it [here on the Google Play Store][playstore]
+
+<a href='https://play.google.com/store/apps/details?id=me.sabareesh.trippie&hl=en&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='300px'/></a>
+
+### Features
+
+- Simple, intuitive interface based on **[Material Design](https://material.google.com/)** principles.
+- **HOTELS AND RESTAURANTS** Browse pictures and reviews of great new places also with driving directions !
+- **NEARBY ATTRACTIONS** Find out nearby popular attractions as well as reviews and ratings from other travelers.
+- **No Internet? No problem**. Tap the star button and browse your favorite places on the go.
+
+### Bug reports? Feature requests?
+
+[File an issue](/CONTRIBUTING.md)
+
+If you need help getting started, [email me](mailto:thesabareesh@gmail.com)
+
+### Developer setup
+
+Setup is as simple as importing the project into Android Studio and building (assuming you have the correct build tools and Android SDK).
+
+If you face any issues setting this up, please let me know by [filing a new issue](/issues/new).
+
+### Contributors
+
+- [@thesabareesh](https://github.com/thesabareesh)
+
+
+
+[playstore]: https://play.google.com/store/apps/details?id=me.sabareesh.trippie&hl=en
