@@ -1,5 +1,6 @@
 [![](/resources/feature_graphic.png)][playstore]
 
+<img src="/resources/1.png" width="320" align="right" hspace="20">
 ProTrip is built on integration with Google Places API and with strong focus on Material design. 
 Get it [here on the Google Play Store][playstore]
 
