@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleMarginBottom="@dimen/start_margin_collapse"
-            app:expandedTitleMarginStart="@dimen/start_margin_collapse"
+            app:expandedTitleMarginEnd="@dimen/margin_title_right"
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -280,7 +280,7 @@
         android:clickable="true"
         android:contentDescription="@string/cd_fab_fav"
         android:visibility="gone"
-        app:layout_anchor="@id/banner"
+        app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"
         app:srcCompat="@drawable/ic_favorite_border_white_24px"
         app:useCompatPadding="true"

@@ -57,6 +57,7 @@
     <dimen name="margin_place_start_rating">10dp</dimen>
     <dimen name="height_reviewer_avatar">50dp</dimen>
     <dimen name="margin_place_top_review">2dp</dimen>
+    <dimen name="margin_title_right">75dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

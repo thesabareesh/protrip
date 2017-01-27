@@ -6,5 +6,6 @@
 
     <bool name="isTablet">true</bool>
     <dimen name="pbar_height">30dp</dimen>
+    <dimen name="margin_title_right">0dp</dimen>
 
 </resources>

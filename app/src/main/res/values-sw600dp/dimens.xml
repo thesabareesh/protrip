@@ -16,6 +16,9 @@
     <!--Intro swipe dimens-->
     <dimen name="img_width_height">200dp</dimen>
 
+    <!-- place screen-->
+    <dimen name="margin_title_right">0dp</dimen>
+
 </resources>
 
 
