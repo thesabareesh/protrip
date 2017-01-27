@@ -4,6 +4,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="action_feedback">Feedback</string>
     <string name="action_info">Info</string>
+    <string name="action_rate">Rate us</string>
     <string name="action_share">Share</string>
     <string name="action_share_app">Share App</string>
     <string name="action_settings">Settings</string>

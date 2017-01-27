@@ -15,7 +15,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:gravity="center_horizontal">
         <ImageView
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/height_nofavs_badge"
             android:layout_height="@dimen/height_nofavs_badge"
             android:src="@drawable/badge_no_favs_final"
             android:layout_gravity="center_vertical|center_horizontal" />

@@ -11,6 +11,10 @@
             android:id="@+id/nav_feedback"
             android:icon="@drawable/ic_menu_send"
             android:title="@string/action_feedback" />
+        <item
+            android:id="@+id/nav_rate"
+            android:icon="@drawable/ic_stars_black_24px"
+            android:title="@string/action_rate" />
 
         <item
             android:id="@+id/nav_info"

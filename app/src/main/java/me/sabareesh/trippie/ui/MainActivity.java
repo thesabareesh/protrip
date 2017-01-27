@@ -1,6 +1,7 @@
 package me.sabareesh.trippie.ui;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -354,6 +355,21 @@ public class MainActivity extends AppCompatActivity
                     "\n" +getResources().getString(R.string.desc_device_info)+ Build.BRAND.toUpperCase()+" "+Build.MODEL+", OS : " +Build.VERSION.RELEASE);
             email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(Intent.createChooser(email, getString(R.string.intent_desc_link)));
+            return true;
+
+        }
+        else if (id == R.id.nav_rate) {
+            Uri uri = Uri.parse("market://details?id="+getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try {
+                startActivity(goToMarket);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id="+getPackageName())));
+            }
             return true;
 
         }

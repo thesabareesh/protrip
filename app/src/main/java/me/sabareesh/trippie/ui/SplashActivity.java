@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.RuntimeExecutionException;
 
 import java.util.List;
 import java.util.Locale;
@@ -43,6 +44,13 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     String mCurrentLocName, mCurrentLat, mCurrentLng;
     private GoogleApiClient mGoogleApiClient;
     ImageView logo;
+    Handler handler = new Handler();
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            launchHome();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +82,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void skip() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                launchHome();
-            }
-        }, Constants.SPLASH_DELAY_MS);
+
+        handler.postDelayed(runnable,Constants.SPLASH_DELAY_MS);
 
     }
 
@@ -141,12 +144,22 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         //Log.d(TAG, "onStart");
     }
 
+    protected void onResume() {
+        checkLocationPermission();
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        handler.removeCallbacks(runnable);
+        super.onPause();
+    }
     @Override
     public void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
         //Log.d(TAG, "onStop");
     }
+
 
     //Google Location API methods
     @Override
