@@ -10,7 +10,7 @@ import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.Places;
 
 /**
- * Created by VE288800 on 09-Jan-17.
+ * Created by Sabareesh on 09-Jan-17.
  */
 
 public abstract class PhotoTask extends AsyncTask<String, Void, PhotoTask.AttributedPhoto> {

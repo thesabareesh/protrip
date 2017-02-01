@@ -15,7 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -124,7 +124,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                     mCurrentLocName = addresses.get(0).getAddressLine(1);
 
                 } catch (Exception e) {
-                    //Log.d(TAG, "Exception");
+                    Log.d(TAG, "Exception");
                 }
             }
             skip();
@@ -141,7 +141,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
             skip();
         }
         super.onStart();
-        //Log.d(TAG, "onStart");
+        Log.d(TAG, "onStart");
     }
 
     protected void onResume() {
@@ -157,20 +157,20 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     public void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
-        //Log.d(TAG, "onStop");
+        Log.d(TAG, "onStop");
     }
 
 
     //Google Location API methods
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        //Log.d(TAG, "gAPI connected");
+        Log.d(TAG, "gAPI connected");
         checkLocationPermission();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        //Log.d(TAG, "gAPI suspended");
+        Log.d(TAG, "gAPI suspended");
     }
 
     @Override

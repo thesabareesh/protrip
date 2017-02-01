@@ -11,12 +11,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 
 import java.util.HashMap;
 
 /**
- * Created by VE288800 on 09-Jan-17.
+ * Created by Sabareesh on 09-Jan-17.
  */
 
 public class PlacesProvider extends ContentProvider {
@@ -82,7 +82,7 @@ public class PlacesProvider extends ContentProvider {
                 count = database.delete(sqLiteOpenHelper.TABLE_NAME,selection,selectionArgs);
                 break;
             case PLACES_ID:
-                //Log.d("Selection deletion", "selection" + selection);
+                Log.d("Selection deletion", "selection" + selection);
                 count = database.delete( sqLiteOpenHelper.TABLE_NAME, sqLiteOpenHelper.ID +  " = '" + selection +"'"
                         +(!TextUtils.isEmpty(null) ? " AND (" +
                                 selection + ')' : ""), selectionArgs);

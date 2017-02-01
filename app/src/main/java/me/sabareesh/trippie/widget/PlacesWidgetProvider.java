@@ -7,14 +7,14 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 import android.widget.RemoteViews;
 
 import me.sabareesh.trippie.R;
 
 
 /**
- * Created by VE288800 on 12-Jan-17.
+ * Created by Sabareesh on 12-Jan-17.
  */
 
 public class PlacesWidgetProvider extends AppWidgetProvider {
@@ -50,19 +50,19 @@ public class PlacesWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //Log.d(TAG, "onReceive");
+        Log.d(TAG, "onReceive");
         super.onReceive(context, intent);
     }
 
     @Override
     public void onEnabled(Context context) {
-        //Log.d(TAG, "onEnabled");
+        Log.d(TAG, "onEnabled");
         super.onEnabled(context);
     }
 
     @Override
     public void onDisabled(Context context) {
-        //Log.d(TAG, "onDisabled");
+        Log.d(TAG, "onDisabled");
         super.onDisabled(context);
     }
 

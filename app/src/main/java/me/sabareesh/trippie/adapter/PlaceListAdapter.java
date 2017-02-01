@@ -3,9 +3,10 @@ package me.sabareesh.trippie.adapter;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Utils;
 
 /**
- * Created by ve288800 on 03-Jan-17.
+ * Created by Sabareesh on 03-Jan-17.
  */
 
 public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.ViewHolder> {
@@ -61,11 +62,18 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
                 Intent intent = new Intent(mContext, PlaceDetailActivity.class);
                 ImageView thumbnail = (ImageView) v.findViewById(R.id.place_pic);
                 //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(CityActivity.this, thumbnail, getString(R.string.transition_image));
-                ActivityOptions options = ActivityOptions.makeScaleUpAnimation(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight());
+                //ActivityOptions options = ActivityOptions.makeScaleUpAnimation(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight());
                 intent.putExtra("place_id", place_id);
                 intent.putExtra("place_name", place_name);
                 intent.putExtra("image_URL", place_imageURL);
-                mContext.startActivity(intent, options.toBundle());
+                if (Build.VERSION.SDK_INT >= 23) {
+                    ActivityOptions options=ActivityOptions.makeClipRevealAnimation(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight());
+                    mContext.startActivity(intent, options.toBundle());
+                }else{
+                    ActivityOptions options = ActivityOptions.makeScaleUpAnimation(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight());
+                    mContext.startActivity(intent, options.toBundle());
+                }
+                //mContext.startActivity(intent, options.toBundle());
             }
         });
 
@@ -81,7 +89,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
             url = Constants.PLACE_THUMBNAIL +
                     placeList.getPhoto_reference().get(0) +
                     "&" + Constants.API_KEY_PARAM + "=" + Constants.API_VALUE;
-            //Log.d(TAG, "Image url " + url);
+            Log.d(TAG, "Image url " + url);
         } else {
             url = placeList.getIcon_url();
         }

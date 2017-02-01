@@ -3,10 +3,10 @@ package me.sabareesh.trippie.provider;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 
 /**
- * Created by VE288800 on 09-Jan-17.
+ * Created by Sabareesh on 09-Jan-17.
  */
 
 public class PlacesSQLiteHelper extends SQLiteOpenHelper {
@@ -52,7 +52,7 @@ public class PlacesSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //Log.d(" Creating a table", "" + CREATE_TABLE);
+        Log.d(" Creating a table", "" + CREATE_TABLE);
         db.execSQL(CREATE_TABLE );
     }
 

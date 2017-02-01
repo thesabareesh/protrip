@@ -13,7 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -91,7 +91,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             place_id = getIntent().getStringExtra("place_id");
             place_name = getIntent().getStringExtra("place_name");
             image_URL = getIntent().getStringExtra("image_URL");
-            //Log.d(TAG, "Image url " + image_URL);
+            Log.d(TAG, "Image url " + image_URL);
             //Toast.makeText(this, place_id, Toast.LENGTH_SHORT).show();
 
         }
@@ -137,12 +137,12 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                     .append(PLACE_ID_PARAM + "=" + place_id)
                     .append("&" + APPKEY_PARAM + "=" + Constants.API_VALUE);
 
-            //Log.d(TAG, "Place URL built " + sb.toString());
+            Log.d(TAG, "Place URL built " + sb.toString());
 
             fetchPlaceDetails(sb.toString());
 
         } catch (Exception e) {
-            //Log.e(TAG, "Error building url", e);
+            Log.e(TAG, "Error building url");
         }
     }
 
@@ -221,7 +221,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                //VolleyLog.d(TAG, "Error: " + error.getMessage());
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
 
             }
         });
@@ -303,7 +303,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
 
             reviewAuthor.setText(extras.getReviewAtIndex(i).getAuthor());
             reviewContent.setText(extras.getReviewAtIndex(i).getBody().replace("\n\n", " ").replace("\n", " "));
-            //Log.d(TAG, "picasso url http:" + extras.getReviewAtIndex(i).getAvatar_url());
+            Log.d(TAG, "picasso url http:" + extras.getReviewAtIndex(i).getAvatar_url());
             Picasso.with(this).load("http:" + extras.getReviewAtIndex(i).getAvatar_url())
                     .placeholder(R.drawable.ic_account_circle_black_24dp)
                     .transform(new CircleTransform())

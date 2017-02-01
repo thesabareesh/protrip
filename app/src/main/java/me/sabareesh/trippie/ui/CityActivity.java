@@ -4,16 +4,18 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -110,13 +112,21 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
                     public void onItemClick(View view, int position) {
                         int itemPosition = recyclerView.getChildLayoutPosition(view);
                         ImageView thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-                        //Log.d(TAG, "City Item clicked: " + String.valueOf(itemPosition));
+                        Log.d(TAG, "City Item clicked: " + String.valueOf(itemPosition));
                         Intent intent = new Intent(view.getContext(), PlaceListActivity.class);
                         intent.putExtra("cityLatLng", mCityLat + "," + mCityLng);
                         intent.putExtra("itemPosition", itemPosition);
                         //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(CityActivity.this, thumbnail, getString(R.string.transition_image));
-                        ActivityOptions options = ActivityOptions.makeScaleUpAnimation(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight());
-                        startActivity(intent, options.toBundle());
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            ActivityOptions options=ActivityOptions.makeClipRevealAnimation(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight());
+                            startActivity(intent, options.toBundle());
+                        }else{
+                             ActivityOptions options = ActivityOptions.makeScaleUpAnimation(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight());
+                            startActivity(intent, options.toBundle());
+                        }
+
+
+
                     }
 
                     @Override
@@ -229,17 +239,17 @@ public class CityActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        //Log.i(TAG, "API services connected.");
+        Log.i(TAG, "API services connected.");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        //Log.i(TAG, "Location services suspended. Please reconnect.");
+        Log.i(TAG, "Location services suspended. Please reconnect.");
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        //Log.i(TAG, "API services connection failed. Please reconnect.");
+        Log.i(TAG, "API services connection failed. Please reconnect.");
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

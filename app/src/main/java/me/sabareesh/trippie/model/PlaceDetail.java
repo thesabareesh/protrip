@@ -2,7 +2,7 @@ package me.sabareesh.trippie.model;
 
 
 /**
- * Created by VE288800 on 05-Jan-17.
+ * Created by Sabareesh on 05-Jan-17.
  */
 
 public class PlaceDetail {

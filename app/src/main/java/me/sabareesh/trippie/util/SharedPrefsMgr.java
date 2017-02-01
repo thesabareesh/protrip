@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by VE288800 on 14-Jan-17.
+ * Created by Sabareesh on 14-Jan-17.
  */
 
 public class SharedPrefsMgr  {

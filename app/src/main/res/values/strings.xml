@@ -31,7 +31,7 @@
     <string name="text_size_home_search" translatable="false">15</string>
     <string name="title_favorite_places">Favorite places</string>
     <string name="title_no_favs">No Favorites</string>
-    <string name="desc_no_favs">Tap the star icon of a place to add it to your Favorites</string>
+    <string name="desc_no_favs">Tap the ♥ icon of a place to add it to your Favorites</string>
 
     <!--City screen-->
     <string name="cd_city_banner">City banner</string>

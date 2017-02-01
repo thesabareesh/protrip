@@ -6,7 +6,7 @@ import android.support.v4.util.LruCache;
 import com.android.volley.toolbox.ImageLoader;
 
 /**
- * Created by ve288800 on 03-Jan-17.
+ * Created by Sabareesh on 03-Jan-17.
  */
 
 public class LruBitmapCache extends LruCache<String, Bitmap> implements

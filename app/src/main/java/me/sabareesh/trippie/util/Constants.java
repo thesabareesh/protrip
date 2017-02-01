@@ -1,7 +1,7 @@
 package me.sabareesh.trippie.util;
 
 /**
- * Created by ve288800 on 03-Jan-17.
+ * Created by Sabareesh on 03-Jan-17.
  */
 
 public class Constants {

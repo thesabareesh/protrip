@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -25,7 +25,7 @@ import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
 import me.sabareesh.trippie.ui.PlaceDetailActivity;
 
 /**
- * Created by VE288800 on 12-Jan-17.
+ * Created by Sabareesh on 12-Jan-17.
  */
 
 public class PlacesWidgetRemoteViewsService extends RemoteViewsService {
@@ -50,11 +50,11 @@ class PlacesWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
     }
 
     public void onCreate() {
-        //Log.d(TAG, "onCreate");
+        Log.d(TAG, "onCreate");
     }
 
     public void onDestroy() {
-        //Log.d(TAG, "onDestroy");
+        Log.d(TAG, "onDestroy");
 
         if (mPlaceCursor != null) {
             mPlaceCursor.close();
@@ -62,7 +62,7 @@ class PlacesWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
     }
 
     public int getCount() {
-        //Log.d(TAG, "getCount");
+        Log.d(TAG, "getCount");
         if (mPlaceCursor != null) {
             return mPlaceCursor.getCount();
         } else {
@@ -117,18 +117,18 @@ class PlacesWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public RemoteViews getLoadingView() {
-        //Log.d(TAG, "getLoadingView");
+        Log.d(TAG, "getLoadingView");
         return null;
     }
 
 
     public int getViewTypeCount() {
-        //Log.d(TAG, "getViewTypeCount");
+        Log.d(TAG, "getViewTypeCount");
         return 1;
     }
 
     public long getItemId(int position) {
-        //   Log.d(TAG, "getItemId");
+           Log.d(TAG, "getItemId");
         return position;
     }
 
@@ -137,7 +137,7 @@ class PlacesWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
     }
 
     public void onDataSetChanged() {
-        //Log.d(TAG, "onDataSetChanged");
+        Log.d(TAG, "onDataSetChanged");
         if (mPlaceCursor != null) {
             mPlaceCursor.close();
         }

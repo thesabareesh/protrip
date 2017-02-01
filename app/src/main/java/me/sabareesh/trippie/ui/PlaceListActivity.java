@@ -10,7 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -147,12 +147,12 @@ public class PlaceListActivity extends AppCompatActivity {
                     .append("&" + RADIUS_PARAM + "=" + Constants.RADIUS_VALUE)
                     .append("&" + APPKEY_PARAM + "=" + Constants.API_VALUE);
 
-            //Log.d(LOG_TAG, "Places URL built " + sb.toString());
+            Log.d(LOG_TAG, "Places URL built " + sb.toString());
 
             fetchPlaces(sb.toString());
 
         } catch (Exception e) {
-            //Log.e(LOG_TAG, "Error building url", e);
+            Log.e(LOG_TAG, "Error building url");
         }
 
         //Admob
@@ -175,7 +175,7 @@ public class PlaceListActivity extends AppCompatActivity {
             @Override
             public void onAdLoaded() {
                 mAdView.setVisibility(View.VISIBLE);
-                //Log.d(LOG_TAG, getString(R.string.admob_loaded));
+                Log.d(LOG_TAG, getString(R.string.admob_loaded));
             }
 
         });
@@ -285,7 +285,7 @@ public class PlaceListActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                //VolleyLog.d(LOG_TAG, "Error: " + error.getMessage());
+                VolleyLog.d(LOG_TAG, "Error: " + error.getMessage());
 
             }
         });

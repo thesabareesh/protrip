@@ -3,7 +3,7 @@ package me.sabareesh.trippie.model;
 import java.util.ArrayList;
 
 /**
- * Created by ve288800 on 03-Jan-17.
+ * Created by Sabareesh on 03-Jan-17.
  */
 
 public class PlaceList {

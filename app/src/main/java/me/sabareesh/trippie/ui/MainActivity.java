@@ -30,7 +30,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import me.sabareesh.trippie.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,7 +60,7 @@ import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
 import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Utils;
 
-;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onError(Status status) {
-        //Log.e(TAG, "onError: Status = " + status.toString());
+        Log.e(TAG, "onError: Status = " + status.toString());
 
         Toast.makeText(this, getString(R.string.error_api) + status.getStatusMessage(),
                 Toast.LENGTH_SHORT).show();
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        //Log.v(TAG, "onCreateLoader");
+        Log.v(TAG, "onCreateLoader");
         if (id == PLACES_LOADER_ID) {
             Uri uri = PlacesProvider.CONTENT_URI;
             return new CursorLoader(this, uri, null, null, null, null);
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        //Log.v(TAG, "onLoadFinished");
+        Log.v(TAG, "onLoadFinished");
         if (loader.getId() == PLACES_LOADER_ID && cursor != null) {
             while (cursor != null && cursor.moveToNext()) {
                 PlaceList placeList = new PlaceList();
@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onPlaceSelected(Place place) {
-        //Log.i(TAG, "Place Selected: " + place.getName());
+        Log.i(TAG, "Place Selected: " + place.getName());
         final String cityId = String.valueOf(place.getId());
         final String cityName = String.valueOf(place.getName());
         final String cityLat = String.valueOf(place.getLatLng().latitude);
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        //Log.v(TAG, " activity onResume");
+        Log.v(TAG, " activity onResume");
 
         ((EditText) mAutocompleteFragment.getView().
                 findViewById(R.id.place_autocomplete_search_input)).setText("");
@@ -422,7 +422,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //Log.v(TAG, "Loader destroyed");
+        Log.v(TAG, "Loader destroyed");
         getSupportLoaderManager().destroyLoader(PLACES_LOADER_ID);
     }
 
