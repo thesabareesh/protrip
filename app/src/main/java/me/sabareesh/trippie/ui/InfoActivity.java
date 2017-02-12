@@ -53,6 +53,7 @@ public class InfoActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void initList() {
         infoList.add(createPlanet("info","Version "+BuildConfig.VERSION_NAME));
+        infoList.add(createPlanet("info","Privacy policy"));
         infoList.add(createPlanet("info", "Published by www.sabareesh.me"));
 
 
@@ -67,13 +68,13 @@ public class InfoActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if(position==1){
+            startActivity(new Intent(this,PrivacyPolicy.class));
+        }
+        if(position==2){
             Intent browserIntent = new Intent(Intent.ACTION_VIEW);
             browserIntent.setData(Uri.parse(getString(R.string.site_admin)));
-            browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (browserIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(Intent.createChooser(browserIntent, getString(R.string.intent_desc_link)));
-            }
-
+            startActivity(Intent.createChooser(browserIntent, getString(R.string.intent_desc_link)));
         }
+
     }
 }

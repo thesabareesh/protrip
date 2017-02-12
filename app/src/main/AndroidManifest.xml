@@ -54,7 +54,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.sabareesh.trippie.ui.PlaceListActivity" />
         </activity>
-
         <activity
             android:name=".ui.InfoActivity"
             android:parentActivityName=".ui.MainActivity"
@@ -63,7 +62,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.sabareesh.trippie.ui.MainActivity" />
+        </activity>
 
+        <activity android:name=".ui.PrivacyPolicy"
+            android:parentActivityName=".ui.InfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.sabareesh.trippie.ui.InfoActivity" />
         </activity>
 
         <meta-data

@@ -2,9 +2,9 @@
     <string name="app_name" translatable="false">ProTrip</string>
     <string name="app_desc">Your travel guide</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="action_feedback">Feedback</string>
+    <string name="action_feedback">Send feedback</string>
     <string name="action_info">Info</string>
-    <string name="action_rate">Rate us</string>
+    <string name="action_rate">Rate this App</string>
     <string name="action_share">Share</string>
     <string name="action_share_app">Share App</string>
     <string name="action_settings">Settings</string>
@@ -20,7 +20,9 @@
     <string name="desc_app_version">App version :&#160;</string>
     <string name="desc_device_info">Device info :&#160;</string>
     <string name="title_titlebar_info">Info</string>
-    <string name="site_admin">wwww.sabareesh.me</string>
+    <string name="title_titlebar_privacy_policy">Privacy Policy</string>
+    <string name="site_admin">http://www.sabareesh.me</string>
+    <string name="site_privacy_policy">http://sabareesh.me/apps/protrip/privacypolicy.htm</string>
 
 
     <!--Home screen-->
@@ -31,7 +33,7 @@
     <string name="text_size_home_search" translatable="false">15</string>
     <string name="title_favorite_places">Favorite places</string>
     <string name="title_no_favs">No Favorites</string>
-    <string name="desc_no_favs">Tap the ♥ icon of a place to add it to your Favorites</string>
+    <string name="desc_no_favs">Tap the ♥ icon of a place to see it here</string>
 
     <!--City screen-->
     <string name="cd_city_banner">City banner</string>
@@ -101,7 +103,6 @@
 
     <string name="slide_4_title">Slide 4</string>
     <string name="slide_4_desc">slide 4 description</string>
-
 
 
 </resources>
