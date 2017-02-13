@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "686869351064",
+    "firebase_url": "https://protrip-debug-2338e.firebaseio.com",
+    "project_id": "protrip-debug-2338e",
+    "storage_bucket": "protrip-debug-2338e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686869351064:android:1d4e71fab9a8a67b",
+        "android_client_info": {
+          "package_name": "me.sabareesh.trippie.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "686869351064-h23bemqcgskkt50a18dcujgv2qjr2jcr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.sabareesh.trippie.debug",
+            "certificate_hash": "0BF00DC15456BFAF34FFFF32439FE66E1E89EF8A"
+          }
+        },
+        {
+          "client_id": "686869351064-9k3srp7nrqhtv9plunvrmhd67o5lrs3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCupOzFzsHsqFrXWD1erRpoxtYjfld6SqE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "686869351064-9k3srp7nrqhtv9plunvrmhd67o5lrs3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

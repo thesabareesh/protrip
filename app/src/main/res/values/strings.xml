@@ -105,4 +105,8 @@
     <string name="slide_4_desc">slide 4 description</string>
 
 
+    <!-- Account strings-->
+    <string name="drawer_user_title">Sign In</string>
+
+
 </resources>
