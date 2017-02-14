@@ -20,6 +20,11 @@
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_info_black_24px"
             android:title="@string/action_info" />
+        <item
+            android:id="@+id/nav_signout"
+            android:icon="@drawable/ic_power_settings_new_black_24px"
+            android:title="@string/action_signOut"
+            android:visible="false"/>
 
         <!--<item
             android:id="@+id/nav_settings"

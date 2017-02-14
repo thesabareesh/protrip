@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_header"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
@@ -25,10 +26,12 @@
         android:gravity="center_horizontal|center">
 
         <ImageView
+            android:id="@+id/user_avatar"
             android:layout_width="@dimen/height_logo_nav"
             android:layout_height="@dimen/height_logo_nav"
             android:layout_weight="0.25"
-            android:src="@drawable/ic_account_circle_black_24dp"
+            android:contentDescription="@string/cd_user_avatar"
+            app:srcCompat="@drawable/ic_account_circle_white_24px"
             android:layout_gravity="left|center_vertical|center_horizontal" />
 
         <TextView
@@ -37,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/drawer_user_title"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:gravity="left|center_vertical|center_horizontal" />
 

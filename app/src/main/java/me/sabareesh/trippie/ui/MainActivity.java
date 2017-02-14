@@ -2,12 +2,13 @@ package me.sabareesh.trippie.ui;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Rect;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -49,7 +51,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +60,10 @@ import me.sabareesh.trippie.BuildConfig;
 import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.adapter.PlaceListAdapter;
 import me.sabareesh.trippie.model.PlaceList;
+import me.sabareesh.trippie.model.User;
 import me.sabareesh.trippie.provider.PlacesProvider;
 import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
+import me.sabareesh.trippie.util.CircleTransform;
 import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Log;
 import me.sabareesh.trippie.util.Utils;
@@ -78,20 +82,20 @@ public class MainActivity extends AppCompatActivity
     LinearLayout mCurrentCardLayout, llNoFavsLayout;
     CardView mCardView;
     RelativeLayout mCurrentLayout;
-    TextView tvCurrCityName, tvFavPlaces;
-    ImageView ivStaticMap;
+    TextView tvCurrCityName, tvFavPlaces, tvUserName;
+    ImageView ivStaticMap, ivAvatar;
     CoordinatorLayout mCoordinatorLayout;
     String mCurrentLocName, mCurrentLat, mCurrentLng, mStaticMapURL;
+    MenuItem logoutItem;
     private boolean mDidInitLoader;
     private RecyclerView recyclerView;
     private List<PlaceList> placeList;
     private PlaceListAdapter adapter;
     private List<PlaceList> placeListDetailList = new ArrayList<>();
-
     // Firebase & co instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private String mUsername;
+    private String mUsername, mUserAvatarUrl, mUserEmail;
     private LinearLayout mSignInLayout;
 
     @Override
@@ -151,13 +155,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerLayout = navigationView.getHeaderView(0);
-        mSignInLayout=(LinearLayout) headerLayout.findViewById(R.id.ll_header);
-
+        logoutItem = navigationView.getMenu().findItem(R.id.nav_signout);
+        mSignInLayout = (LinearLayout) headerLayout.findViewById(R.id.ll_header);
+        tvUserName = (TextView) headerLayout.findViewById(R.id.user_name);
+        ivAvatar = (ImageView) headerLayout.findViewById(R.id.user_avatar);
         //listener init
         mSignInLayout.setOnClickListener(this);
 
         //Loader
-
         if (!mDidInitLoader) {
             getSupportLoaderManager().initLoader(PLACES_LOADER_ID, null, this);
             mDidInitLoader = true;
@@ -205,7 +210,7 @@ public class MainActivity extends AppCompatActivity
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    onSignedInInitialize(user.getDisplayName());
+                    onSignedInInitialize(user);
                 } else {
                     // User is signed out
                     onSignedOutCleanup();
@@ -222,7 +227,7 @@ public class MainActivity extends AppCompatActivity
         Utils.loadStaticMap(this, ivStaticMap, mCurrentLat, mCurrentLng, Constants.SIZE_VALUE_S, Constants.ZOOM_VALUE_LOW);
     }
 
-    private void showFirebaseLogin(){
+    private void showFirebaseLogin() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -235,6 +240,7 @@ public class MainActivity extends AppCompatActivity
                         .build(),
                 RC_SIGN_IN);
     }
+
     //Google location methods
     protected void requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -404,7 +410,7 @@ public class MainActivity extends AppCompatActivity
                     "\n" + getResources().getString(R.string.desc_device_info) + Build.BRAND.toUpperCase() + " " + Build.MODEL + ", OS : " + Build.VERSION.RELEASE);
             email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(Intent.createChooser(email, getString(R.string.intent_desc_link)));
-            return true;
+
 
         } else if (id == R.id.nav_rate) {
             Uri uri = Uri.parse("market://details?id=" + getPackageName());
@@ -418,12 +424,17 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
             }
-            return true;
+
 
         } else if (id == R.id.nav_info) {
             startActivity(new Intent(this, InfoActivity.class));
-        }
+        } else if (id == R.id.nav_signout) {
+            confirmSignOut(this,getString(R.string.alert_title_signout),
+                    getString(R.string.alert_title_signout_desc),
+                    getString(R.string.alert_choice_positive_signOut));
 
+
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -447,14 +458,70 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void onSignedInInitialize(String username) {
-        mUsername = username;
+    private void onSignedInInitialize(FirebaseUser firebaseUser) {
+        User user = new User(firebaseUser.getDisplayName(),
+                firebaseUser.getPhotoUrl().toString(),
+                firebaseUser.getEmail());
+        mUsername = user.getUsername();
+        mUserAvatarUrl = user.getAvatarUrl();
+        mUserEmail = user.getEmailId();
+
+        tvUserName.setText(mUsername);
+        logoutItem.setVisible(true);
+        if (mUserAvatarUrl != null && !mUserAvatarUrl.isEmpty()) {
+            Picasso.with(this).load(mUserAvatarUrl).
+                    placeholder(R.drawable.ic_account_circle_white_24dp).
+                    transform(new CircleTransform()).
+                    fit().
+                    into(ivAvatar);
+        }
     }
 
     private void onSignedOutCleanup() {
+
         mUsername = ANONYMOUS;
+        User user = new User(null, null, null);
+        mUserAvatarUrl = user.getAvatarUrl();
+        mUserEmail = user.getEmailId();
+
+        tvUserName.setText(getString(R.string.drawer_user_title));
+        logoutItem.setVisible(false);
+        ivAvatar.setImageResource(R.drawable.ic_account_circle_white_24px);
     }
 
+    private void signOut(){
+        AuthUI.getInstance().signOut(this);
+        Toast.makeText(this, "Signed out !", Toast.LENGTH_SHORT).show();
+        onSignedOutCleanup();
+    }
+    private void confirmSignOut(Context context, String title, String message, String positiveText) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        //String positiveText = context.getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        signOut();
+                    }
+                });
+
+        String negativeText = context.getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
     //App lifecycles
 
     @Override
@@ -464,6 +531,7 @@ public class MainActivity extends AppCompatActivity
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -516,10 +584,8 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.ll_header:
-                if(mUsername.equals(ANONYMOUS)){
+                if (mUsername.equals(ANONYMOUS)) {
                     showFirebaseLogin();
-                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
                 }
             default:
                 break;

@@ -4,6 +4,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="action_feedback">Send feedback</string>
     <string name="action_info">Info</string>
+    <string name="action_signOut">Sign out</string>
     <string name="action_rate">Rate this App</string>
     <string name="action_share">Share</string>
     <string name="action_share_app">Share App</string>
@@ -23,6 +24,7 @@
     <string name="title_titlebar_privacy_policy">Privacy Policy</string>
     <string name="site_admin">http://www.sabareesh.me</string>
     <string name="site_privacy_policy">http://sabareesh.me/apps/protrip/privacypolicy.htm</string>
+    <string name="cd_user_avatar">User Display picture</string>
 
 
     <!--Home screen-->
@@ -71,6 +73,12 @@
     <string name="snackbar_action_allow">I\'M IN</string>
     <string name="notify_favorite">Added to favorites !</string>
     <string name="notify_unfavorite">Removed from favorites !   </string>
+
+    <!--Alerts-->
+    <string name="alert_title_signout_desc">Are you sure?</string>
+    <string name="alert_choice_positive_ok">OK</string>
+    <string name="alert_choice_positive_signOut">SIGN OUT</string>
+    <string name="alert_title_signout">Sign out</string>
 
     <!--Admob-->
     <string name="banner_ad_unit_id">ca-app-pub-1589330732834822/6070642390</string>
