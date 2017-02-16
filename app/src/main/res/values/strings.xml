@@ -3,7 +3,7 @@
     <string name="app_desc">Your travel guide</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_feedback">Send feedback</string>
-    <string name="action_info">Info</string>
+    <string name="action_info">About</string>
     <string name="action_signOut">Sign out</string>
     <string name="action_rate">Rate this App</string>
     <string name="action_share">Share</string>
@@ -17,7 +17,7 @@
     <!--Drawer items-->
     <string name="title_feedback">Feedback on ProTrip</string>
     <string name="email_admin">thesabareesh@gmail.com</string>
-    <string name="share_app_desc">Exploring just gets easier with #ProTrip! Download now! http://bit.ly/2jF1C1g</string>
+    <string name="share_app_desc">An easy way to discover new places to visit. Travel like a Pro! #ProTrip https://play.google.com/store/apps/details?id=me.sabareesh.trippie </string>
     <string name="desc_app_version">App version :&#160;</string>
     <string name="desc_device_info">Device info :&#160;</string>
     <string name="title_titlebar_info">Info</string>
@@ -34,8 +34,8 @@
     <string name="cd_current_card">Current Location</string>
     <string name="text_size_home_search" translatable="false">15</string>
     <string name="title_favorite_places">Favorite places</string>
-    <string name="title_no_favs">No Favorites</string>
-    <string name="desc_no_favs">Tap the ♥ icon of a place to see it here</string>
+    <string name="title_no_favs">It looks empty in here.</string>
+    <string name="desc_no_favs">Start adding places to your favorites \n by tapping the ♥ icon!</string>
 
     <!--City screen-->
     <string name="cd_city_banner">City banner</string>
@@ -55,6 +55,7 @@
     <string name="title_call">Call</string>
     <string name="place_desc"> </string>
     <string name="intent_desc_link">Open with</string>
+    <string name="intent_desc_share">Share via</string>
     <string name="title_reviews">Top reviews</string>
 
 
@@ -107,7 +108,7 @@
     <string name="slide_2_desc">See pictures and reviews of great new places also with driving directions !</string>
 
     <string name="slide_3_title">Works offline</string>
-    <string name="slide_3_desc">Tap the star button and browse your favorite places on the go.</string>
+    <string name="slide_3_desc">Tap the star button and browse your favorite places on the go. </string>
 
     <string name="slide_4_title">Slide 4</string>
     <string name="slide_4_desc">slide 4 description</string>

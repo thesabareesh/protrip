@@ -72,8 +72,9 @@ public class InfoActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         if(position==2){
             Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+            browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             browserIntent.setData(Uri.parse(getString(R.string.site_admin)));
-            startActivity(Intent.createChooser(browserIntent, getString(R.string.intent_desc_link)));
+            startActivity(browserIntent);
         }
 
     }

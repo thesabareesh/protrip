@@ -2,9 +2,11 @@ package me.sabareesh.trippie.ui;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -22,6 +24,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -51,12 +54,14 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.sabareesh.trippie.BuildConfig;
+import me.sabareesh.trippie.Config;
 import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.adapter.PlaceListAdapter;
 import me.sabareesh.trippie.model.PlaceList;
@@ -66,12 +71,15 @@ import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
 import me.sabareesh.trippie.util.CircleTransform;
 import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Log;
+import me.sabareesh.trippie.util.NotificationUtils;
 import me.sabareesh.trippie.util.Utils;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PlaceSelectionListener, View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+        PlaceSelectionListener,
+        View.OnClickListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "MainActivity";
     public static final String ANONYMOUS = "anonymous";
@@ -95,7 +103,9 @@ public class MainActivity extends AppCompatActivity
     // Firebase & co instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private String mUsername, mUserAvatarUrl, mUserEmail;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private String mUsername, mUserEmail;
+    private Uri mUserAvatarUrl;
     private LinearLayout mSignInLayout;
 
     @Override
@@ -218,6 +228,25 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
+        //Firebase notifications listener
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+                    String message = intent.getStringExtra("message");
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                }
+            }
+        };
     }
 
     private void showCurrentCard() {
@@ -287,9 +316,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.LENGTH_SHORT).show();
     }
 
-
     //Loader methods
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v(TAG, "onCreateLoader");
@@ -399,8 +426,9 @@ public class MainActivity extends AppCompatActivity
             sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_desc));
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
+            startActivity(Intent.createChooser(sendIntent, getString(R.string.intent_desc_share)));
 
-
+            return true;
         } else if (id == R.id.nav_feedback) {
             Intent email = new Intent(Intent.ACTION_SENDTO);
             email.setType("text/email");
@@ -411,6 +439,7 @@ public class MainActivity extends AppCompatActivity
             email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(Intent.createChooser(email, getString(R.string.intent_desc_link)));
 
+            return true;
 
         } else if (id == R.id.nav_rate) {
             Uri uri = Uri.parse("market://details?id=" + getPackageName());
@@ -424,16 +453,16 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
             }
-
-
+            return true;
         } else if (id == R.id.nav_info) {
             startActivity(new Intent(this, InfoActivity.class));
+            return true;
         } else if (id == R.id.nav_signout) {
-            confirmSignOut(this,getString(R.string.alert_title_signout),
+            confirmSignOut(this, getString(R.string.alert_title_signout),
                     getString(R.string.alert_title_signout_desc),
                     getString(R.string.alert_choice_positive_signOut));
 
-
+            return true;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -460,7 +489,7 @@ public class MainActivity extends AppCompatActivity
 
     private void onSignedInInitialize(FirebaseUser firebaseUser) {
         User user = new User(firebaseUser.getDisplayName(),
-                firebaseUser.getPhotoUrl().toString(),
+                firebaseUser.getPhotoUrl(),
                 firebaseUser.getEmail());
         mUsername = user.getUsername();
         mUserAvatarUrl = user.getAvatarUrl();
@@ -468,7 +497,7 @@ public class MainActivity extends AppCompatActivity
 
         tvUserName.setText(mUsername);
         logoutItem.setVisible(true);
-        if (mUserAvatarUrl != null && !mUserAvatarUrl.isEmpty()) {
+        if (mUserAvatarUrl != null) {
             Picasso.with(this).load(mUserAvatarUrl).
                     placeholder(R.drawable.ic_account_circle_white_24dp).
                     transform(new CircleTransform()).
@@ -489,11 +518,12 @@ public class MainActivity extends AppCompatActivity
         ivAvatar.setImageResource(R.drawable.ic_account_circle_white_24px);
     }
 
-    private void signOut(){
+    private void signOut() {
         AuthUI.getInstance().signOut(this);
         Toast.makeText(this, "Signed out !", Toast.LENGTH_SHORT).show();
         onSignedOutCleanup();
     }
+
     private void confirmSignOut(Context context, String title, String message, String positiveText) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -530,6 +560,7 @@ public class MainActivity extends AppCompatActivity
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
 
     @Override
@@ -548,6 +579,19 @@ public class MainActivity extends AppCompatActivity
         }
         mDidInitLoader = false;
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+
+        //Notifications
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
     }
 
     @Override

@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.util.SharedPrefsMgr;
+import me.sabareesh.trippie.util.Utils;
 
 //Credits to Androidhive for Intro layout : http://www.androidhive.info/2016/05/android-build-intro-slider-app/
 
@@ -62,7 +63,7 @@ public class WelcomeActivity extends AppCompatActivity {
         addBottomDots(0);
 
         // making notification bar transparent
-        changeStatusBarColor();
+        Utils.changeStatusBarColor(getWindow());
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);

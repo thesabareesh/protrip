@@ -1,18 +1,20 @@
 package me.sabareesh.trippie.model;
 
+import android.net.Uri;
+
 /**
  * Created by VE288800 on 14-Feb-17.
  */
 
 public class User {
     private String username;
-    private String avatarUrl;
+    private Uri avatarUrl;
     private String emailId;
 
     public User(){
 
     }
-    public User(String username, String avatarUrl,String emailId){
+    public User(String username, Uri avatarUrl,String emailId){
         this.username=username;
         this.avatarUrl=avatarUrl;
         this.emailId=emailId;
@@ -25,11 +27,11 @@ public class User {
         this.username = username;
     }
 
-    public String getAvatarUrl() {
+    public Uri getAvatarUrl() {
         return avatarUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
+    public void setAvatarUrl(Uri avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
 
