@@ -3,32 +3,43 @@ package me.sabareesh.trippie.ui;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+
+import me.sabareesh.trippie.model.User;
 import me.sabareesh.trippie.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.places.Place;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -44,31 +55,14 @@ import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
 import me.sabareesh.trippie.util.AppController;
 import me.sabareesh.trippie.util.CircleTransform;
 import me.sabareesh.trippie.util.Constants;
+import me.sabareesh.trippie.util.NotificationUtils;
+import me.sabareesh.trippie.util.Utils;
 
 
 public class PlaceDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String TAG = "PlaceDetailActivity";
-    private static final String TAG_RESULT = "result";
-    private static final String TAG_ICON = "icon";
-    private static final String TAG_NAME = "name";
-    private static final String TAG_PLACE_ID = "place_id";
-    private static final String TAG_RATING = "rating";
-    private static final String TAG_REVIEWS = "reviews";
-    private static final String TAG_ADDRESS = "vicinity";
-    private static final String TAG_ADDRESS_FULL = "formatted_address";
-    private static final String TAG_WEBSITE = "website";
-    private static final String TAG_PHONE = "international_phone_number";
-    private static final String TAG_MAP_URL = "url";
-    private static final String TAG_LAT = "lat";
-    private static final String TAG_LNG = "lng";
-    private static final String TAG_GEOMETRY = "geometry";
-    private static final String TAG_LOCATION = "location";
-    private static final String TAG_REVIEW_NAME = "author_name";
-    private static final String TAG_REVIEW_AVATAR = "profile_photo_url";
-    private static final String TAG_REVIEW_TIME = "relative_time_description";
-    private static final String TAG_REVIEW_BODY = "text";
-    private static final String TAG_REVIEW_RATING = "rating";
+
     String place_id, place_name, image_URL;
     ProgressBar progressBar;
     ImageView mBanner;
@@ -78,6 +72,12 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     CoordinatorLayout coordinatorLayout;
     LinearLayout llUrlIcon, llCall, llDirections, llReviews;
     PlaceDetail placeDetail = new PlaceDetail();
+
+    // Firebase & co instance variables
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private String mUsername, mUserEmail;
+    private Uri mUserAvatarUrl;
 
 
     @Override
@@ -95,6 +95,9 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             //Toast.makeText(this, place_id, Toast.LENGTH_SHORT).show();
 
         }
+
+        // Initialize Firebase components
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
 
         //Views and click listeners
@@ -144,6 +147,22 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         } catch (Exception e) {
             Log.e(TAG, "Error building url");
         }
+
+        //Firebase Auth listener
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    onSignedInInitialize(user);
+                } else {
+                    // User is signed out
+                    onSignedOutCleanup();
+                    //showFirebaseLogin();
+                }
+            }
+        };
     }
 
     @Override
@@ -165,46 +184,46 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONObject place = response.getJSONObject(TAG_RESULT);
-                            placeDetail.setPlace_detail_id(place.getString(TAG_PLACE_ID));
-                            placeDetail.setPlace_detail_icon_url(place.getString(TAG_ICON));
-                            placeDetail.setPlace_detail_address(place.getString(TAG_ADDRESS_FULL));
+                            JSONObject place = response.getJSONObject(Constants.TAG_RESULT);
+                            placeDetail.setPlace_detail_id(place.getString(Constants.TAG_PLACE_ID));
+                            placeDetail.setPlace_detail_icon_url(place.getString(Constants.TAG_ICON));
+                            placeDetail.setPlace_detail_address(place.getString(Constants.TAG_ADDRESS_FULL));
                             tvAddress.setText(placeDetail.getPlace_detail_address());
-                            placeDetail.setPlace_detail_name(place.getString(TAG_NAME));
-                            if (place.has(TAG_RATING)) {
-                                placeDetail.setPlace_detail_rating(place.getDouble(TAG_RATING));
+                            placeDetail.setPlace_detail_name(place.getString(Constants.TAG_NAME));
+                            if (place.has(Constants.TAG_RATING)) {
+                                placeDetail.setPlace_detail_rating(place.getDouble(Constants.TAG_RATING));
                                 rbRatingBar.setRating(Float.parseFloat(String.valueOf(placeDetail.getPlace_detail_rating())));
                                 rbRatingBar.setVisibility(View.VISIBLE);
                             }
-                            if (place.has(TAG_PHONE)) {
-                                placeDetail.setPlace_detail_phone(place.getString(TAG_PHONE));
+                            if (place.has(Constants.TAG_PHONE)) {
+                                placeDetail.setPlace_detail_phone(place.getString(Constants.TAG_PHONE));
                                 llCall.setVisibility(View.VISIBLE);
                             }
-                            if (place.has(TAG_WEBSITE)) {
-                                placeDetail.setPlace_detail_website(place.getString(TAG_WEBSITE));
+                            if (place.has(Constants.TAG_WEBSITE)) {
+                                placeDetail.setPlace_detail_website(place.getString(Constants.TAG_WEBSITE));
                                 llUrlIcon.setVisibility(View.VISIBLE);
                             }
-                            if (place.has(TAG_MAP_URL)) {
-                                placeDetail.setPlace_detail_url(place.getString(TAG_MAP_URL));
+                            if (place.has(Constants.TAG_MAP_URL)) {
+                                placeDetail.setPlace_detail_url(place.getString(Constants.TAG_MAP_URL));
                                 llDirections.setVisibility(View.VISIBLE);
                             }
-                            if (place.has(TAG_REVIEWS)) {
-                                JSONArray placeReviewsArray = place.getJSONArray(TAG_REVIEWS);
+                            if (place.has(Constants.TAG_REVIEWS)) {
+                                JSONArray placeReviewsArray = place.getJSONArray(Constants.TAG_REVIEWS);
                                 Review[] reviews = new Review[placeReviewsArray.length()];
                                 for (int j = 0; j < placeReviewsArray.length(); j++) {
                                     JSONObject review = placeReviewsArray.getJSONObject(j);
-                                    if (review.has(TAG_REVIEW_AVATAR)) {
+                                    if (review.has(Constants.TAG_REVIEW_AVATAR)) {
                                         reviews[j] = new Review(
-                                                review.getString(TAG_REVIEW_NAME),
-                                                review.getString(TAG_REVIEW_BODY),
-                                                review.getDouble(TAG_REVIEW_RATING),
-                                                review.getString(TAG_REVIEW_AVATAR)
+                                                review.getString(Constants.TAG_REVIEW_NAME),
+                                                review.getString(Constants.TAG_REVIEW_BODY),
+                                                review.getDouble(Constants.TAG_REVIEW_RATING),
+                                                review.getString(Constants.TAG_REVIEW_AVATAR)
                                         );
                                     } else {
                                         reviews[j] = new Review(
-                                                review.getString(TAG_REVIEW_NAME),
-                                                review.getString(TAG_REVIEW_BODY),
-                                                review.getDouble(TAG_REVIEW_RATING)
+                                                review.getString(Constants.TAG_REVIEW_NAME),
+                                                review.getString(Constants.TAG_REVIEW_BODY),
+                                                review.getDouble(Constants.TAG_REVIEW_RATING)
                                         );
                                     }
                                 }
@@ -215,7 +234,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                             e.printStackTrace();
                         }
                         progressBar.setVisibility(View.GONE);
-                        fabFav.setVisibility(View.VISIBLE);
+                        fabFav.show();
                     }
                 }, new Response.ErrorListener() {
 
@@ -344,12 +363,81 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.fab_favorite:
-                toggleFavourite();
+                if(mUsername!=Constants.ANONYMOUS){
+                    toggleFavourite();
+                }else{
+                    showFirebaseLogin();
+                }
+
             default:
                 break;
 
         }
     }
+
+    //Firebase methods
+    private void showFirebaseLogin() {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
+                        .setLogo(R.drawable.auth)
+                        .setTheme(R.style.AppTheme_NoActionBar)
+                        .setProviders(
+                                AuthUI.EMAIL_PROVIDER,
+                                AuthUI.GOOGLE_PROVIDER)
+                        .build(),
+                Constants.RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAuthStateListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG, " activity onResume");
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
+                toggleFavourite();
+            } else if (resultCode == RESULT_CANCELED) {
+                // TODO: 19-Feb-17 - Handle auth cancelled
+            }
+        }
+    }
+
+    private void onSignedInInitialize(FirebaseUser firebaseUser) {
+        User user = new User(firebaseUser.getDisplayName(),
+                firebaseUser.getPhotoUrl(),
+                firebaseUser.getEmail());
+        mUsername = user.getUsername();
+        mUserAvatarUrl = user.getAvatarUrl();
+        mUserEmail = user.getEmailId();
+
+    }
+
+    private void onSignedOutCleanup() {
+        mUsername = Constants.ANONYMOUS;
+        User user = new User(null, null, null);
+
+        mUserAvatarUrl = user.getAvatarUrl();
+        mUserEmail = user.getEmailId();
+
+    }
 }
+
 
 

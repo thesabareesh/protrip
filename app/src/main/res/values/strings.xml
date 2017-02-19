@@ -117,5 +117,11 @@
     <!-- Account strings-->
     <string name="drawer_user_title">Sign In</string>
 
+    <!--Firebase strings-->
+    <string name="general_error">An error has occurred.</string>
+    <string name="sign_in_default">Sign in</string>
+    <string name="progress_dialog_loading">Loading…</string>
+    <string name="progress_dialog_signing_up">Signing up…</string>
+
 
 </resources>

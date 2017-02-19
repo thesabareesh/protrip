@@ -47,11 +47,50 @@ public class Constants {
     public static final int HEIGHT_CITY_GPHOTO = 300;
     public static final int WIDTH_CITY_GPHOTO = 600;
 
+    //keys
+    public static final String TAG_RESULT = "result";
+    public static final String TAG_ICON = "icon";
+    public static final String TAG_NAME = "name";
+    public static final String TAG_PLACE_ID = "place_id";
+    public static final String TAG_RATING = "rating";
+    public static final String TAG_REVIEWS = "reviews";
+    public static final String TAG_ADDRESS = "vicinity";
+    public static final String TAG_ADDRESS_FULL = "formatted_address";
+    public static final String TAG_WEBSITE = "website";
+    public static final String TAG_PHONE = "international_phone_number";
+    public static final String TAG_MAP_URL = "url";
+    public static final String TAG_LAT = "lat";
+    public static final String TAG_LNG = "lng";
+    public static final String TAG_GEOMETRY = "geometry";
+    public static final String TAG_LOCATION = "location";
+    public static final String TAG_REVIEW_NAME = "author_name";
+    public static final String TAG_REVIEW_AVATAR = "profile_photo_url";
+    public static final String TAG_REVIEW_TIME = "relative_time_description";
+    public static final String TAG_REVIEW_BODY = "text";
+    public static final String TAG_REVIEW_RATING = "rating";
+
 
     //Delays
     public static final int PERMISSION_DELAY_MS = 2000;
     public static final int SPLASH_DELAY_MS = 1500;
     public static final int ADMOB_DELAY_MS = 0;
 
+
+
+     //FCM Push notifications
+
+    // global topic to receive app wide push notifications
+    public static final String TOPIC_GLOBAL = "global";
+    // broadcast receiver intent filters
+    public static final String REGISTRATION_COMPLETE = "registrationComplete";
+    public static final String PUSH_NOTIFICATION = "pushNotification";
+    // id to handle the notification in the notification tray
+    public static final int NOTIFICATION_ID = 100;
+    public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
+    public static final String SHARED_PREF = "ah_firebase";
+
+    //Firebase Auth
+    public static final int RC_SIGN_IN = 1;
+    public static final String ANONYMOUS = "anonymous";
 
 }

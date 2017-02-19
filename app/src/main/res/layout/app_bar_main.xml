@@ -187,6 +187,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
         android:clickable="true"
+        android:visibility="invisible"
         android:contentDescription="@string/cd_fab_search"
         app:srcCompat="@drawable/ic_search_white_24px"
         app:useCompatPadding="true"

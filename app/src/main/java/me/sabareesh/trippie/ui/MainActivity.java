@@ -61,7 +61,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.sabareesh.trippie.BuildConfig;
-import me.sabareesh.trippie.Config;
 import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.adapter.PlaceListAdapter;
 import me.sabareesh.trippie.model.PlaceList;
@@ -82,19 +81,18 @@ public class MainActivity extends AppCompatActivity
         LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = "MainActivity";
-    public static final String ANONYMOUS = "anonymous";
-    public static final int RC_SIGN_IN = 1;
     public static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
     private static final int PLACES_LOADER_ID = 0;
     PlaceAutocompleteFragment mAutocompleteFragment;
     LinearLayout mCurrentCardLayout, llNoFavsLayout;
     CardView mCardView;
     RelativeLayout mCurrentLayout;
-    TextView tvCurrCityName, tvFavPlaces, tvUserName;
+    TextView tvCurrCityName, tvFavPlaces, tvUserName,tvUserEmail;
     ImageView ivStaticMap, ivAvatar;
     CoordinatorLayout mCoordinatorLayout;
     String mCurrentLocName, mCurrentLat, mCurrentLng, mStaticMapURL;
-    MenuItem logoutItem;
+    MenuItem logoutItem, favoritesItem;
+    FloatingActionButton searchFAB;
     private boolean mDidInitLoader;
     private RecyclerView recyclerView;
     private List<PlaceList> placeList;
@@ -144,8 +142,9 @@ public class MainActivity extends AppCompatActivity
         mAutocompleteFragment.setOnPlaceSelectedListener(this);
 
         //FAB
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search);
-        fab.setOnClickListener(new View.OnClickListener() {
+        searchFAB = (FloatingActionButton) findViewById(R.id.fab_search);
+        searchFAB.show();
+        searchFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 (mAutocompleteFragment.getView().
@@ -166,8 +165,10 @@ public class MainActivity extends AppCompatActivity
 
         View headerLayout = navigationView.getHeaderView(0);
         logoutItem = navigationView.getMenu().findItem(R.id.nav_signout);
+        favoritesItem = navigationView.getMenu().findItem(R.id.nav_favorites);
         mSignInLayout = (LinearLayout) headerLayout.findViewById(R.id.ll_header);
         tvUserName = (TextView) headerLayout.findViewById(R.id.user_name);
+        tvUserEmail = (TextView) headerLayout.findViewById(R.id.user_email);
         ivAvatar = (ImageView) headerLayout.findViewById(R.id.user_avatar);
         //listener init
         mSignInLayout.setOnClickListener(this);
@@ -234,12 +235,12 @@ public class MainActivity extends AppCompatActivity
             public void onReceive(Context context, Intent intent) {
 
                 // checking for type intent filter
-                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                if (intent.getAction().equals(Constants.REGISTRATION_COMPLETE)) {
                     // gcm successfully registered
                     // now subscribe to `global` topic to receive app wide notifications
-                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+                    FirebaseMessaging.getInstance().subscribeToTopic(Constants.TOPIC_GLOBAL);
 
-                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                } else if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
                     String message = intent.getStringExtra("message");
                     Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
@@ -267,7 +268,7 @@ public class MainActivity extends AppCompatActivity
                                 AuthUI.EMAIL_PROVIDER,
                                 AuthUI.GOOGLE_PROVIDER)
                         .build(),
-                RC_SIGN_IN);
+                Constants.RC_SIGN_IN);
     }
 
     //Google location methods
@@ -411,6 +412,9 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if (id == R.id.nav_favorites) {
+            //// TODO: 19-Feb-17 -  Launch a favorites activity
+        }
 
         if (id == R.id.nav_share) {
             /*String _ImageFile = "android.resource://" + getResources().getResourceName(R.drawable.nav_header).replace(":", "/");
@@ -494,9 +498,11 @@ public class MainActivity extends AppCompatActivity
         mUsername = user.getUsername();
         mUserAvatarUrl = user.getAvatarUrl();
         mUserEmail = user.getEmailId();
-
         tvUserName.setText(mUsername);
+        tvUserEmail.setVisibility(View.VISIBLE);
+        tvUserEmail.setText(mUserEmail);
         logoutItem.setVisible(true);
+        favoritesItem.setVisible(true);
         if (mUserAvatarUrl != null) {
             Picasso.with(this).load(mUserAvatarUrl).
                     placeholder(R.drawable.ic_account_circle_white_24dp).
@@ -507,14 +513,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onSignedOutCleanup() {
-
-        mUsername = ANONYMOUS;
-        User user = new User(null, null, null);
-        mUserAvatarUrl = user.getAvatarUrl();
-        mUserEmail = user.getEmailId();
-
+        mUsername = Constants.ANONYMOUS;
+        new User(null, null, null);
         tvUserName.setText(getString(R.string.drawer_user_title));
+        tvUserEmail.setText("");
+        tvUserEmail.setVisibility(View.GONE);
         logoutItem.setVisible(false);
+        favoritesItem.setVisible(false);
         ivAvatar.setImageResource(R.drawable.ic_account_circle_white_24px);
     }
 
@@ -583,12 +588,12 @@ public class MainActivity extends AppCompatActivity
         //Notifications
         // register GCM registration complete receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.REGISTRATION_COMPLETE));
+                new IntentFilter(Constants.REGISTRATION_COMPLETE));
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Config.PUSH_NOTIFICATION));
+                new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
         NotificationUtils.clearNotifications(getApplicationContext());
@@ -604,12 +609,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == Constants.RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Sign in cancelled", Toast.LENGTH_SHORT).show();
-
+                // TODO: 19-Feb-17 - Handle auth cancelled     
             }
         }
     }
@@ -628,7 +632,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.ll_header:
-                if (mUsername.equals(ANONYMOUS)) {
+                if (mUsername.equals(Constants.ANONYMOUS)) {
                     showFirebaseLogin();
                 }
             default:

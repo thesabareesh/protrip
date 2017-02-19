@@ -12,16 +12,23 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import me.sabareesh.trippie.util.Log;
 
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListener;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.picasso.Picasso;
@@ -130,6 +137,9 @@ public class Utils {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
+
+
+
 
 
 }
