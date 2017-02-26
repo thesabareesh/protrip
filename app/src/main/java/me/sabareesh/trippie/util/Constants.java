@@ -77,7 +77,7 @@ public class Constants {
 
 
 
-     //FCM Push notifications
+     //FCM Push notifications -start
 
     // global topic to receive app wide push notifications
     public static final String TOPIC_GLOBAL = "global";
@@ -92,5 +92,12 @@ public class Constants {
     //Firebase Auth
     public static final int RC_SIGN_IN = 1;
     public static final String ANONYMOUS = "anonymous";
+
+    //FCM Push notifications -end
+
+    //Firebase db values -start
+
+    //same as the place-title field name in PlaceDetail model
+    public  static final String title_node_place_id="place_detail_id";
 
 }

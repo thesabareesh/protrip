@@ -40,6 +40,13 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.places.Place;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -74,9 +81,12 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     PlaceDetail placeDetail = new PlaceDetail();
 
     // Firebase & co instance variables
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mPlaceDetailsDbRef;
+    private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private String mUsername, mUserEmail;
+    private String mUsername, mUserEmail,mUid;
     private Uri mUserAvatarUrl;
 
 
@@ -98,6 +108,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
 
         // Initialize Firebase components
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
 
 
         //Views and click listeners
@@ -248,7 +259,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     public int  toggleFavourite() {
-
+        mPlaceDetailsDbRef = mFirebaseDatabase.getReference().getRoot().child(mUid+"/favoritePlaces");
         Uri.Builder uriBuilder = PlacesProvider.CONTENT_URI.buildUpon();
 
         if (isFavourite(this, placeDetail.getPlace_detail_id())) {
@@ -256,8 +267,22 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             Snackbar.make(coordinatorLayout, getString(R.string.notify_unfavorite), Snackbar.LENGTH_SHORT)
                     .show();
 
+            //Delete on Firebase and db
             this.getContentResolver().delete(uriBuilder.build(), placeDetail.getPlace_detail_id(), null);
+            Query placeQuery = mPlaceDetailsDbRef.orderByChild(Constants.title_node_place_id).equalTo(placeDetail.getPlace_detail_id());
+            placeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        snapshot.getRef().removeValue();
+                    }
+                }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e(TAG, "onCancelled "+databaseError.toException());
+                }
+            });
 
         } else {
             fabFav.setImageResource(R.drawable.ic_favorite_white_24px);
@@ -275,6 +300,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
 
 
             this.getContentResolver().insert(PlacesProvider.CONTENT_URI, contentValues);
+            mPlaceDetailsDbRef.push().setValue(placeDetail);
 
             Snackbar.make(coordinatorLayout, getString(R.string.notify_favorite), Snackbar.LENGTH_SHORT)
                     .show();
@@ -422,21 +448,22 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     private void onSignedInInitialize(FirebaseUser firebaseUser) {
         User user = new User(firebaseUser.getDisplayName(),
                 firebaseUser.getPhotoUrl(),
-                firebaseUser.getEmail());
+                firebaseUser.getEmail(),
+                firebaseUser.getUid());
+
         mUsername = user.getUsername();
         mUserAvatarUrl = user.getAvatarUrl();
         mUserEmail = user.getEmailId();
-
+        mUid=user.getUid();
     }
 
     private void onSignedOutCleanup() {
         mUsername = Constants.ANONYMOUS;
-        User user = new User(null, null, null);
-
-        mUserAvatarUrl = user.getAvatarUrl();
-        mUserEmail = user.getEmailId();
+        User user = new User(null, null, null,null);
 
     }
+
+
 }
 
 

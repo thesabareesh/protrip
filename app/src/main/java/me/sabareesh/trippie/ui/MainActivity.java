@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private String mUsername, mUserEmail;
+    private String mUsername, mUserEmail,mUid;
     private Uri mUserAvatarUrl;
     private LinearLayout mSignInLayout;
 
@@ -417,13 +417,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (id == R.id.nav_share) {
-            /*String _ImageFile = "android.resource://" + getResources().getResourceName(R.drawable.nav_header).replace(":", "/");
-            Uri imageUri = Uri.parse(_ImageFile);
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("image*//*");
-            intent.putExtra(Intent.EXTRA_TEXT,getString(R.string.share_app_desc));
-            intent.putExtra(Intent.EXTRA_STREAM, imageUri);
-            startActivity(Intent.createChooser(intent, getString(R.string.action_share)));*/
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -494,10 +487,11 @@ public class MainActivity extends AppCompatActivity
     private void onSignedInInitialize(FirebaseUser firebaseUser) {
         User user = new User(firebaseUser.getDisplayName(),
                 firebaseUser.getPhotoUrl(),
-                firebaseUser.getEmail());
+                firebaseUser.getEmail(),firebaseUser.getUid());
         mUsername = user.getUsername();
         mUserAvatarUrl = user.getAvatarUrl();
         mUserEmail = user.getEmailId();
+        mUid=user.getUid();
         tvUserName.setText(mUsername);
         tvUserEmail.setVisibility(View.VISIBLE);
         tvUserEmail.setText(mUserEmail);
@@ -514,7 +508,7 @@ public class MainActivity extends AppCompatActivity
 
     private void onSignedOutCleanup() {
         mUsername = Constants.ANONYMOUS;
-        new User(null, null, null);
+        new User(null, null, null,null);
         tvUserName.setText(getString(R.string.drawer_user_title));
         tvUserEmail.setText("");
         tvUserEmail.setVisibility(View.GONE);
@@ -611,7 +605,7 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Signed in successfully !", Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED) {
                 // TODO: 19-Feb-17 - Handle auth cancelled     
             }
