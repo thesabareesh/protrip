@@ -42,6 +42,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,12 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
@@ -63,6 +70,7 @@ import java.util.List;
 import me.sabareesh.trippie.BuildConfig;
 import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.adapter.PlaceListAdapter;
+import me.sabareesh.trippie.model.PlaceDetail;
 import me.sabareesh.trippie.model.PlaceList;
 import me.sabareesh.trippie.model.User;
 import me.sabareesh.trippie.provider.PlacesProvider;
@@ -98,7 +106,11 @@ public class MainActivity extends AppCompatActivity
     private List<PlaceList> placeList;
     private PlaceListAdapter adapter;
     private List<PlaceList> placeListDetailList = new ArrayList<>();
+    private ProgressBar mProgressBar;
     // Firebase & co instance variables
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mFavsDbRef;
+    private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -115,6 +127,7 @@ public class MainActivity extends AppCompatActivity
         boolean isTablet = getResources().getBoolean(R.bool.isTablet);
 
         // Initialize Firebase components
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
 
@@ -128,7 +141,8 @@ public class MainActivity extends AppCompatActivity
         ivStaticMap = (ImageView) findViewById(R.id.iv_staticMap);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.cLayout_main);
         tvFavPlaces = (TextView) findViewById(R.id.fab_favorite_title);
-
+        mProgressBar=(ProgressBar)findViewById(R.id.progress_bar);
+        mProgressBar.setVisibility(View.VISIBLE);
 
         //AutoCompleteFragment
         mAutocompleteFragment.setHint(getResources().getString(R.string.home_search_hint));
@@ -330,7 +344,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.v(TAG, "onLoadFinished");
+       /* Log.v(TAG, "onLoadFinished");
         if (loader.getId() == PLACES_LOADER_ID && cursor != null) {
             while (cursor != null && cursor.moveToNext()) {
                 PlaceList placeList = new PlaceList();
@@ -341,7 +355,8 @@ public class MainActivity extends AppCompatActivity
                 placeList.setIcon_url(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE)));
 
                 // Toast.makeText(this, cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE)), Toast.LENGTH_SHORT).show();
-                placeListDetailList.add(placeList);
+
+                //placeListDetailList.add(placeList);
                 tvFavPlaces.setVisibility(View.VISIBLE);
                 llNoFavsLayout.setVisibility(View.GONE);
             }
@@ -350,20 +365,19 @@ public class MainActivity extends AppCompatActivity
             tvFavPlaces.setVisibility(View.GONE);
 
         }
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
 
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Log.v(TAG, "onLoaderReset");
+        /*// Log.v(TAG, "onLoaderReset");
         placeListDetailList.clear();
         adapter.notifyDataSetChanged();
         tvFavPlaces.setVisibility(View.GONE);
-        llNoFavsLayout.setVisibility(View.VISIBLE);
+        llNoFavsLayout.setVisibility(View.VISIBLE);*/
 
     }
-
 
     //App options methods
     @Override
@@ -485,6 +499,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onSignedInInitialize(FirebaseUser firebaseUser) {
+
+        //Firebase Auth
         User user = new User(firebaseUser.getDisplayName(),
                 firebaseUser.getPhotoUrl(),
                 firebaseUser.getEmail(),firebaseUser.getUid());
@@ -504,9 +520,14 @@ public class MainActivity extends AppCompatActivity
                     fit().
                     into(ivAvatar);
         }
+
+        //Firebase DB
+        mFavsDbRef = mFirebaseDatabase.getReference().getRoot().child(mUid+"/favoritePlaces");
+        attachDatabaseReadListener();
     }
 
     private void onSignedOutCleanup() {
+        //Firebase Auth
         mUsername = Constants.ANONYMOUS;
         new User(null, null, null,null);
         tvUserName.setText(getString(R.string.drawer_user_title));
@@ -515,6 +536,15 @@ public class MainActivity extends AppCompatActivity
         logoutItem.setVisible(false);
         favoritesItem.setVisible(false);
         ivAvatar.setImageResource(R.drawable.ic_account_circle_white_24px);
+        tvFavPlaces.setVisibility(View.GONE);
+        llNoFavsLayout.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
+
+        //Firebase DB
+        placeListDetailList.clear();
+        detachDatabaseReadListener();
+        adapter.notifyDataSetChanged();
+
     }
 
     private void signOut() {
@@ -551,6 +581,63 @@ public class MainActivity extends AppCompatActivity
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void attachDatabaseReadListener() {
+        if (mChildEventListener == null) {
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    PlaceDetail placeDetail = dataSnapshot.getValue(PlaceDetail.class);
+                    PlaceList placeList = new PlaceList();
+                    placeList.setPlace_id(placeDetail.getPlace_detail_id());
+                    placeList.setPlace_name(placeDetail.getPlace_detail_name());
+                    placeList.setPlace_address(placeDetail.getPlace_detail_address());
+                    placeList.setPlace_rating(placeDetail.getPlace_detail_rating());
+                    placeList.setIcon_url(placeDetail.getPlace_detail_icon_url());
+
+                    placeListDetailList.add(placeList);
+                    adapter.notifyDataSetChanged();
+
+                }
+
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+
+            mFavsDbRef.addChildEventListener(mChildEventListener);
+
+            mFavsDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.i(TAG,"Done with Firebase loading");
+                    mProgressBar.setVisibility(View.GONE);
+                    if(placeListDetailList.size()>0){
+                        llNoFavsLayout.setVisibility(View.GONE);
+                        tvFavPlaces.setVisibility(View.VISIBLE);
+                    }else{
+                        llNoFavsLayout.setVisibility(View.VISIBLE);
+                        tvFavPlaces.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+
+            });
+
+        }
+    }
+
+    private void detachDatabaseReadListener() {
+        if (mChildEventListener != null) {
+            mFavsDbRef.removeEventListener(mChildEventListener);
+            mChildEventListener = null;
+        }
+    }
+
     //App lifecycles
 
     @Override
@@ -559,6 +646,8 @@ public class MainActivity extends AppCompatActivity
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
+        detachDatabaseReadListener();
+        adapter.notifyDataSetChanged();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
 
@@ -569,13 +658,15 @@ public class MainActivity extends AppCompatActivity
 
         ((EditText) mAutocompleteFragment.getView().
                 findViewById(R.id.place_autocomplete_search_input)).setText("");
-        if (!mDidInitLoader) {
+        /*if (!mDidInitLoader) {
             placeListDetailList.clear();
             tvFavPlaces.setVisibility(View.GONE);
             llNoFavsLayout.setVisibility(View.VISIBLE);
             adapter.notifyDataSetChanged();
             getSupportLoaderManager().restartLoader(PLACES_LOADER_ID, null, this);
-        }
+        }*/
+        placeListDetailList.clear();
+        adapter.notifyDataSetChanged();
         mDidInitLoader = false;
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
 

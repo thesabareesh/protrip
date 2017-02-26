@@ -17,7 +17,7 @@ import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.NotificationUtils;
 
 /**
- * Created by VE288800 on 01-Feb-17.
+ * Created by Sabareesh on 01-Feb-17.
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {

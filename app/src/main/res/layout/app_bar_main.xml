@@ -170,6 +170,16 @@
                 android:layout_below="@+id/rv_fav_places"
                 android:layout_alignParentBottom="true"
                 android:gravity="bottom" />
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/rv_fav_places"
+                android:layout_marginTop="@dimen/margin_top_nofavs_badge"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                />
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

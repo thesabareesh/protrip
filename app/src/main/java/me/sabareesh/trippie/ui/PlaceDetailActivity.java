@@ -3,8 +3,6 @@ package me.sabareesh.trippie.ui;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,19 +10,13 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-
-import me.sabareesh.trippie.model.User;
-import me.sabareesh.trippie.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -37,7 +29,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.location.places.Place;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -57,19 +48,20 @@ import me.sabareesh.trippie.R;
 import me.sabareesh.trippie.model.Extras;
 import me.sabareesh.trippie.model.PlaceDetail;
 import me.sabareesh.trippie.model.Review;
+import me.sabareesh.trippie.model.User;
 import me.sabareesh.trippie.provider.PlacesProvider;
 import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
 import me.sabareesh.trippie.util.AppController;
 import me.sabareesh.trippie.util.CircleTransform;
 import me.sabareesh.trippie.util.Constants;
-import me.sabareesh.trippie.util.NotificationUtils;
-import me.sabareesh.trippie.util.Utils;
+import me.sabareesh.trippie.util.Log;
 
 
 public class PlaceDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String TAG = "PlaceDetailActivity";
-
+    private static boolean isFavPlace;
+    private static DatabaseReference mFavsDbRef;
     String place_id, place_name, image_URL;
     ProgressBar progressBar;
     ImageView mBanner;
@@ -79,14 +71,12 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     CoordinatorLayout coordinatorLayout;
     LinearLayout llUrlIcon, llCall, llDirections, llReviews;
     PlaceDetail placeDetail = new PlaceDetail();
-
     // Firebase & co instance variables
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mPlaceDetailsDbRef;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private String mUsername, mUserEmail,mUid;
+    private String mUsername, mUserEmail, mUid;
     private Uri mUserAvatarUrl;
 
 
@@ -138,8 +128,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         }
 
         //Ui
-        fabFav.setImageResource(isFavourite(this,place_id) ?
-                R.drawable.ic_favorite_white_24px : R.drawable.ic_favorite_border_white_24px);
+
 
         final String DOMAIN = Constants.BASE_URL_PLACE_DETAILS;
         final String APPKEY_PARAM = Constants.API_KEY_PARAM;
@@ -200,6 +189,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                             placeDetail.setPlace_detail_icon_url(place.getString(Constants.TAG_ICON));
                             placeDetail.setPlace_detail_address(place.getString(Constants.TAG_ADDRESS_FULL));
                             tvAddress.setText(placeDetail.getPlace_detail_address());
+                            placeDetail.setPlace_detail_icon_url(image_URL);
                             placeDetail.setPlace_detail_name(place.getString(Constants.TAG_NAME));
                             if (place.has(Constants.TAG_RATING)) {
                                 placeDetail.setPlace_detail_rating(place.getDouble(Constants.TAG_RATING));
@@ -244,8 +234,9 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        progressBar.setVisibility(View.GONE);
                         fabFav.show();
+                        progressBar.setVisibility(View.GONE);
+
                     }
                 }, new Response.ErrorListener() {
 
@@ -258,33 +249,35 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
     }
 
-    public int  toggleFavourite() {
-        mPlaceDetailsDbRef = mFirebaseDatabase.getReference().getRoot().child(mUid+"/favoritePlaces");
+    public int toggleFavourite() {
+
         Uri.Builder uriBuilder = PlacesProvider.CONTENT_URI.buildUpon();
 
-        if (isFavourite(this, placeDetail.getPlace_detail_id())) {
+        if (isFavPlace) {
+            isFavPlace = false;
             fabFav.setImageResource(R.drawable.ic_favorite_border_white_24px);
             Snackbar.make(coordinatorLayout, getString(R.string.notify_unfavorite), Snackbar.LENGTH_SHORT)
                     .show();
 
             //Delete on Firebase and db
-            this.getContentResolver().delete(uriBuilder.build(), placeDetail.getPlace_detail_id(), null);
-            Query placeQuery = mPlaceDetailsDbRef.orderByChild(Constants.title_node_place_id).equalTo(placeDetail.getPlace_detail_id());
+            //this.getContentResolver().delete(uriBuilder.build(), placeDetail.getPlace_detail_id(), null);
+            Query placeQuery = mFavsDbRef.orderByChild(Constants.title_node_place_id).equalTo(placeDetail.getPlace_detail_id());
             placeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         snapshot.getRef().removeValue();
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Log.e(TAG, "onCancelled "+databaseError.toException());
+                    Log.e(TAG, "onCancelled " + databaseError.toException());
                 }
             });
 
         } else {
+            isFavPlace = true;
             fabFav.setImageResource(R.drawable.ic_favorite_white_24px);
             ContentValues contentValues = new ContentValues();
             contentValues.put(PlacesSQLiteHelper.ID, placeDetail.getPlace_detail_id());
@@ -296,11 +289,11 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             contentValues.put(PlacesSQLiteHelper.ADDRESS_PHONE, placeDetail.getPlace_detail_phone());
             contentValues.put(PlacesSQLiteHelper.ADDRESS_URL, placeDetail.getPlace_detail_url());
             contentValues.put(PlacesSQLiteHelper.ADDRESS_WEB, placeDetail.getPlace_detail_website());
-            contentValues.put(PlacesSQLiteHelper.ADDRESS_FULL,placeDetail.getPlace_detail_address());
+            contentValues.put(PlacesSQLiteHelper.ADDRESS_FULL, placeDetail.getPlace_detail_address());
 
 
-            this.getContentResolver().insert(PlacesProvider.CONTENT_URI, contentValues);
-            mPlaceDetailsDbRef.push().setValue(placeDetail);
+            //this.getContentResolver().insert(PlacesProvider.CONTENT_URI, contentValues);
+            mFavsDbRef.push().setValue(placeDetail);
 
             Snackbar.make(coordinatorLayout, getString(R.string.notify_favorite), Snackbar.LENGTH_SHORT)
                     .show();
@@ -310,8 +303,8 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    public static boolean isFavourite(Context context, String placeId) {
-        String URL = PlacesProvider.URL;
+    private void isFavourite(Context context, final String placeId) {
+        /*String URL = PlacesProvider.URL;
         Uri places = Uri.parse(URL);
         Cursor cursor = null;
         cursor = context.getContentResolver().query(places, null, PlacesSQLiteHelper.ID +" = '"+ placeId +"'", null, PlacesSQLiteHelper.ROW_ID);
@@ -319,7 +312,27 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             return true;
         } else {
             return false;
-        }
+        }*/
+        isFavPlace = false;
+        Query placeQuery = mFavsDbRef.orderByChild(Constants.title_node_place_id).equalTo(placeId);
+        placeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (snapshot.exists()) {
+                        isFavPlace = true;
+                        fabFav.setImageResource(R.drawable.ic_favorite_white_24px);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled " + databaseError.toException());
+            }
+        });
+
     }
 
     private void showReviews(Extras extras) {
@@ -389,9 +402,9 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.fab_favorite:
-                if(mUsername!=Constants.ANONYMOUS){
+                if (mUsername != Constants.ANONYMOUS) {
                     toggleFavourite();
-                }else{
+                } else {
                     showFirebaseLogin();
                 }
 
@@ -438,7 +451,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         if (requestCode == Constants.RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
-                toggleFavourite();
+                //toggleFavourite();
             } else if (resultCode == RESULT_CANCELED) {
                 // TODO: 19-Feb-17 - Handle auth cancelled
             }
@@ -454,12 +467,15 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         mUsername = user.getUsername();
         mUserAvatarUrl = user.getAvatarUrl();
         mUserEmail = user.getEmailId();
-        mUid=user.getUid();
+        mUid = user.getUid();
+
+        mFavsDbRef = mFirebaseDatabase.getReference().getRoot().child(mUid + "/favoritePlaces");
+        isFavourite(this, place_id);
     }
 
     private void onSignedOutCleanup() {
         mUsername = Constants.ANONYMOUS;
-        User user = new User(null, null, null,null);
+        User user = new User(null, null, null, null);
 
     }
 
