@@ -101,7 +101,7 @@
 
 
         <!-- Widget start -->
-        <receiver
+       <!-- <receiver
             android:name=".widget.PlacesWidgetProvider"
             android:label="@string/widget_label">
             <intent-filter>
@@ -116,7 +116,7 @@
         <service
             android:name=".widget.PlacesWidgetRemoteViewsService"
             android:exported="true"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+            android:permission="android.permission.BIND_REMOTEVIEWS" />-->
         <!-- Widget end -->
 
 
