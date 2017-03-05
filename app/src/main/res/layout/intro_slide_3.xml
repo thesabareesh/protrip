@@ -22,7 +22,8 @@
             android:text="@string/slide_3_title"
             android:layout_marginTop="20dp"
             android:textColor="@android:color/black"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAlignment="center" />
 
         <TextView
             android:layout_width="wrap_content"

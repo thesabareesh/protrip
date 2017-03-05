@@ -116,11 +116,11 @@
     <string name="slide_2_title">Find restaurants and hotels </string>
     <string name="slide_2_desc">See pictures and reviews of great new places also with driving directions !</string>
 
-    <string name="slide_3_title">Works offline</string>
-    <string name="slide_3_desc">Tap the star button and browse your favorite places on the go. </string>
+    <string name="slide_3_title">Store and sync app data in realtime</string>
+    <string name="slide_3_desc">Access your favorite places across all of your devices.</string>
 
-    <string name="slide_4_title">Slide 4</string>
-    <string name="slide_4_desc">slide 4 description</string>
+    <string name="slide_4_title">Simple, trusted and secure way to Sign-in</string>
+    <string name="slide_4_desc">Signs in with Google, to create more engaging experience.</string>
 
 
     <!-- Account strings-->

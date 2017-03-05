@@ -15,8 +15,8 @@ public class SharedPrefsMgr  {
     // shared pref mode
     int PRIVATE_MODE = 0;
 
-    // Shared preferences file name
-    private static final String PREF_NAME = "intro-swipe";
+    // Shared preference name should be changed if a new slide is added
+    private static final String PREF_NAME = "intro-swipe-layout";
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
 

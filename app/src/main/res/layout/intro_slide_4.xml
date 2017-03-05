@@ -12,15 +12,20 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="@dimen/img_width_height"
-            android:layout_height="@dimen/img_width_height" />
+            android:layout_width="@dimen/img_width_height_2x"
+            android:layout_height="@dimen/img_width_height_2x"
+            android:src="@drawable/auth"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/slide_4_title"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:textColor="@android:color/black"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAlignment="center" />
 
         <TextView
             android:layout_width="wrap_content"
