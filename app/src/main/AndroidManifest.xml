@@ -18,6 +18,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -47,6 +48,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.sabareesh.trippie.ui.PlaceListActivity" />
         </activity>
+
+        <activity
+            android:name=".ui.FavoritesActivity"
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.sabareesh.trippie.ui.MainActivity" />
+        </activity>
+
         <activity
             android:name=".ui.InfoActivity"
             android:parentActivityName=".ui.MainActivity"
@@ -55,8 +66,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.sabareesh.trippie.ui.MainActivity" />
         </activity>
-
-        <activity android:name=".ui.PrivacyPolicy"
+        <activity
+            android:name=".ui.PrivacyPolicy"
             android:parentActivityName=".ui.InfoActivity"
             android:screenOrientation="portrait">
             <meta-data
@@ -81,13 +92,13 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".service.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <!-- ./Firebase Notifications -->
+
 
         <!-- Widget start -->
         <receiver

@@ -22,6 +22,7 @@
     <string name="desc_device_info">Device info :&#160;</string>
     <string name="title_titlebar_info">Info</string>
     <string name="title_titlebar_privacy_policy">Privacy Policy</string>
+    <string name="title_titlebar_favorites">Favorite places</string>
     <string name="site_admin">http://www.sabareesh.me</string>
     <string name="site_privacy_policy">http://sabareesh.me/apps/protrip/privacypolicy.htm</string>
     <string name="cd_user_avatar">User Display picture</string>
@@ -33,9 +34,7 @@
     <string name="cd_fab_search">Search</string>
     <string name="cd_current_card">Current Location</string>
     <string name="text_size_home_search" translatable="false">15</string>
-    <string name="title_favorite_places">Favorite places</string>
-    <string name="title_no_favs">It looks empty in here.</string>
-    <string name="desc_no_favs">Start adding places to your favorites \n by tapping the ♥ icon!</string>
+
 
     <!--City screen-->
     <string name="cd_city_banner">City banner</string>
@@ -54,9 +53,17 @@
     <string name="title_directions">Directions</string>
     <string name="title_call">Call</string>
     <string name="place_desc"> </string>
-    <string name="intent_desc_link">Open with</string>
+    <string name="intent_desc_link">Complete action using</string>
     <string name="intent_desc_share">Share via</string>
     <string name="title_reviews">Top reviews</string>
+
+    <!-- favorites screen-->
+    <string name="cd_favs_banner">Favorite places banner</string>
+    <string name="title_favorite_places">Favorite places</string>
+    <string name="title_no_favs">It looks empty in here.</string>
+    <string name="desc_no_favs">Start adding places to your favorites \n by tapping the ♥ icon!</string>
+    <string name="title_offline">Internet connection appears to be offline. \n Please try again later !</string>
+    <string name="text_retry">Retry</string>
 
 
     <!--APp wide -->
@@ -72,8 +79,10 @@
     <string name="notify_permission_denied">Allow access to location services to explore nearby places !</string>
     <string name="notify_permission_accepted">Awesome ! Location based suggestions will be shown from now. </string>
     <string name="snackbar_action_allow">I\'M IN</string>
+    <string name="snackbar_action_ok">OK</string>
     <string name="notify_favorite">Added to favorites !</string>
     <string name="notify_unfavorite">Removed from favorites !   </string>
+    <string name="notify_connection">Connection appears to be offline ! Try again later. </string>
 
     <!--Alerts-->
     <string name="alert_title_signout_desc">Are you sure?</string>

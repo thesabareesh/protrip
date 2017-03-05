@@ -14,6 +14,7 @@
     <dimen name="pbar_margin">-8dp</dimen>
     <dimen name="card_radius">2dp</dimen>
     <dimen name="pb_elevation">10dp</dimen>
+    <dimen name="button_elevation">1dp</dimen>
     <dimen name="margin_large">16dp</dimen>
     <dimen name="margin_small">4dp</dimen>
     <item name="bodytext_spacing" format="float" type="dimen">1.15</item>
@@ -26,8 +27,7 @@
     <!-- home screen-->
     <dimen name="margin_home_search">2dp</dimen>
     <dimen name="height_card_current">75dp</dimen>
-    <dimen name="height_nofavs_badge">150dp</dimen>
-    <dimen name="margin_top_nofavs_badge">50dp</dimen>
+
 
     <!--city screen-->
     <dimen name="start_margin_collapse">15dp</dimen>
@@ -58,6 +58,13 @@
     <dimen name="height_reviewer_avatar">50dp</dimen>
     <dimen name="margin_place_top_review">2dp</dimen>
     <dimen name="margin_title_right">75dp</dimen>
+
+    <!--favs screen-->
+    <dimen name="height_nofavs_badge">150dp</dimen>
+    <dimen name="margin_top_nofavs_badge">50dp</dimen>
+    <dimen name="height_offline_badge">100dp</dimen>
+    <dimen name="height_retry_badge">50dp</dimen>
+
 
     <!--
 Refer to App Widget Documentation for margin information

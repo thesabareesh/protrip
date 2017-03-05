@@ -8,9 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.database.Cursor;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,9 +18,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -31,18 +25,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,25 +45,12 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.sabareesh.trippie.BuildConfig;
 import me.sabareesh.trippie.R;
-import me.sabareesh.trippie.adapter.PlaceListAdapter;
-import me.sabareesh.trippie.model.PlaceDetail;
-import me.sabareesh.trippie.model.PlaceList;
 import me.sabareesh.trippie.model.User;
-import me.sabareesh.trippie.provider.PlacesProvider;
-import me.sabareesh.trippie.provider.PlacesSQLiteHelper;
 import me.sabareesh.trippie.util.CircleTransform;
 import me.sabareesh.trippie.util.Constants;
 import me.sabareesh.trippie.util.Log;
@@ -85,36 +61,28 @@ import me.sabareesh.trippie.util.Utils;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         PlaceSelectionListener,
-        View.OnClickListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        View.OnClickListener {
 
     public static final String TAG = "MainActivity";
     public static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
-    private static final int PLACES_LOADER_ID = 0;
+
     PlaceAutocompleteFragment mAutocompleteFragment;
-    LinearLayout mCurrentCardLayout, llNoFavsLayout;
+    LinearLayout mCurrentCardLayout;
     CardView mCardView;
     RelativeLayout mCurrentLayout;
-    TextView tvCurrCityName, tvFavPlaces, tvUserName,tvUserEmail;
+    TextView tvCurrCityName, tvUserName, tvUserEmail;
     ImageView ivStaticMap, ivAvatar;
     CoordinatorLayout mCoordinatorLayout;
     String mCurrentLocName, mCurrentLat, mCurrentLng, mStaticMapURL;
     MenuItem logoutItem, favoritesItem;
     FloatingActionButton searchFAB;
-    private boolean mDidInitLoader;
-    private RecyclerView recyclerView;
-    private List<PlaceList> placeList;
-    private PlaceListAdapter adapter;
-    private List<PlaceList> placeListDetailList = new ArrayList<>();
-    private ProgressBar mProgressBar;
+
     // Firebase & co instance variables
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mFavsDbRef;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private String mUsername, mUserEmail,mUid;
+    private String mUsername, mUserEmail, mUid;
     private Uri mUserAvatarUrl;
     private LinearLayout mSignInLayout;
 
@@ -127,7 +95,6 @@ public class MainActivity extends AppCompatActivity
         boolean isTablet = getResources().getBoolean(R.bool.isTablet);
 
         // Initialize Firebase components
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
 
@@ -136,13 +103,10 @@ public class MainActivity extends AppCompatActivity
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         mCardView = (CardView) findViewById(R.id.current_location_card);
         mCurrentCardLayout = (LinearLayout) findViewById(R.id.current_location_layout);
-        llNoFavsLayout = (LinearLayout) findViewById(R.id.layout_no_favs);
         tvCurrCityName = (TextView) findViewById(R.id.tv_city_name);
         ivStaticMap = (ImageView) findViewById(R.id.iv_staticMap);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.cLayout_main);
-        tvFavPlaces = (TextView) findViewById(R.id.fab_favorite_title);
-        mProgressBar=(ProgressBar)findViewById(R.id.progress_bar);
-        mProgressBar.setVisibility(View.VISIBLE);
+
 
         //AutoCompleteFragment
         mAutocompleteFragment.setHint(getResources().getString(R.string.home_search_hint));
@@ -186,27 +150,6 @@ public class MainActivity extends AppCompatActivity
         ivAvatar = (ImageView) headerLayout.findViewById(R.id.user_avatar);
         //listener init
         mSignInLayout.setOnClickListener(this);
-
-        //Loader
-        if (!mDidInitLoader) {
-            getSupportLoaderManager().initLoader(PLACES_LOADER_ID, null, this);
-            mDidInitLoader = true;
-        } else {
-            getSupportLoaderManager().restartLoader(PLACES_LOADER_ID, null, this);
-        }
-
-        //Recyclerview
-        recyclerView = (RecyclerView) findViewById(R.id.rv_fav_places);
-        placeList = new ArrayList<>();
-        RecyclerView.LayoutManager mLayoutManager;
-        int span = (isTablet) ? 2 : 1;
-        mLayoutManager = new StaggeredGridLayoutManager(span, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(mLayoutManager);
-        adapter = new PlaceListAdapter(this, placeListDetailList);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setAdapter(adapter);
 
 
         //GetIntent
@@ -331,53 +274,6 @@ public class MainActivity extends AppCompatActivity
                 Toast.LENGTH_SHORT).show();
     }
 
-    //Loader methods
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.v(TAG, "onCreateLoader");
-        if (id == PLACES_LOADER_ID) {
-            Uri uri = PlacesProvider.CONTENT_URI;
-            return new CursorLoader(this, uri, null, null, null, null);
-        }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-       /* Log.v(TAG, "onLoadFinished");
-        if (loader.getId() == PLACES_LOADER_ID && cursor != null) {
-            while (cursor != null && cursor.moveToNext()) {
-                PlaceList placeList = new PlaceList();
-                placeList.setPlace_id(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ID)));
-                placeList.setPlace_name(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE)));
-                placeList.setPlace_address(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.ADDRESS_FULL)));
-                placeList.setPlace_rating(cursor.getDouble(cursor.getColumnIndex(PlacesSQLiteHelper.RATING_AVG)));
-                placeList.setIcon_url(cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.POSTERPATH_WIDE)));
-
-                // Toast.makeText(this, cursor.getString(cursor.getColumnIndex(PlacesSQLiteHelper.TITLE)), Toast.LENGTH_SHORT).show();
-
-                //placeListDetailList.add(placeList);
-                tvFavPlaces.setVisibility(View.VISIBLE);
-                llNoFavsLayout.setVisibility(View.GONE);
-            }
-
-        } else {
-            tvFavPlaces.setVisibility(View.GONE);
-
-        }
-        adapter.notifyDataSetChanged();*/
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        /*// Log.v(TAG, "onLoaderReset");
-        placeListDetailList.clear();
-        adapter.notifyDataSetChanged();
-        tvFavPlaces.setVisibility(View.GONE);
-        llNoFavsLayout.setVisibility(View.VISIBLE);*/
-
-    }
 
     //App options methods
     @Override
@@ -427,7 +323,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_favorites) {
-            //// TODO: 19-Feb-17 -  Launch a favorites activity
+            Intent favIntent= new Intent(this, FavoritesActivity.class);
+            favIntent.putExtra("mUid", mUid);
+            startActivity(favIntent);
+            return false;
         }
 
         if (id == R.id.nav_share) {
@@ -436,7 +335,6 @@ public class MainActivity extends AppCompatActivity
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_desc));
             sendIntent.setType("text/plain");
-            startActivity(sendIntent);
             startActivity(Intent.createChooser(sendIntent, getString(R.string.intent_desc_share)));
 
             return true;
@@ -503,11 +401,11 @@ public class MainActivity extends AppCompatActivity
         //Firebase Auth
         User user = new User(firebaseUser.getDisplayName(),
                 firebaseUser.getPhotoUrl(),
-                firebaseUser.getEmail(),firebaseUser.getUid());
+                firebaseUser.getEmail(), firebaseUser.getUid());
         mUsername = user.getUsername();
         mUserAvatarUrl = user.getAvatarUrl();
         mUserEmail = user.getEmailId();
-        mUid=user.getUid();
+        mUid = user.getUid();
         tvUserName.setText(mUsername);
         tvUserEmail.setVisibility(View.VISIBLE);
         tvUserEmail.setText(mUserEmail);
@@ -521,30 +419,19 @@ public class MainActivity extends AppCompatActivity
                     into(ivAvatar);
         }
 
-        //Firebase DB
-        mFavsDbRef = mFirebaseDatabase.getReference().getRoot().child(mUid+"/favoritePlaces");
-        attachDatabaseReadListener();
+
     }
 
     private void onSignedOutCleanup() {
         //Firebase Auth
         mUsername = Constants.ANONYMOUS;
-        new User(null, null, null,null);
+        new User(null, null, null, null);
         tvUserName.setText(getString(R.string.drawer_user_title));
         tvUserEmail.setText("");
         tvUserEmail.setVisibility(View.GONE);
         logoutItem.setVisible(false);
         favoritesItem.setVisible(false);
         ivAvatar.setImageResource(R.drawable.ic_account_circle_white_24px);
-        tvFavPlaces.setVisibility(View.GONE);
-        llNoFavsLayout.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
-
-        //Firebase DB
-        placeListDetailList.clear();
-        detachDatabaseReadListener();
-        adapter.notifyDataSetChanged();
-
     }
 
     private void signOut() {
@@ -582,62 +469,6 @@ public class MainActivity extends AppCompatActivity
         dialog.show();
     }
 
-    private void attachDatabaseReadListener() {
-        if (mChildEventListener == null) {
-            mChildEventListener = new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    PlaceDetail placeDetail = dataSnapshot.getValue(PlaceDetail.class);
-                    PlaceList placeList = new PlaceList();
-                    placeList.setPlace_id(placeDetail.getPlace_detail_id());
-                    placeList.setPlace_name(placeDetail.getPlace_detail_name());
-                    placeList.setPlace_address(placeDetail.getPlace_detail_address());
-                    placeList.setPlace_rating(placeDetail.getPlace_detail_rating());
-                    placeList.setIcon_url(placeDetail.getPlace_detail_icon_url());
-
-                    placeListDetailList.add(placeList);
-                    adapter.notifyDataSetChanged();
-
-                }
-
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                public void onCancelled(DatabaseError databaseError) {}
-            };
-
-            mFavsDbRef.addChildEventListener(mChildEventListener);
-
-            mFavsDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.i(TAG,"Done with Firebase loading");
-                    mProgressBar.setVisibility(View.GONE);
-                    if(placeListDetailList.size()>0){
-                        llNoFavsLayout.setVisibility(View.GONE);
-                        tvFavPlaces.setVisibility(View.VISIBLE);
-                    }else{
-                        llNoFavsLayout.setVisibility(View.VISIBLE);
-                        tvFavPlaces.setVisibility(View.GONE);
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-
-            });
-
-        }
-    }
-
-    private void detachDatabaseReadListener() {
-        if (mChildEventListener != null) {
-            mFavsDbRef.removeEventListener(mChildEventListener);
-            mChildEventListener = null;
-        }
-    }
-
     //App lifecycles
 
     @Override
@@ -646,8 +477,6 @@ public class MainActivity extends AppCompatActivity
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
-        detachDatabaseReadListener();
-        adapter.notifyDataSetChanged();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
 
@@ -665,9 +494,6 @@ public class MainActivity extends AppCompatActivity
             adapter.notifyDataSetChanged();
             getSupportLoaderManager().restartLoader(PLACES_LOADER_ID, null, this);
         }*/
-        placeListDetailList.clear();
-        adapter.notifyDataSetChanged();
-        mDidInitLoader = false;
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
 
         //Notifications
@@ -687,8 +513,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "Loader destroyed");
-        getSupportLoaderManager().destroyLoader(PLACES_LOADER_ID);
     }
 
     @Override
@@ -723,50 +547,6 @@ public class MainActivity extends AppCompatActivity
             default:
                 break;
 
-        }
-    }
-
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
-
-    //recyclerview methods
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-
-            // Credits for Item offsets : http://www.androidhive.info/2016/05/android-working-with-card-view-and-recycler-view/
-
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
         }
     }
 

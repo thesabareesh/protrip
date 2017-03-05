@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_offline"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="3"
+    android:visibility="gone"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal">
+        <ImageView
+            android:layout_width="@dimen/height_offline_badge"
+            android:layout_height="@dimen/height_offline_badge"
+            app:srcCompat="@drawable/ic_cloud_off_black_24px"
+            android:layout_gravity="center_vertical|center_horizontal" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:text="@string/title_offline"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:gravity="center_vertical|center_horizontal" />
+  <!--  <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:text="@string/desc_no_favs"
+        android:gravity="center_vertical|center_horizontal" />-->
+    <Button
+        android:id="@+id/iv_offline_reload"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_retry"
+        android:elevation="@dimen/button_elevation"
+        android:soundEffectsEnabled="true"
+        android:clickable="true"/>
+
+
+
+
+</LinearLayout>

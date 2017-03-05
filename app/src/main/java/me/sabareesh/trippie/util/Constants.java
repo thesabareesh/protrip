@@ -28,10 +28,10 @@ public class Constants {
 
 
     //Values
-    public static final String API_VALUE = "";
+    public static final String API_VALUE = "AIzaSyDhDto1l7gRDL-UQcu4iGJImIDjiT8XMs0";
 
 
-    public static final String API_MAPS_VALUE = "";
+    public static final String API_MAPS_VALUE = "AIzaSyCKF2LPs0GjBMDCrkySviGwCGWJpa5K8-M";
     public static final String ABMOBS_APP_ID = "ca-app-pub-3940256099942544~3347511713";
     public static final String TYPE_VALUE_RESTAURANT = "restaurant";
     public static final String TYPE_VALUE_HOTEL = "lodging";
