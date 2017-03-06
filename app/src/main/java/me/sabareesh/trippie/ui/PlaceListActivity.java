@@ -166,7 +166,7 @@ public class PlaceListActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mAdView.loadAd(adRequest);
+               // mAdView.loadAd(adRequest);
             }
         }, Constants.ADMOB_DELAY_MS);
 
