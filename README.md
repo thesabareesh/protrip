@@ -29,6 +29,10 @@ If you face any issues setting this up, please let me know by [filing a new issu
 
 - [@thesabareesh](https://github.com/thesabareesh)
 
+### License
+
+[MIT](https://github.com/thesabareesh/protrip/edit/master/README.md)
+
 
 
 [playstore]: https://play.google.com/store/apps/details?id=me.sabareesh.trippie&hl=en
