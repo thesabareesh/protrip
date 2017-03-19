@@ -1,6 +1,7 @@
 [![](/resources/feature_graphic.png)][playstore]
 
 <img src="/resources/1.png" width="320" align="right" hspace="20">
+
 ProTrip is built on integration with Google Places API and with strong focus on Material design. 
 Get it [here on the Google Play Store][playstore]
 
@@ -11,7 +12,9 @@ Get it [here on the Google Play Store][playstore]
 - Simple, intuitive interface based on **[Material Design](https://material.google.com/)** principles.
 - **HOTELS AND RESTAURANTS** Browse pictures and reviews of great new places also with driving directions !
 - **NEARBY ATTRACTIONS** Find out nearby popular attractions as well as reviews and ratings from other travelers.
-- **No Internet? No problem**. Tap the star button and browse your favorite places on the go.
+- Access your favorite places across all of your devices.
+- Simple, trusted and secure way to Sign-in.
+
 
 ### Bug reports? Feature requests?
 
