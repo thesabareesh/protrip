@@ -34,7 +34,7 @@ If you face any issues setting this up, please let me know by [filing a new issu
 
 ### License
 
-[MIT](https://github.com/thesabareesh/protrip/edit/master/README.md)
+The Mighty [MIT](https://github.com/thesabareesh/protrip/edit/master/README.md)
 
 
 
