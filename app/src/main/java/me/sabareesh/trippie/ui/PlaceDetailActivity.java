@@ -362,7 +362,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
             reviewAuthor.setText(extras.getReviewAtIndex(i).getAuthor());
             reviewContent.setText(extras.getReviewAtIndex(i).getBody().replace("\n\n", " ").replace("\n", " "));
             Log.d(TAG, "picasso url http:" + extras.getReviewAtIndex(i).getAvatar_url());
-            Picasso.with(this).load("http:" + extras.getReviewAtIndex(i).getAvatar_url())
+            Picasso.with(this).load(extras.getReviewAtIndex(i).getAvatar_url())
                     .placeholder(R.drawable.ic_account_circle_black_24dp)
                     .transform(new CircleTransform())
                     .fit()

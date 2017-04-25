@@ -6,7 +6,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-
+        <item name="android:actionMenuTextColor">@color/colorPrimary</item>
         <item name="android:windowContentTransitions">true</item>
 
     </style>
