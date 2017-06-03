@@ -8,8 +8,8 @@ android {
         applicationId "me.sabareesh.trippie"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 1_100_100
-        versionName "1.1.1"
+        versionCode 1_200_000
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -17,14 +17,14 @@ android {
         javaMaxHeapSize "4g"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-        }
-        debug {
-            minifyEnabled false
-            applicationIdSuffix ".debug"
         }
     }
 }
