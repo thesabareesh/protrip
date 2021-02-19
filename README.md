@@ -2,10 +2,7 @@
 
 <img src="/resources/1.png" width="320" align="right" hspace="20">
 
-ProTrip is built on integration with Google Places API and with strong focus on Material design. 
-Get it [here on the Google Play Store][playstore]
-
-<a href='https://play.google.com/store/apps/details?id=me.sabareesh.trippie&hl=en&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='300px'/></a>
+ProTrip is built on integration with Google Places API and with strong focus on Material design.d
 
 ### Features
 
@@ -38,4 +35,4 @@ The Mighty [MIT](https://github.com/thesabareesh/protrip/edit/master/README.md)
 
 
 
-[playstore]: https://play.google.com/store/apps/details?id=me.sabareesh.trippie&hl=en
+[playstore]: https://play.google.com/store/apps/details?id=me.sab
